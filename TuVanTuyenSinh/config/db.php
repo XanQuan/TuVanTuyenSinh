@@ -1,26 +1,31 @@
 <?php
 // config/db.php
 
-// 1. Cấu hình thông số kết nối
-$servername = "127.0.0.1"; // Dùng IP này thay cho 'localhost' để tránh lỗi trên Windows
-$username = "root";        // Tên đăng nhập mặc định của XAMPP
-$password = "";            // Mật khẩu mặc định là rỗng
-$dbname = "tuvan_db";      // Tên database bạn đã tạo
+$servername = "127.0.0.1"; 
+$username = "root";        
+$password = "123456";            // Nếu máy bạn đặt mật khẩu MySQL thì điền vào đây
+$dbname = "tuvan_db";      
 
-// QUAN TRỌNG: Hãy thử số 3306 trước (Cổng mặc định)
-// Nếu vẫn lỗi thì mới đổi thành số khác bạn thấy ở cột "Port(s)" trong XAMPP
-$port = 2511; 
+/* Mẹo đồng bộ: Kiểm tra xem đang chạy ở máy nào để tự đổi PORT
+  Giả sử máy bạn dùng port 3306 (mặc định MySQL), máy bạn kia dùng 2511 (XAMPP)
+*/
+$port = ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_ADDR'] == '127.0.0.1') ? 3306 : 2511;
+
+// Hoặc đơn giản nhất là thống nhất để một số port cố định nếu cả hai cùng sửa được
+// $port = 3306; 
 
 try {
-    // 2. Tạo kết nối có truyền tham số PORT (số 3306)
+    // Kết nối
     $conn = new mysqli($servername, $username, $password, $dbname, $port);
 
-    // 3. Thiết lập font chữ tiếng Việt
+    // Kiểm tra kết nối
+    if ($conn->connect_error) {
+        throw new Exception($conn->connect_error);
+    }
+
     mysqli_set_charset($conn, 'UTF8');
 
-} catch (mysqli_sql_exception $e) {
-    // Nếu lỗi thì hiện thông báo rõ ràng
-    die("❌ Lỗi kết nối Database: " . $e->getMessage() . 
-        "<br>👉 Hãy kiểm tra lại XAMPP xem MySQL đã bật chưa và Port có đúng là $port không?");
+} catch (Exception $e) {
+    die("❌ Lỗi kết nối: " . $e->getMessage() . " (Đang thử Port: $port)");
 }
 ?>
