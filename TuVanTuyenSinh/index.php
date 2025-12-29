@@ -95,11 +95,13 @@ switch ($page) {
         break;
 
     // === XỬ LÝ ĐĂNG XUẤT ===
-    case 'logout':
-        require_once 'controllers/AuthController.php';
-        $auth = new AuthController($conn);
-        $auth->logout();
-        break;
+   case 'logout':
+    require_once 'controllers/AuthController.php'; //
+    $auth = new AuthController($conn); //
+    $auth->logout(); // Gọi hàm xóa session và redirect
+    exit;
+    break;
+    
 
     // === XỬ LÝ AUTH CHUNG ===
     case 'auth':
