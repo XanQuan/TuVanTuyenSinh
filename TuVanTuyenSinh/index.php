@@ -93,7 +93,12 @@ switch ($page) {
         $auth = new AuthController($conn);
         $auth->register();
         break;
-
+    case 'logout':
+        require_once 'controllers/AuthController.php';
+        $auth = new AuthController($conn);
+        $auth->logout(); // Hàm này sẽ thực hiện session_destroy() và header()
+        exit; // Dừng thực thi ngay để lệnh chuyển hướng có hiệu lực
+        break;
     // === XỬ LÝ ĐĂNG XUẤT ===
   // Tìm đoạn case 'logout' trong index.php và sửa thành:
     

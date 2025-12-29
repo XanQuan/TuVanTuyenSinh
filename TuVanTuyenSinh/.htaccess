@@ -2,7 +2,7 @@ RewriteEngine On
 
 # Nếu bạn để code trong thư mục TuVanTuyenSinh, hãy bỏ chú thích dòng dưới:
 # RewriteBase /TuVanTuyenSinh/
-
+RewriteBase /GitHub/TuVanTuyenSinh/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
