@@ -79,15 +79,15 @@ class AuthController {
     /**
      * 3. Xử lý Đăng xuất
      */
-    public function logout() {
-        // Xóa toàn bộ dữ liệu session
-        session_unset();
-        session_destroy();
-        
-        // Quay về trang Đăng nhập
-        header("Location: index.php?page=login");
-        exit;
-    }
+  // Trong controllers/AuthController.php
+public function logout() {
+    session_unset(); // Xóa sạch các biến trong session
+    session_destroy(); // Hủy toàn bộ phiên làm việc
+    
+    // Đưa bạn về trang đăng nhập
+    header("Location: index.php?page=login");
+    exit;
+}
 
     /**
      * Hàm phụ trợ: Điều hướng người dùng dựa trên vai trò

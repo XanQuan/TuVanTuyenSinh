@@ -96,7 +96,7 @@ switch ($page) {
 
     // === XỬ LÝ ĐĂNG XUẤT ===
   // Tìm đoạn case 'logout' trong index.php và sửa thành:
-    
+
 
     // === XỬ LÝ AUTH CHUNG ===
     case 'auth':

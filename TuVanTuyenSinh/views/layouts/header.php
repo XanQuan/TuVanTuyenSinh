@@ -52,30 +52,60 @@
             border-radius: 25px;
             box-shadow: 0 4px 10px rgba(167, 29, 42, 0.2);
         }
-
-        /* SỬA LỖI DROPDOWN: Hiển thị mượt mà và không bị mất khi cuộn */
-        .user-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-       .user-dropdown-content {
+        /* views/layouts/header.php */
+.user-dropdown-content {
     display: none;
     position: absolute;
     right: 0;
-    top: 100%; /* Đảm bảo menu sát ngay dưới nút 'Chào...' */
-    background-color: #ffffff;
+    top: 100%; 
+    background-color: #fff;
     min-width: 220px;
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.15);
+    /* Sửa tại đây: Đảm bảo menu luôn nổi lên trên cùng */
+    z-index: 999999 !important; 
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Hiển thị menu khi di chuột vào tên người dùng */
+.user-dropdown:hover .user-dropdown-content {
+    display: block !important;
+}
+
+/* Nút đăng xuất rõ ràng */
+.logout-btn {
+    color: #dc3545 !important;
+    font-weight: bold;
+    background-color: #fff5f5;
+}
+
+        /* SỬA LỖI DROPDOWN: Hiển thị mượt mà và không bị mất khi cuộn */
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+ .user-dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%; /* Sát lề dưới của nút chào */
+    background-color: #fff;
+    min-width: 200px;
     box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-    z-index: 999999 !important; /* Quan trọng: Đặt số thật lớn để luôn nằm trên cùng */
+    z-index: 999999 !important; 
     border-radius: 8px;
-    padding: 10px 0;
+    overflow: hidden;
+    
+    /* TẠO VÙNG ĐỆM ĐỂ CHUỘT KHÔNG BỊ RỜI KHỎI MENU */
+    margin-top: 0; 
+    padding: 5px 0;
 }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-       .user-dropdown:hover .user-dropdown-content {
-    display: block;
+  .user-dropdown:hover .user-dropdown-content {
+    display: block !important;
 }
 
         .user-dropdown-content a {
@@ -99,6 +129,15 @@
             margin-right: 8px; border: 2px solid #a71d2a;
             object-fit: cover;
         }
+        .user-dropdown::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 20px; /* Độ dày vùng đệm */
+    display: block;
+}
     </style>
 </head>
 
@@ -157,12 +196,12 @@
                                     Chào, <?= htmlspecialchars($_SESSION['user']['fullname']) ?> <i class="fa fa-angle-down ms-1"></i>
                                 </a>
                                 <div class="user-dropdown-content">
-                                    <a href="#"><i class="fa fa-user me-2"></i> Hồ sơ cá nhân</a>
-                                    <div style="border-top: 1px solid #eee; margin: 5px 0;"></div>
-                                    <a href="index.php?page=logout" style="color: #dc3545 !important; font-weight: bold;">
-                                        <i class="fa fa-sign-out me-2"></i> Đăng xuất
-                                    </a>
-                                </div>
+    <a href="index.php?page=profile"><i class="fa fa-user me-2"></i> Hồ sơ cá nhân</a>
+    <div style="border-top: 1px solid #eee; margin: 5px 0;"></div>
+    <a href="index.php?page=logout" class="logout-btn">
+        <i class="fa fa-sign-out me-2"></i> ĐĂNG XUẤT
+    </a>
+</div>
                              </li>
                           <?php else: ?>
                              <li><a href="index.php?page=auth&action=login" class="btn-login-custom">Đăng nhập</a></li>
