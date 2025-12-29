@@ -12,13 +12,14 @@ if (file_exists('config/db.php')) {
 // 2. Lấy tham số trên URL
 $page   = isset($_GET['page']) ? $_GET['page'] : 'advice';
 $action = isset($_GET['action']) ? $_GET['action'] : 'index';
+$allowed_pages = ['login', 'register', 'auth', 'forgot_password'];
 
 // ==========================================================
 // 🔥 LOGIC BẮT BUỘC ĐĂNG NHẬP (Gatekeeper)
 // ==========================================================
 if (!isset($_SESSION['user'])) {
     // Danh sách các trang được phép truy cập mà không cần đăng nhập
-    $allowed_pages = ['login', 'register', 'auth'];
+    $allowed_pages = ['login', 'register', 'auth', 'forgot_password'];
     
     // Nếu trang hiện tại KHÔNG nằm trong danh sách cho phép -> Đẩy về login
     if (!in_array($page, $allowed_pages)) {
@@ -89,15 +90,22 @@ switch ($page) {
 
     // === XỬ LÝ ĐĂNG KÝ ===
     case 'register':
-        require_once 'controllers/AuthController.php';
-        $auth = new AuthController($conn);
-        $auth->register();
-        break;
+    require_once 'controllers/AuthController.php';
+    $auth = new AuthController($conn);
+    $auth->register(); // Đảm bảo hàm này được gọi
+    break;
+     // === XỬ LÝ ĐĂNG XUẤT ===
     case 'logout':
         require_once 'controllers/AuthController.php';
         $auth = new AuthController($conn);
         $auth->logout(); // Hàm này sẽ thực hiện session_destroy() và header()
         exit; // Dừng thực thi ngay để lệnh chuyển hướng có hiệu lực
+        break;
+ // === Quên Mk ===
+    case 'forgot_password':
+        require_once 'controllers/AuthController.php';
+        $auth = new AuthController($conn);
+        $auth->forgotPassword(); // Gọi hàm hiển thị giao diện quên mật khẩu
         break;
     // === XỬ LÝ ĐĂNG XUẤT ===
   // Tìm đoạn case 'logout' trong index.php và sửa thành:
