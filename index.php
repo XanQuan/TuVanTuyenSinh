@@ -139,13 +139,28 @@ switch ($page) {
         break;
         
     // === MODULE SO SÁNH ===
+   // === MODULE SO SÁNH (HỢP NHẤT XỬ LÝ GIAO DIỆN & AJAX) ===
     case 'compare':
         require_once 'controllers/CompareController.php';
         $compare = new CompareController($conn);
-        if (method_exists($compare, $action)) {
-            $compare->$action();
+        $action = isset($_GET['action']) ? $_GET['action'] : 'index';
+
+        // Danh sách các hành động AJAX trả về dữ liệu JSON
+        $ajax_actions = ['getMajorsByUni', 'checkMajorAjax'];
+
+        if (in_array($action, $ajax_actions)) {
+            // Nếu là yêu cầu AJAX, gọi hàm và dừng chương trình để trả về JSON sạch
+            if (method_exists($compare, $action)) {
+                $compare->$action();
+            }
+            exit; 
         } else {
-            $compare->index();
+            // Nếu là trang giao diện thông thường (index, result)
+            if (method_exists($compare, $action)) {
+                $compare->$action();
+            } else {
+                $compare->index();
+            }
         }
         break;
     // === MODULE MỞ RỘNG ===
@@ -198,5 +213,6 @@ switch ($page) {
         header("Location: index.php?page=advice");
         exit;
         break;
+ 
 }
 ?>
