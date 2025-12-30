@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/TuVanTuyenSinh/public/assets/css/templatemo-edu-meeting.css">
     <link rel="stylesheet" href="/TuVanTuyenSinh/public/assets/css/owl.css">
     <link rel="stylesheet" href="/TuVanTuyenSinh/public/assets/css/lightbox.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
         /* SỬA LỖI: Đảm bảo Header luôn nằm trên cùng */
@@ -172,9 +173,9 @@
                       
                       <ul class="nav">
                           <li><a href="index.php">Trang chủ</a></li>
-                          <li><a href="index.php?page=about">Giới thiệu</a></li>
-                          <li><a href="index.php?page=assessment">🧩 Trắc nghiệm</a></li>
-                          <li><a href="index.php?page=compare">⚖️ So sánh</a></li>
+                          <li><a href="index.php?page=about">Về Chúng tôi</a></li>
+                          <li><a href="index.php?page=assessment">Trắc nghiệm</a></li>
+                          <li><a href="index.php?page=compare"> So sánh</a></li>
 
                           <li class="has-sub">
                             <a href="javascript:void(0)">Khám phá</a>

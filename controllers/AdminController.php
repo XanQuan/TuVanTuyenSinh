@@ -325,5 +325,28 @@ class AdminController {
         header("Location: index.php?page=admin&action=majors");
         exit;
     }
+    // xử Lý thêm câu hỏi holland code
+    public function save_question() {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $text = $_POST['question_text'];
+        $group = $_POST['holland_group'];
+        $image_name = null;
+
+        // Xử lý upload ảnh
+        if (!empty($_FILES['question_image']['name'])) {
+            $image_name = time() . '_' . $_FILES['question_image']['name'];
+            move_uploaded_file($_FILES['question_image']['tmp_name'], "uploads/questions/" . $image_name);
+        }
+
+        // Lưu vào DB
+        $sql = "INSERT INTO questions (question_text, holland_group, image_url) VALUES (?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("sss", $text, $group, $image_name);
+        
+        if ($stmt->execute()) {
+            header("Location: index.php?page=admin&action=list_questions&status=success");
+        }
+    }
+}
 }
 ?>

@@ -12,71 +12,47 @@ class AssessmentController {
 
     // 1. Hiển thị bài test
     public function index() {
-        // Bộ câu hỏi Holland Code ngắn gọn (18 câu - 3 câu mỗi nhóm)
-        $questions = [
-            ['id' => 1, 'group' => 'R', 'text' => 'Thích làm việc với các công cụ, máy móc, thiết bị kỹ thuật.'],
-            ['id' => 2, 'group' => 'R', 'text' => 'Thích sửa chữa đồ đạc, lắp ráp linh kiện.'],
-            ['id' => 3, 'group' => 'R', 'text' => 'Thích các hoạt động ngoài trời, vận động chân tay.'],
-            
-            ['id' => 4, 'group' => 'I', 'text' => 'Thích tìm hiểu nguyên lý hoạt động của mọi vật.'],
-            ['id' => 5, 'group' => 'I', 'text' => 'Thích giải các câu đố, bài toán khó, tư duy logic.'],
-            ['id' => 6, 'group' => 'I', 'text' => 'Thích nghiên cứu khoa học, đọc sách chuyên sâu.'],
-
-            ['id' => 7, 'group' => 'A', 'text' => 'Thích sáng tạo, vẽ tranh, chơi nhạc cụ hoặc viết lách.'],
-            ['id' => 8, 'group' => 'A', 'text' => 'Thích sự tự do, không gò bó theo khuôn mẫu.'],
-            ['id' => 9, 'group' => 'A', 'text' => 'Thích cái đẹp, có khả năng thẩm mỹ tốt.'],
-
-            ['id' => 10, 'group' => 'S', 'text' => 'Thích giúp đỡ, chăm sóc, dạy dỗ người khác.'],
-            ['id' => 11, 'group' => 'S', 'text' => 'Thích giao tiếp, kết bạn, làm việc nhóm.'],
-            ['id' => 12, 'group' => 'S', 'text' => 'Thích tham gia các hoạt động cộng đồng, thiện nguyện.'],
-
-            ['id' => 13, 'group' => 'E', 'text' => 'Thích lãnh đạo, thuyết phục người khác nghe theo mình.'],
-            ['id' => 14, 'group' => 'E', 'text' => 'Thích kinh doanh, buôn bán, kiếm tiền.'],
-            ['id' => 15, 'group' => 'E', 'text' => 'Thích sự cạnh tranh, dám chấp nhận rủi ro.'],
-
-            ['id' => 16, 'group' => 'C', 'text' => 'Thích sự ngăn nắp, trật tự, quy trình rõ ràng.'],
-            ['id' => 17, 'group' => 'C', 'text' => 'Thích làm việc với con số, sổ sách, dữ liệu chi tiết.'],
-            ['id' => 18, 'group' => 'C', 'text' => 'Thích sự ổn định, an toàn, tuân thủ quy tắc.']
-        ];
+        $sql = "SELECT * FROM questions ORDER BY RAND()"; // Lấy ngẫu nhiên cho khách quan
+        $result = $this->conn->query($sql);
+        
+        $questions = [];
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $questions[] = $row;
+            }
+        }
         
         require 'views/assessment/test.php';
     }
+    
 
     // 2. Xử lý kết quả (Chấm điểm)
-    public function submit() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    public function submit() {if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Nhận mảng answers dạng [question_id => group_code]
             $answers = $_POST['answers'] ?? [];
             
-            // Khởi tạo điểm
             $scores = ['R' => 0, 'I' => 0, 'A' => 0, 'S' => 0, 'E' => 0, 'C' => 0];
 
-            // Tính điểm (Mỗi câu tick = 1 điểm)
-            foreach ($answers as $group) {
-                if (isset($scores[$group])) {
-                    $scores[$group]++;
+            // Tính điểm dựa trên group của câu hỏi được chọn
+            foreach ($answers as $group_code) {
+                if (isset($scores[$group_code])) {
+                    $scores[$group_code]++;
                 }
             }
 
-            // Tìm nhóm điểm cao nhất
-            $max_score = -1;
-            $dominant = '';
-            foreach ($scores as $key => $val) {
-                if ($val > $max_score) {
-                    $max_score = $val;
-                    $dominant = $key;
-                }
-            }
+            // Tìm nhóm điểm cao nhất (Logic giữ nguyên)
+            arsort($scores); // Sắp xếp giảm dần theo điểm số
+            $dominant = array_key_first($scores);
 
-            // Lưu vào Database
+            // Lưu vào Database (Giữ nguyên logic của bạn)
             $user_id = $_SESSION['user']['id'];
             $sql = "INSERT INTO assessment_results (user_id, r_score, i_score, a_score, s_score, e_score, c_score, dominant_type) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bind_param("iiiiiiis", $user_id, $scores['R'], $scores['I'], $scores['A'], $scores['S'], $scores['E'], $scores['C'], $dominant);
             $stmt->execute();
+            
             $result_id = $stmt->insert_id;
-
-            // Chuyển hướng sang trang kết quả
             header("Location: index.php?page=assessment&action=result&id=$result_id");
             exit;
         }
