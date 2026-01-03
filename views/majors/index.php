@@ -25,12 +25,13 @@
                                 </div>
                                 <div class="down-content h-100 d-flex flex-column">
                                     <h4 class="mb-2"><?= htmlspecialchars($m['name']) ?></h4>
-                                    <p class="text-danger fw-bold small">Mã ngành: <?= htmlspecialchars($m['code']) ?></p>
-                                    <p class="flex-grow-1">
+                                   <p class="text-danger fw-bold small">Mã ngành: <?= htmlspecialchars($m['code'] ?? 'Chưa cập nhật') ?></p>
+
+<a href="index.php?page=advice&group=<?= htmlspecialchars($m['code'] ?? '') ?>">Xem điểm chuẩn</a>
                                         <?= htmlspecialchars($m['description'] ?? 'Ngành học đang được quan tâm hàng đầu hiện nay.') ?>
                                     </p>
                                     <div class="main-button-red mt-3">
-                                        <a href="index.php?page=advice&group=<?= htmlspecialchars($m['code']) ?>">Xem điểm chuẩn</a>
+                                        <a href="index.php?page=advice&group=<?= htmlspecialchars($m['code'] ?? '') ?>">Xem điểm chuẩn</a>
                                     </div>
                                 </div>
                             </div>
