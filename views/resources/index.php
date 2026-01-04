@@ -19,12 +19,13 @@
                     <?php if(isset($resources) && count($resources) > 0): ?>
                         <?php foreach($resources as $res): ?>
                         <div class="col-lg-6 mb-4">
-                            <div class="meeting-item">
-                                <div class="down-content" style="border-radius: 20px; padding: 40px;">
+                            <div class="meeting-item shadow-sm" style="border-radius: 20px; transition: 0.3s;">
+                                <div class="down-content" style="border-radius: 20px; padding: 40px; background: #fff;">
                                     <div class="row align-items-center">
                                         <div class="col-md-3 text-center mb-3 mb-md-0">
                                             <?php 
                                                 $type = $res['type'] ?? 'Doc';
+                                                // Hiển thị Icon dựa trên loại tài liệu
                                                 if(stripos($type, 'Video') !== false): 
                                             ?>
                                                 <i class="fas fa-play-circle fa-4x text-danger"></i>
@@ -39,8 +40,39 @@
                                             <span class="badge bg-secondary mb-2"><?= htmlspecialchars($type) ?></span>
                                             <p><?= htmlspecialchars($res['description'] ?? 'Mô tả tài liệu.') ?></p>
                                             
-                                            <div class="main-button-yellow mt-3">
-                                                <a href="<?= htmlspecialchars($res['link'] ?? '#') ?>" target="_blank">Xem / Tải về</a>
+                                            <div class="main-button-yellow mt-3 d-flex gap-2">
+                                                <?php 
+                                                    $file_name = $res['file_link'];
+                                                    
+                                                    // LOGIC QUAN TRỌNG: Kiểm tra link ngoài hay file nội bộ
+                                                    if (strpos($file_name, 'http') !== false) {
+                                                        // Nếu là link Youtube/Drive thì giữ nguyên
+                                                        $final_url = $file_name;
+                                                        $is_external = true;
+                                                    } else {
+                                                        // Nếu là file trong máy, nối thêm đường dẫn thư mục documents
+                                                        $final_url = "public/assets/documents/" . $file_name;
+                                                        $is_external = false;
+                                                    }
+                                                ?>
+
+                                                <?php if(!empty($file_name)): ?>
+                                                    <a href="<?= htmlspecialchars($final_url) ?>" target="_blank" class="btn btn-warning shadow-sm">
+                                                        <i class="fa <?= $is_external ? 'fa-play' : 'fa-eye' ?> me-2"></i>
+                                                        <?= $is_external ? 'XEM VIDEO' : 'XEM TRỰC TIẾP' ?>
+                                                    </a>
+                                                    
+                                                    <?php if(!$is_external): ?>
+                                                    <a href="<?= htmlspecialchars($final_url) ?>" download class="btn btn-outline-warning shadow-sm">
+                                                        <i class="fa fa-download me-2"></i>TẢI VỀ MÁY
+                                                    </a>
+                                                    <?php endif; ?>
+
+                                                <?php else: ?>
+                                                    <button class="btn btn-secondary disabled" title="Tài liệu đang cập nhật">
+                                                        <i class="fa fa-lock me-2"></i>CHƯA CÓ FILE
+                                                    </button>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>

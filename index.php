@@ -177,10 +177,11 @@ switch ($page) {
         break;
 
     case 'resources':
-        require_once 'controllers/ResourceController.php';
-        $resources = new ResourceController($conn);
-        $resources->index();
-        break;
+    require_once 'controllers/ResourceController.php';
+    $resources = new ResourceController($conn);
+    // Nếu không có action cụ thể trên URL, mặc định chạy index()
+    $resources->index();
+    break;
 
     case 'faq':
         require_once 'controllers/FaqController.php';
@@ -200,13 +201,28 @@ switch ($page) {
         $major = new MajorController($conn);
         $major->index();
         break;
-    // === TRANG KHÓA HỌC ===
+   // === TRANG KHÓA HỌC ===
     case 'courses':
         require_once 'controllers/CourseController.php';
         $course = new CourseController($conn);
-        $course->index();
+        
+        if ($action == 'detail') {
+            $course->detail();
+        } 
+        // THÊM ĐOẠN NÀY: Để Router cho phép nhảy sang trang điền thông tin
+        elseif ($action == 'register') {
+            $course->register(); 
+        } 
+        elseif ($action == 'submit_consultation') {
+            $course->submit_consultation();
+        } 
+        elseif ($action == 'rate') {
+            $course->rate();
+        } 
+        else {
+            $course->index();
+        }
         break;
-
     // === TRANG KHÔNG TỒN TẠI HOẶC MẶC ĐỊNH ===
     default:
         // Quay về trang chủ tư vấn

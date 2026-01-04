@@ -249,31 +249,16 @@
         <i class="fa-solid fa-layer-group"></i> NHÓM NGÀNH QUAN TÂM
     </label>
     <div style="position: relative;">
-        <select name="group" class="input-premium">
-            <option value="" disabled selected>-- Chọn lĩnh vực bạn yêu thích --</option>
-            <?php if (count($results) > 0): ?>
-    <?php foreach ($results as $row): ?>
-        <div class="uni-item shadow-sm">
-            <div class="d-flex justify-content-between">
-                <h6 class="fw-bold text-danger m-0"><?= $row['uni_name'] ?></h6>
-                <span class="badge bg-success rounded-pill">Tỷ lệ đậu cao</span>
-            </div>
-            <p class="small text-muted mb-1 mt-2">Ngành: <strong><?= $row['major_name'] ?></strong></p>
-            
-            <div class="d-flex justify-content-between align-items-center mt-2">
-                <span class="small">Điểm chuẩn: <b><?= $row['score'] ?></b></span>
-                <span class="small text-primary">Chênh lệch: +<?= round($searchScore - $row['score'], 2) ?></span>
-            </div>
-
-            <div class="mt-3 text-end">
-                <a href="index.php?page=compare&uni_id=<?= $row['uni_id'] ?>" class="btn btn-sm btn-outline-danger rounded-pill">
-                    <i class="fas fa-balance-scale"></i> So sánh trường này
-                </a>
-            </div>
-        </div>
-    <?php endforeach; ?>
-<?php endif; ?>
-        </select>
+       <select name="group" class="input-premium">
+    <option value="" disabled selected>-- Chọn lĩnh vực bạn yêu thích --</option>
+    <?php if (isset($major_groups) && count($major_groups) > 0): ?>
+        <?php foreach ($major_groups as $g): ?>
+            <option value="<?= $g['group_code'] ?>">
+                <?= htmlspecialchars($g['group_name']) ?>
+            </option>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</select>
         <i class="fa-solid fa-chevron-down" style="position: absolute; right: 25px; top: 50%; transform: translateY(-50%); color: #fff; pointer-events: none;"></i>
     </div>
 </div>
