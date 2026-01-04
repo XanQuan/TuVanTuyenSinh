@@ -6,6 +6,7 @@ include __DIR__ . '/../layouts/header.php';
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
     :root {
@@ -23,14 +24,14 @@ include __DIR__ . '/../layouts/header.php';
         font-family: 'Inter', sans-serif;
     }
 
-    /* 1. BANNER HIỆN ĐẠI */
+    /* BANNER HIỆN ĐẠI */
     .test-banner {
         background: linear-gradient(135deg, #be1e2d 0%, #ff5b5b 100%);
         padding: 140px 0 100px;
         text-align: center;
         color: white;
         clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
-        margin-bottom: -60px; /* Để phần nội dung đè lên */
+        margin-bottom: -60px;
     }
 
     .test-banner h1 {
@@ -47,7 +48,7 @@ include __DIR__ . '/../layouts/header.php';
         margin: 0 auto;
     }
 
-    /* 2. CONTAINER CHÍNH */
+    /* CONTAINER CHÍNH */
     .test-container {
         max-width: 1200px;
         margin: 0 auto;
@@ -56,14 +57,14 @@ include __DIR__ . '/../layouts/header.php';
         z-index: 10;
     }
 
-    /* 3. LƯỚI CÂU HỎI (RESPONSIVE GRID) */
+    /* LƯỚI CÂU HỎI */
     .questions-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Tự động co giãn */
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 20px;
     }
 
-    /* 4. THẺ CÂU HỎI (CARD STYLE) */
+    /* THẺ CÂU HỎI */
     .q-card {
         background: var(--card-bg);
         border-radius: 16px;
@@ -77,17 +78,16 @@ include __DIR__ . '/../layouts/header.php';
         flex-direction: row;
         align-items: center;
         gap: 15px;
-        user-select: none; /* Chống bôi đen text khi bấm nhanh */
+        user-select: none;
+        height: 100%;
     }
 
-    /* Hiệu ứng khi di chuột */
     .q-card:hover {
         transform: translateY(-5px);
         box-shadow: var(--shadow-hover);
         border-color: rgba(190, 30, 45, 0.3);
     }
 
-    /* Hiệu ứng KHI ĐƯỢC CHỌN (Sẽ được JS thêm class .selected) */
     .q-card.selected {
         background-color: #fff5f5;
         border-color: var(--primary-red);
@@ -100,7 +100,6 @@ include __DIR__ . '/../layouts/header.php';
         color: white;
     }
 
-    /* Nút tròn giả checkbox */
     .check-circle {
         width: 28px;
         height: 28px;
@@ -115,7 +114,6 @@ include __DIR__ . '/../layouts/header.php';
         font-size: 14px;
     }
 
-    /* Nội dung câu hỏi */
     .q-content {
         font-size: 1rem;
         font-weight: 600;
@@ -123,19 +121,18 @@ include __DIR__ . '/../layouts/header.php';
         line-height: 1.5;
     }
 
-    /* Ẩn input checkbox thật đi */
     .q-card input[type="checkbox"] {
         display: none;
     }
 
-    /* 5. NÚT SUBMIT NỔI */
+    /* ACTION BAR */
     .action-bar {
         position: sticky;
         bottom: 20px;
         text-align: center;
         margin-top: 40px;
         z-index: 100;
-        pointer-events: none; /* Để click xuyên qua vùng trống */
+        pointer-events: none;
     }
 
     .btn-submit {
@@ -148,7 +145,7 @@ include __DIR__ . '/../layouts/header.php';
         border: none;
         box-shadow: 0 10px 20px rgba(190, 30, 45, 0.4);
         transition: 0.3s;
-        pointer-events: auto; /* Bật lại click cho nút */
+        pointer-events: auto;
         cursor: pointer;
         display: inline-flex;
         align-items: center;
@@ -161,7 +158,6 @@ include __DIR__ . '/../layouts/header.php';
         box-shadow: 0 15px 30px rgba(190, 30, 45, 0.5);
     }
 
-    /* Thanh tiến độ (Trang trí) */
     .progress-info {
         background: rgba(255,255,255,0.9);
         padding: 8px 20px;
@@ -184,6 +180,7 @@ include __DIR__ . '/../layouts/header.php';
 </div>
 
 <div class="test-container">
+    
     <form action="index.php?page=assessment&action=submit" method="POST" id="testForm">
         
         <div class="questions-grid">
@@ -191,7 +188,6 @@ include __DIR__ . '/../layouts/header.php';
                 <?php foreach ($questions as $index => $q): ?>
                 
                 <label class="q-card" id="card-<?= $index ?>">
-                    
                     <input type="checkbox" name="answers[]" 
                            value="<?= htmlspecialchars($q['group_code']) ?>" 
                            onchange="toggleCard(this, 'card-<?= $index ?>')">
@@ -208,6 +204,7 @@ include __DIR__ . '/../layouts/header.php';
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="col-12 text-center py-5">
+                    <img src="https://cdn-icons-png.flaticon.com/512/7486/7486744.png" width="80" alt="Empty" class="mb-3 opacity-50">
                     <h3 class="text-muted">⚠️ Chưa có dữ liệu câu hỏi!</h3>
                     <p>Vui lòng liên hệ Admin để cập nhật ngân hàng câu hỏi.</p>
                 </div>
@@ -229,7 +226,7 @@ include __DIR__ . '/../layouts/header.php';
 </div>
 
 <script>
-    // Hàm đổi màu thẻ khi được chọn
+    // 1. Hàm đổi màu thẻ khi được chọn
     function toggleCard(checkbox, cardId) {
         const card = document.getElementById(cardId);
         if (checkbox.checked) {
@@ -240,11 +237,50 @@ include __DIR__ . '/../layouts/header.php';
         updateCount();
     }
 
-    // Hàm đếm số lượng đã chọn
+    // 2. Hàm đếm số lượng đã chọn
     function updateCount() {
         const checkboxes = document.querySelectorAll('input[name="answers[]"]:checked');
         document.getElementById('countDisplay').innerText = checkboxes.length;
     }
+
+    // 3. XỬ LÝ SỰ KIỆN NỘP BÀI (DÙNG SWEETALERT2 THAY ALERT CŨ)
+    document.getElementById('testForm').addEventListener('submit', function(e) {
+        const checked = document.querySelectorAll('input[name="answers[]"]:checked');
+        
+        // Nếu chưa chọn mục nào
+        if (checked.length === 0) {
+            e.preventDefault(); // Chặn load lại trang
+            
+            // HIỆN POPUP ĐẸP
+            Swal.fire({
+                icon: 'warning',
+                title: 'Chưa chọn mục nào!',
+                text: 'Bạn cần chọn những mô tả phù hợp với bản thân trước khi xem kết quả.',
+                confirmButtonText: 'Đã hiểu',
+                confirmButtonColor: '#be1e2d', // Màu đỏ giống web của bạn
+                background: '#fff',
+                backdrop: `
+                    rgba(0,0,123,0.4)
+                    left top
+                    no-repeat
+                `
+            });
+            
+            // Cuộn lên đầu
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    });
+
+    // 4. KIỂM TRA LỖI PHP TỪ SERVER (NẾU CÓ) -> HIỆN POPUP LUÔN
+    <?php if (isset($error) && $error): ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Có lỗi xảy ra',
+            text: '<?= htmlspecialchars($error) ?>',
+            confirmButtonText: 'Thử lại',
+            confirmButtonColor: '#be1e2d'
+        });
+    <?php endif; ?>
 </script>
 
 <?php include __DIR__ . '/../layouts/footer.php'; ?>
