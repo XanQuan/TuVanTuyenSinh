@@ -59,47 +59,58 @@ class AssessmentController {
     }
 
     // 3. Hiển thị Kết quả & Gợi ý ngành
-    public function result() {
-        $id = $_GET['id'];
-        $user_id = $_SESSION['user']['id'];
-
-        // Lấy kết quả từ DB
-        $sql = "SELECT * FROM assessment_results WHERE id = ? AND user_id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ii", $id, $user_id);
-        $stmt->execute();
-        $result = $stmt->get_result()->fetch_assoc();
-
-        if (!$result) die("Không tìm thấy kết quả!");
-
-        // Logic gợi ý ngành dựa trên nhóm cao nhất
-        $dominant = $result['dominant_type'];
-        $suggestion_sql = "";
-        
-        // Mapping nhóm tính cách -> mã nhóm ngành trong bảng majors (DB của bạn)
-        // Bạn cần đảm bảo bảng majors có cột 'group_code' khớp hoặc dùng LIKE
-        switch ($dominant) {
-            case 'R': $group_search = 'CK'; break; // Kỹ thuật - Cơ khí
-            case 'I': $group_search = 'IT'; break; // Công nghệ / Nghiên cứu (IT là ví dụ)
-            case 'A': $group_search = 'NN'; break; // Nghệ thuật / Ngôn ngữ
-            case 'S': $group_search = 'YD'; break; // Xã hội (Y dược, giáo dục...)
-            case 'E': $group_search = 'KT'; break; // Kinh tế / Quản lý
-            case 'C': $group_search = 'KT'; break; // Nghiệp vụ (Kế toán...)
-            default: $group_search = '';
-        }
-
-        $suggested_majors = [];
-        if ($group_search) {
-            // Lấy 5 ngành gợi ý
-            $sql_majors = "SELECT * FROM majors WHERE group_code = ? LIMIT 5";
-            $stmt_m = $this->conn->prepare($sql_majors);
-            $stmt_m->bind_param("s", $group_search);
-            $stmt_m->execute();
-            $res_m = $stmt_m->get_result();
-            while ($row = $res_m->fetch_assoc()) $suggested_majors[] = $row;
-        }
-
-        require 'views/assessment/result.php';
+   public function result() {
+    // 1. Kiểm tra đăng nhập
+    if (!isset($_SESSION['user'])) {
+        header("Location: index.php?page=auth&action=login");
+        exit;
     }
+
+    $id = $_GET['id'] ?? 0;
+    $user_id = $_SESSION['user']['id'];
+
+    // 2. Lấy kết quả từ Database
+    $sql = "SELECT * FROM assessment_results WHERE id = ? AND user_id = ?";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("ii", $id, $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+
+    if (!$result) {
+        die("Không tìm thấy kết quả hoặc bạn không có quyền xem.");
+    }
+
+    // 3. Logic gợi ý ngành (Mapping Holland -> Mã nhóm ngành)
+    $dominant = $result['dominant_type']; // Ví dụ: 'R', 'I', 'A'...
+    $group_search = '';
+
+    // LƯU Ý: Mã nhóm ngành bên dưới (CK, IT, NN...) phải khớp với cột 'group_code' trong bảng 'majors' của bạn
+    switch ($dominant) {
+        case 'R': $group_search = 'CK'; break; // Thực tế -> Cơ khí/Kỹ thuật
+        case 'I': $group_search = 'IT'; break; // Nghiên cứu -> CNTT
+        case 'A': $group_search = 'NN'; break; // Nghệ thuật -> Ngôn ngữ/Báo chí
+        case 'S': $group_search = 'YD'; break; // Xã hội -> Y Dược/Sư phạm
+        case 'E': $group_search = 'KT'; break; // Quản lý -> Kinh tế
+        case 'C': $group_search = 'KT'; break; // Nghiệp vụ -> Kế toán (Chung nhóm Kinh tế)
+        default: $group_search = 'IT';
+    }
+
+    // 4. Lấy danh sách ngành gợi ý
+    $suggested_majors = [];
+    if ($group_search) {
+        // Lấy 5 ngành thuộc nhóm đó, hoặc lấy ngẫu nhiên nếu muốn
+        $sql_majors = "SELECT * FROM majors WHERE group_code = ? LIMIT 6";
+        $stmt_m = $this->conn->prepare($sql_majors);
+        $stmt_m->bind_param("s", $group_search);
+        $stmt_m->execute();
+        $res_m = $stmt_m->get_result();
+        while ($row = $res_m->fetch_assoc()) {
+            $suggested_majors[] = $row;
+        }
+    }
+
+    // 5. Gọi View hiển thị
+    require 'views/assessment/result.php';
+}
 }
 ?>
