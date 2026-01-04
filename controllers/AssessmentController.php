@@ -4,6 +4,7 @@ class AssessmentController {
 
     public function __construct($db) {
         $this->conn = $db;
+        // Kiểm tra đăng nhập
         if (!isset($_SESSION['user'])) {
             header("Location: index.php?page=auth&action=login");
             exit;
@@ -12,91 +13,141 @@ class AssessmentController {
 
     // 1. Hiển thị bài test
     public function index() {
-        $sql = "SELECT * FROM questions ORDER BY RAND()"; // Lấy ngẫu nhiên cho khách quan
+        // Lấy câu hỏi ngẫu nhiên
+        $sql = "SELECT * FROM questions ORDER BY RAND()"; 
         $result = $this->conn->query($sql);
         
         $questions = [];
-        if ($result->num_rows > 0) {
+        if ($result && $result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
                 $questions[] = $row;
             }
         }
         
+        // Lấy thông báo lỗi từ Session (nếu có) để truyền sang View
+        $error = $_SESSION['error'] ?? null;
+        unset($_SESSION['error']); // Xóa lỗi sau khi đã lấy để không hiện lại lần sau
+
         require 'views/assessment/test.php';
     }
-    
 
-    // 2. Xử lý kết quả (Chấm điểm)
-    public function submit() {if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Nhận mảng answers dạng [question_id => group_code]
+    // 2. Xử lý nộp bài
+    public function submit() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $answers = $_POST['answers'] ?? [];
             
+            // --- VALIDATION: Chặn nộp bài trống ---
+            if (empty($answers)) {
+                $_SESSION['error'] = "Bạn chưa chọn đáp án nào. Vui lòng thực hiện bài trắc nghiệm!";
+                header("Location: index.php?page=assessment");
+                exit;
+            }
+
             $scores = ['R' => 0, 'I' => 0, 'A' => 0, 'S' => 0, 'E' => 0, 'C' => 0];
 
-            // Tính điểm dựa trên group của câu hỏi được chọn
             foreach ($answers as $group_code) {
                 if (isset($scores[$group_code])) {
                     $scores[$group_code]++;
                 }
             }
 
-            // Tìm nhóm điểm cao nhất (Logic giữ nguyên)
-            arsort($scores); // Sắp xếp giảm dần theo điểm số
+            // Tìm nhóm điểm cao nhất để lưu "dominant_type" (lấy đại diện 1 cái đầu tiên)
+            arsort($scores); 
             $dominant = array_key_first($scores);
 
-            // Lưu vào Database (Giữ nguyên logic của bạn)
             $user_id = $_SESSION['user']['id'];
             $sql = "INSERT INTO assessment_results (user_id, r_score, i_score, a_score, s_score, e_score, c_score, dominant_type) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param("iiiiiiis", $user_id, $scores['R'], $scores['I'], $scores['A'], $scores['S'], $scores['E'], $scores['C'], $dominant);
-            $stmt->execute();
             
-            $result_id = $stmt->insert_id;
-            header("Location: index.php?page=assessment&action=result&id=$result_id");
+            $stmt = $this->conn->prepare($sql);
+            if ($stmt) {
+                $stmt->bind_param("iiiiiiis", $user_id, $scores['R'], $scores['I'], $scores['A'], $scores['S'], $scores['E'], $scores['C'], $dominant);
+                
+                if ($stmt->execute()) {
+                    $result_id = $stmt->insert_id;
+                    header("Location: index.php?page=assessment&action=result&id=$result_id");
+                    exit;
+                }
+            }
+            
+            $_SESSION['error'] = "Lỗi hệ thống: Không thể lưu kết quả. Vui lòng thử lại.";
+            header("Location: index.php?page=assessment");
             exit;
         }
     }
 
-    // 3. Hiển thị Kết quả & Gợi ý ngành
+    // 3. Hiển thị Kết quả & Gợi ý ngành (LOGIC ĐA TIỀM NĂNG)
     public function result() {
-        $id = $_GET['id'];
+        $id = $_GET['id'] ?? 0;
         $user_id = $_SESSION['user']['id'];
 
-        // Lấy kết quả từ DB
         $sql = "SELECT * FROM assessment_results WHERE id = ? AND user_id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("ii", $id, $user_id);
         $stmt->execute();
-        $result = $stmt->get_result()->fetch_assoc();
+        $result_data = $stmt->get_result()->fetch_assoc();
 
-        if (!$result) die("Không tìm thấy kết quả!");
+        $result = $result_data; 
+        $suggested_majors_grouped = []; // Mảng chứa ngành đã phân nhóm
 
-        // Logic gợi ý ngành dựa trên nhóm cao nhất
-        $dominant = $result['dominant_type'];
-        $suggestion_sql = "";
-        
-        // Mapping nhóm tính cách -> mã nhóm ngành trong bảng majors (DB của bạn)
-        // Bạn cần đảm bảo bảng majors có cột 'group_code' khớp hoặc dùng LIKE
-        switch ($dominant) {
-            case 'R': $group_search = 'CK'; break; // Kỹ thuật - Cơ khí
-            case 'I': $group_search = 'IT'; break; // Công nghệ / Nghiên cứu (IT là ví dụ)
-            case 'A': $group_search = 'NN'; break; // Nghệ thuật / Ngôn ngữ
-            case 'S': $group_search = 'YD'; break; // Xã hội (Y dược, giáo dục...)
-            case 'E': $group_search = 'KT'; break; // Kinh tế / Quản lý
-            case 'C': $group_search = 'KT'; break; // Nghiệp vụ (Kế toán...)
-            default: $group_search = '';
-        }
+        if ($result) {
+            $scores = [
+                'R' => $result['r_score'],
+                'I' => $result['i_score'],
+                'A' => $result['a_score'],
+                'S' => $result['s_score'],
+                'E' => $result['e_score'],
+                'C' => $result['c_score']
+            ];
 
-        $suggested_majors = [];
-        if ($group_search) {
-            // Lấy 5 ngành gợi ý
-            $sql_majors = "SELECT * FROM majors WHERE group_code = ? LIMIT 5";
-            $stmt_m = $this->conn->prepare($sql_majors);
-            $stmt_m->bind_param("s", $group_search);
-            $stmt_m->execute();
-            $res_m = $stmt_m->get_result();
-            while ($row = $res_m->fetch_assoc()) $suggested_majors[] = $row;
+            $max_score = max($scores);
+
+            // Tìm TẤT CẢ các nhóm có điểm bằng điểm cao nhất
+            $top_types = [];
+            if ($max_score > 0) {
+                foreach ($scores as $type => $score) {
+                    if ($score == $max_score) {
+                        $top_types[] = $type;
+                    }
+                }
+            }
+
+            // --- CẤU HÌNH MAPPING: MÃ HOLLAND -> MÃ NHÓM NGÀNH (DATABASE) ---
+            // Bạn cần kiểm tra cột 'group_code' trong bảng 'majors' để điền cho đúng
+            $mapping = [
+                'R' => ['code' => 'CK', 'name' => 'Thực tế (Realistic)'],       // Ví dụ: CK = Cơ khí/Kỹ thuật
+                'I' => ['code' => 'IT', 'name' => 'Nghiên cứu (Investigative)'], // Ví dụ: IT = CNTT
+                'A' => ['code' => 'NN', 'name' => 'Nghệ thuật (Artistic)'],      // Ví dụ: NN = Năng khiếu/Nghệ thuật
+                'S' => ['code' => 'YD', 'name' => 'Xã hội (Social)'],            // Ví dụ: YD = Y Dược/Sư phạm
+                'E' => ['code' => 'KT', 'name' => 'Quản lý (Enterprising)'],     // Ví dụ: KT = Kinh tế
+                'C' => ['code' => 'KT', 'name' => 'Nghiệp vụ (Conventional)']    // Ví dụ: KT = Kế toán (Chung nhóm Kinh tế)
+            ];
+
+            // Vòng lặp lấy ngành cho TỪNG nhóm trong Top
+            foreach ($top_types as $type) {
+                if (isset($mapping[$type])) {
+                    $group_code = $mapping[$type]['code'];
+                    $type_name = $mapping[$type]['name'];
+
+                    // Lấy 4 ngành tiêu biểu
+                    $majors = [];
+                    $sql_m = "SELECT * FROM majors WHERE group_code = ? LIMIT 4";
+                    $stmt_m = $this->conn->prepare($sql_m);
+                    $stmt_m->bind_param("s", $group_code);
+                    $stmt_m->execute();
+                    $res_m = $stmt_m->get_result();
+                    while ($row = $res_m->fetch_assoc()) {
+                        $majors[] = $row;
+                    }
+
+                    if (!empty($majors)) {
+                        $suggested_majors_grouped[$type] = [
+                            'name' => $type_name,
+                            'majors' => $majors
+                        ];
+                    }
+                }
+            }
         }
 
         require 'views/assessment/result.php';

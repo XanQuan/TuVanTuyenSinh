@@ -13,54 +13,49 @@ class AdviceController {
 
     // 1. Trang chủ mặc định
     public function index() {
-        // --- THÊM ĐOẠN NÀY ĐỂ LẤY NGÀNH ---
+        // Lấy danh sách nhóm ngành để hiển thị vào Select box
         $major_groups = $this->getMajorGroups(); 
         
-        // Mặc định vào trang chủ chưa có kết quả
+        // Mặc định vào trang chủ chưa có kết quả ($results = null)
+        $results = null;
+        
         require 'views/home/index.php';
     }
 
-    // 2. Xử lý tra cứu (Và lưu lịch sử)
-    // controllers/AdviceController.php
+    // 2. Xử lý tra cứu (Gọi Model tính toán và lưu lịch sử)
+    public function result() {
+        $results = null;
+        $searchScore = "";
+        $searchGroup = "";
 
-public function result() {
-    $results = null;
-    $searchScore = "";
-    $searchGroup = "";
+        // Luôn lấy danh sách nhóm ngành để hiển thị lại Select box (tránh bị mất khi reload)
+        $major_groups = $this->getMajorGroups();
 
-    // Luôn lấy danh sách nhóm ngành để hiển thị lại Select box
-    $major_groups = $this->getMajorGroups();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Lấy dữ liệu từ form
+            $searchScore = isset($_POST['score']) ? floatval($_POST['score']) : 0;
+            $searchGroup = isset($_POST['group']) ? $_POST['group'] : "";
+            
+            // Lấy ID người dùng nếu đã đăng nhập
+            $userId = isset($_SESSION['user']) ? $_SESSION['user']['id'] : null;
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Lấy dữ liệu từ form (cả form trang chủ và form "Tra lại" ở lịch sử)
-        $searchScore = isset($_POST['score']) ? floatval($_POST['score']) : 0;
-        $searchGroup = isset($_POST['group']) ? $_POST['group'] : "";
-        
-        if ($searchScore > 0 && !empty($searchGroup)) {
-            // A. Gọi Model để lấy kết quả tư vấn
-            $results = $this->model->getAdvice($searchScore, $searchGroup);
-
-            // B. LƯU LỊCH SỬ (Chỉ lưu nếu đây là lượt tra cứu mới, 
-            // tránh trùng lặp khi bấm "Tra lại" từ trang lịch sử nếu muốn)
-            // Nếu bạn vẫn muốn lưu mỗi khi bấm "Tra lại", giữ nguyên đoạn code dưới:
-            if (isset($_SESSION['user'])) {
-                $user_id = $_SESSION['user']['id'];
-                $sql = "INSERT INTO search_history (user_id, score, group_code) VALUES (?, ?, ?)";
-                $stmt = $this->conn->prepare($sql);
-                $stmt->bind_param("ids", $user_id, $searchScore, $searchGroup);
-                $stmt->execute();
+            if ($searchScore > 0 && !empty($searchGroup)) {
+                // Gọi Model để lấy kết quả. 
+                // Model sẽ tự động lưu lịch sử nhờ vào tham số $userId được truyền vào
+                $results = $this->model->getAdvice($searchScore, $searchGroup, $userId);
             }
         }
+
+        // Hiển thị lại trang chủ kèm theo biến $results
+        require 'views/home/index.php';
     }
 
-    // Quan trọng: Phải truyền các biến này ra View
-    require 'views/home/index.php';
-}
-
-    // --- HÀM PHỤ TRỢ ĐỂ LẤY DỮ LIỆU TỪ DATABASE ---
+    // --- HÀM PHỤ TRỢ: LẤY DANH SÁCH NHÓM NGÀNH ---
     private function getMajorGroups() {
+        // Lấy các nhóm đang hoạt động (status=1)
         $sql = "SELECT * FROM major_groups WHERE status = 1 ORDER BY group_name ASC";
         $res = $this->conn->query($sql);
+        
         $groups = [];
         if ($res) {
             while ($row = $res->fetch_assoc()) {
@@ -70,57 +65,60 @@ public function result() {
         return $groups;
     }
 
-    // 3. Xem lịch sử tra cứu
-   public function history() {
-    if (!isset($_SESSION['user'])) {
-        header("Location: index.php?page=login");
-        exit;
+    // 3. Xem lịch sử tra cứu (Có bộ lọc)
+    public function history() {
+        // Bắt buộc đăng nhập mới xem được lịch sử
+        if (!isset($_SESSION['user'])) {
+            header("Location: index.php?page=auth&action=login");
+            exit;
+        }
+
+        $user_id = $_SESSION['user']['id'];
+        
+        // Lấy danh sách nhóm ngành cho bộ lọc tìm kiếm bên sidebar (nếu có)
+        $major_groups = $this->getMajorGroups();
+
+        // Xây dựng câu SQL có bộ lọc nâng cao
+        $sql = "SELECT * FROM search_history WHERE user_id = ?";
+        $params = [$user_id];
+        $types = "i"; // i = integer
+
+        // A. Lọc theo ngày
+        if (!empty($_GET['filter_date'])) {
+            $sql .= " AND DATE(created_at) = ?";
+            $params[] = $_GET['filter_date'];
+            $types .= "s";
+        }
+
+        // B. Lọc theo điểm (Lấy các kết quả >= điểm nhập)
+        if (!empty($_GET['filter_score'])) {
+            $sql .= " AND score >= ?";
+            $params[] = $_GET['filter_score'];
+            $types .= "d"; // d = double
+        }
+
+        // C. Lọc theo nhóm ngành
+        if (!empty($_GET['filter_group'])) {
+            $sql .= " AND group_code = ?";
+            $params[] = $_GET['filter_group'];
+            $types .= "s";
+        }
+
+        // Sắp xếp mới nhất lên đầu
+        $sql .= " ORDER BY created_at DESC";
+
+        // Thực thi Prepare Statement
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param($types, ...$params);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        $history_list = [];
+        while($row = $result->fetch_assoc()) {
+            $history_list[] = $row;
+        }
+
+        require 'views/home/history.php';
     }
-
-    $user_id = $_SESSION['user']['id'];
-    
-    // Lấy danh sách nhóm ngành cho bộ lọc
-    $major_groups = $this->getMajorGroups();
-
-    // Xây dựng câu SQL có bộ lọc
-    $sql = "SELECT * FROM search_history WHERE user_id = ?";
-    $params = [$user_id];
-    $types = "i";
-
-    // 1. Lọc theo ngày
-    if (!empty($_GET['filter_date'])) {
-        $sql .= " AND DATE(created_at) = ?";
-        $params[] = $_GET['filter_date'];
-        $types .= "s";
-    }
-
-    // 2. Lọc theo điểm (Lấy các kết quả >= điểm nhập)
-    if (!empty($_GET['filter_score'])) {
-        $sql .= " AND score >= ?";
-        $params[] = $_GET['filter_score'];
-        $types .= "d";
-    }
-
-    // 3. Lọc theo ngành
-    if (!empty($_GET['filter_group'])) {
-        $sql .= " AND group_code = ?";
-        $params[] = $_GET['filter_group'];
-        $types .= "s";
-    }
-
-    $sql .= " ORDER BY created_at DESC";
-
-    $stmt = $this->conn->prepare($sql);
-    $stmt->bind_param($types, ...$params);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    $history_list = [];
-    while($row = $result->fetch_assoc()) {
-        $history_list[] = $row;
-    }
-
-    require 'views/home/history.php';
-}
 }
 ?>
