@@ -13,7 +13,7 @@ class AssessmentController {
 
     // 1. Hiển thị bài test
     public function index() {
-        // Lấy danh sách câu hỏi
+        // Lấy danh sách câu hỏi ngẫu nhiên
         $sql = "SELECT * FROM questions ORDER BY RAND()"; 
         $result = $this->conn->query($sql);
         
@@ -24,27 +24,26 @@ class AssessmentController {
             }
         }
         
-        // Truyền thông báo lỗi nếu có (từ hàm submit gửi sang)
+        // Truyền thông báo lỗi (nếu có) sang View
         $error = $_SESSION['error'] ?? null;
-        unset($_SESSION['error']); // Xóa lỗi sau khi đã lấy
+        unset($_SESSION['error']); 
 
         require 'views/assessment/test.php';
     }
 
-    // 2. Xử lý kết quả (Chấm điểm)
+    // 2. Xử lý nộp bài (Chấm điểm)
     public function submit() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Nhận mảng answers
             $answers = $_POST['answers'] ?? [];
             
-            // --- SỬA LỖI LOGIC TẠI ĐÂY ---
-            // Nếu người dùng không chọn đáp án nào -> Không chấm, bắt làm lại
+            // --- VALIDATION: Bắt buộc phải chọn đáp án mới được nộp ---
             if (empty($answers)) {
-                $_SESSION['error'] = "Bạn chưa chọn đáp án nào. Vui lòng thực hiện bài trắc nghiệm!";
+                $_SESSION['error'] = "Bạn chưa chọn đáp án nào. Vui lòng hoàn thành bài trắc nghiệm!";
                 header("Location: index.php?page=assessment");
                 exit;
             }
 
+            // Khởi tạo điểm
             $scores = ['R' => 0, 'I' => 0, 'A' => 0, 'S' => 0, 'E' => 0, 'C' => 0];
 
             // Tính điểm
@@ -54,9 +53,7 @@ class AssessmentController {
                 }
             }
 
-            // Tìm nhóm điểm cao nhất
-            // Lưu ý: Nếu điểm bằng nhau, arsort giữ thứ tự xuất hiện ban đầu.
-            // Bạn có thể thêm logic phụ để ưu tiên nếu muốn.
+            // Tìm nhóm điểm cao nhất để lưu vào DB (Dùng làm đại diện chính)
             arsort($scores); 
             $dominant = array_key_first($scores);
 
@@ -71,15 +68,15 @@ class AssessmentController {
                 
                 if ($stmt->execute()) {
                     $result_id = $stmt->insert_id;
-                    // Chuyển hướng sang trang kết quả
                     header("Location: index.php?page=assessment&action=result&id=$result_id");
-                    exit;
-                } else {
-                    $_SESSION['error'] = "Lỗi hệ thống: Không thể lưu kết quả.";
-                    header("Location: index.php?page=assessment");
                     exit;
                 }
             }
+            
+            // Nếu lỗi
+            $_SESSION['error'] = "Có lỗi xảy ra khi lưu kết quả. Thử lại sau.";
+            header("Location: index.php?page=assessment");
+            exit;
         }
     }
 
@@ -97,31 +94,26 @@ class AssessmentController {
 
         // Biến $result sẽ được dùng bên View
         $result = $result_data; 
-
-        // Nếu không tìm thấy kết quả hoặc ID sai -> View sẽ hiển thị phần "Chưa có kết quả"
-        // Nhưng ta vẫn cần khởi tạo biến $suggested_majors rỗng để tránh lỗi View
         $suggested_majors = [];
 
         if ($result) {
-            // Logic Mapping Holland -> Mã nhóm ngành
-            // LƯU Ý: Bạn cần kiểm tra lại cột 'group_code' trong bảng 'majors' 
-            // xem có đúng là các mã CK, IT, NN... này không nhé.
             $dominant = $result['dominant_type']; 
             $group_search = '';
 
+            // --- MAPPING HOLLAND -> MÃ NHÓM NGÀNH TRONG DB ---
+            // Hãy đảm bảo các mã 'CK', 'IT'... khớp với cột group_code trong bảng majors của bạn
             switch ($dominant) {
-                case 'R': $group_search = 'CK'; break; // Cơ khí - Kỹ thuật
-                case 'I': $group_search = 'IT'; break; // Công nghệ thông tin
-                case 'A': $group_search = 'NN'; break; // Nghệ thuật - Ngôn ngữ
-                case 'S': $group_search = 'YD'; break; // Sư phạm - Y Dược
-                case 'E': $group_search = 'KT'; break; // Kinh tế - Quản trị
-                case 'C': $group_search = 'KT'; break; // Kế toán (Chung nhóm Kinh tế)
+                case 'R': $group_search = 'CK'; break; // Realistic -> Cơ khí/Kỹ thuật
+                case 'I': $group_search = 'IT'; break; // Investigative -> CNTT/Khoa học
+                case 'A': $group_search = 'NN'; break; // Artistic -> Nghệ thuật/Báo chí
+                case 'S': $group_search = 'YD'; break; // Social -> Sư phạm/Y dược
+                case 'E': $group_search = 'KT'; break; // Enterprising -> Kinh tế/Quản lý
+                case 'C': $group_search = 'KT'; break; // Conventional -> Tài chính/Kế toán
                 default:  $group_search = 'IT';
             }
 
-            // Lấy danh sách ngành gợi ý
+            // Lấy danh sách ngành gợi ý (Lấy 6 ngành)
             if ($group_search) {
-                // Lấy tối đa 6 ngành để giao diện đẹp
                 $sql_majors = "SELECT * FROM majors WHERE group_code = ? LIMIT 6";
                 $stmt_m = $this->conn->prepare($sql_majors);
                 $stmt_m->bind_param("s", $group_search);
@@ -133,7 +125,6 @@ class AssessmentController {
             }
         }
 
-        // Gọi View
         require 'views/assessment/result.php';
     }
 }
