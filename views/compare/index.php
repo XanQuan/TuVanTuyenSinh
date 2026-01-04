@@ -1,233 +1,342 @@
 <?php require_once 'views/layouts/header.php'; ?>
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
     :root {
-        --primary-blue: #0061ff;
-        --primary-red: #ff4b2b;
-        --dark-surface: #0f172a;
+        --primary-blue: #0984e3;
+        --primary-red: #d63031;
+        --bg-color: #dfe6e9;
+        --card-bg: #ffffff;
     }
 
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; }
-    .compare-section { padding: 150px 0 100px; }
-
-    /* PHÂN VÙNG KHỐI RÕ RỆT */
-    .compare-grid {
-        display: flex;
-        align-items: stretch;
-        background: white;
-        border-radius: 40px;
-        overflow: hidden;
-        box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: var(--bg-color);
+        overflow-x: hidden; /* Tránh thanh cuộn ngang */
     }
 
-    .choice-zone {
-        flex: 1;
-        padding: 60px 50px;
+    /* --- SỬA LỖI GIAO DIỆN TẠI ĐÂY --- */
+    .compare-page-wrapper {
+        /* Đẩy nội dung xuống 160px để không bị Header che mất */
+        padding-top: 160px; 
+        padding-bottom: 100px;
+        /* Đảm bảo chiều cao tối thiểu bằng màn hình để luôn có nền đẹp */
+        min-height: 100vh; 
+        background-color: var(--bg-color);
+    }
+
+    /* HEADER SECTION */
+    .compare-header {
+        text-align: center;
+        margin-bottom: 50px; /* Tăng khoảng cách với các ô chọn */
+    }
+    .compare-header h2 {
+        font-weight: 800;
+        font-size: 3rem; /* Chữ to hơn cho ấn tượng */
+        color: #2d3436;
+        text-transform: uppercase;
+        letter-spacing: -1px;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+    }
+    .compare-header p {
+        color: #636e72;
+        font-size: 1.1rem;
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    /* CARD STYLES */
+    .compare-card {
+        background: var(--card-bg);
+        border-radius: 24px;
+        padding: 40px 30px;
+        /* Đổ bóng mềm mại hơn */
+        box-shadow: 0 15px 35px rgba(0,0,0,0.08); 
+        border: 1px solid rgba(255,255,255,1);
         position: relative;
-        transition: 0.4s;
+        height: 100%;
+        transition: transform 0.3s ease;
+    }
+    
+    /* Hiệu ứng nhấc lên khi hover */
+    .compare-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.12);
     }
 
-    /* Khối A - Xanh dương */
-    .zone-a { border-right: 1px solid #f1f5f9; }
-    .zone-a::before { content: ''; position: absolute; top: 0; left: 0; width: 10px; height: 100%; background: var(--primary-blue); }
-    
-    /* Khối B - Đỏ */
-    .zone-b::before { content: ''; position: absolute; top: 0; right: 0; width: 10px; height: 100%; background: var(--primary-red); }
+    /* Màu viền trên */
+    .card-a { border-top: 8px solid var(--primary-blue); }
+    .card-b { border-top: 8px solid var(--primary-red); }
 
-    .vs-separator {
-        width: 100px;
+    .choice-badge {
+        display: inline-block;
+        padding: 8px 20px;
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .badge-a { background: #e3f2fd; color: var(--primary-blue); }
+    .badge-b { background: #ffebee; color: var(--primary-red); }
+
+    .card-title {
+        font-weight: 800;
+        font-size: 2rem;
+        margin-bottom: 35px;
+        color: #2d3436;
+    }
+
+    /* FORM ELEMENTS */
+    .form-group { margin-bottom: 30px; }
+    
+    .form-label {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: #636e72;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        display: block;
+        letter-spacing: 0.5px;
+    }
+
+    .custom-select-box {
+        width: 100%;
+        padding: 18px 20px;
+        border-radius: 12px;
+        border: 2px solid #dfe6e9;
+        background-color: #fdfdfd;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #2d3436;
+        transition: all 0.3s;
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23636e72' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 20px center;
+        background-size: 18px;
+    }
+
+    .custom-select-box:focus {
+        background-color: #fff;
+        outline: none;
+        border-color: #0984e3;
+        box-shadow: 0 0 0 5px rgba(9, 132, 227, 0.1);
+    }
+    
+    .card-a .custom-select-box:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 5px rgba(9, 132, 227, 0.1); }
+    .card-b .custom-select-box:focus { border-color: var(--primary-red); box-shadow: 0 0 0 5px rgba(214, 48, 49, 0.1); }
+
+    .custom-select-box:disabled {
+        background-color: #f1f2f6;
+        color: #b2bec3;
+        cursor: not-allowed;
+        border-color: #f1f2f6;
+    }
+
+    /* VS CIRCLE */
+    .vs-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        position: relative;
+        z-index: 5;
+    }
+    .vs-circle {
+        width: 80px;
+        height: 80px;
+        background: #2d3436;
+        color: #fff;
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #f8fafc;
-        position: relative;
-    }
-
-    .vs-badge {
-        width: 60px; height: 60px;
-        background: var(--dark-surface);
-        color: white;
-        border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
         font-weight: 900;
-        border: 6px solid white;
-        box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        z-index: 10;
+        font-size: 2rem;
+        font-style: italic;
+        box-shadow: 0 0 0 15px var(--bg-color); /* Tạo khoảng cách giả với nền */
     }
 
-    /* NỔI BẬT Ô CHỌN */
-    .modern-label {
-        font-weight: 800;
-        color: #64748b;
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        margin-bottom: 12px;
-        display: block;
-    }
-
-    .pro-select {
-        border-radius: 16px !important;
-        padding: 16px 20px !important;
-        font-weight: 600;
-        color: #1e293b;
-        border: 2px solid #eef2f6 !important;
-        background-color: #f8fafc !important;
-        width: 100%;
-        margin-bottom: 30px;
-        transition: 0.3s;
-    }
-
-    .zone-a .pro-select:focus { border-color: var(--primary-blue) !important; box-shadow: 0 0 0 4px rgba(0, 97, 255, 0.1) !important; background: white !important; }
-    .zone-b .pro-select:focus { border-color: var(--primary-red) !important; box-shadow: 0 0 0 4px rgba(255, 75, 43, 0.1) !important; background: white !important; }
-
-    /* NÚT BẤM CÔNG NGHỆ */
-    .btn-analyze-battle {
-        background: var(--dark-surface);
+    /* BUTTON */
+    .btn-compare-start {
+        background: #2d3436;
         color: white;
-        padding: 22px 60px;
-        border-radius: 20px;
+        padding: 20px 60px;
+        border-radius: 50px;
         font-weight: 800;
+        font-size: 1.1rem;
+        border: none;
+        box-shadow: 0 15px 30px rgba(45, 52, 54, 0.3);
+        transition: all 0.3s;
         text-transform: uppercase;
         letter-spacing: 1px;
-        border: none;
-        transition: 0.4s;
-        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
+        margin-top: 20px;
     }
-    .btn-analyze-battle:hover { transform: translateY(-5px) scale(1.02); background: #000; color: #fff; }
+    .btn-compare-start:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 50px rgba(45, 52, 54, 0.4);
+        background: #000;
+    }
 
-    /* Đánh dấu ngành trùng khớp */
-    .sync-success { color: #059669 !important; font-weight: 800 !important; }
+    /* LOADING ANIMATION */
+    .loader {
+        border: 3px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 3px solid #3498db;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+        position: absolute;
+        right: 50px;
+        top: 45px;
+        display: none;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
 </style>
 
-<section class="compare-section">
+<div class="compare-page-wrapper">
     <div class="container">
-        <div class="text-center mb-5">
-            <h1 class="display-4 fw-800 text-dark mb-2" style="letter-spacing: -2px;">Phân Tích Đối Đầu</h1>
-            <p class="text-muted fs-5">Lựa chọn trường và ngành để hệ thống tự động đồng bộ dữ liệu.</p>
+        
+        <div class="compare-header">
+            <h2>Phân Tích Đối Đầu</h2>
+            <p>Chọn trường và ngành để hệ thống tự động đồng bộ dữ liệu so sánh chi tiết nhất.</p>
         </div>
 
-        <form action="index.php?page=compare&action=result" method="POST">
-            <div class="compare-grid">
-                <div class="choice-zone zone-a">
-                    <div class="mb-5">
-                        <span class="badge bg-primary px-3 py-2 rounded-pill mb-2">LỰA CHỌN 1</span>
-                        <h2 class="fw-800 text-dark">Đối Tượng A</h2>
+        <form action="index.php?page=compare&action=result" method="POST" id="compareForm">
+            <div class="row g-4 align-items-stretch">
+                
+                <div class="col-lg-5">
+                    <div class="compare-card card-a">
+                        <span class="choice-badge badge-a">Lựa chọn 1</span>
+                        <h3 class="card-title">Đối Tượng A</h3>
+
+                        <div class="form-group position-relative">
+                            <label class="form-label"><i class="fas fa-university me-2"></i>Trường Đại học</label>
+                            <select name="uni_a" id="uni_a" class="custom-select-box" required onchange="loadMajors('uni_a', 'major_a', 'loader_a')">
+                                <option value="" disabled selected>-- Chọn trường mong muốn --</option>
+                                <?php foreach ($universities as $uni): ?>
+                                    <option value="<?= $uni['id'] ?>"><?= htmlspecialchars($uni['name']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="form-group position-relative">
+                            <label class="form-label"><i class="fas fa-graduation-cap me-2"></i>Ngành học đào tạo</label>
+                            <select name="major_a" id="major_a" class="custom-select-box" disabled required>
+                                <option value="" disabled selected>-- Vui lòng chọn trường trước --</option>
+                            </select>
+                            <div id="loader_a" class="loader"></div>
+                        </div>
                     </div>
-
-                    <label class="modern-label"><i class="fas fa-university me-2"></i>Trường Đại học</label>
-                    <select name="uni1" id="uni1" class="pro-select" required onchange="loadMajorsRealtime(1)">
-                        <option value="" selected disabled>-- Chọn trường mong muốn --</option>
-                        <?php foreach($universities as $u): ?>
-                            <option value="<?= $u['id'] ?>"><?= $u['name'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
-
-                    <label class="modern-label"><i class="fas fa-graduation-cap me-2"></i>Ngành học đào tạo</label>
-                    <select name="major1" id="major1" class="pro-select" required onchange="syncOtherSide(1)">
-                        <option value="" selected disabled>-- Chọn trường trước --</option>
-                    </select>
                 </div>
 
-                <div class="vs-separator">
-                    <div class="vs-badge">VS</div>
-                </div>
-
-                <div class="choice-zone zone-b">
-                    <div class="mb-5">
-                        <span class="badge bg-danger px-3 py-2 rounded-pill mb-2">LỰA CHỌN 2</span>
-                        <h2 class="fw-800 text-dark">Đối Tượng B</h2>
+                <div class="col-lg-2 d-none d-lg-block">
+                    <div class="vs-container">
+                        <div class="vs-circle">VS</div>
                     </div>
-
-                    <label class="modern-label"><i class="fas fa-university me-2 text-danger"></i>Trường Đại học</label>
-                    <select name="uni2" id="uni2" class="pro-select" required onchange="loadMajorsRealtime(2)">
-                        <option value="" selected disabled>-- Chọn trường mong muốn --</option>
-                        <?php foreach($universities as $u): ?>
-                            <option value="<?= $u['id'] ?>"><?= $u['name'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
-
-                    <label class="modern-label"><i class="fas fa-graduation-cap me-2 text-danger"></i>Ngành học đào tạo</label>
-                    <select name="major2" id="major2" class="pro-select" required onchange="syncOtherSide(2)">
-                        <option value="" selected disabled>-- Chọn trường trước --</option>
-                    </select>
                 </div>
+
+                <div class="col-lg-5">
+                    <div class="compare-card card-b">
+                        <span class="choice-badge badge-b">Lựa chọn 2</span>
+                        <h3 class="card-title">Đối Tượng B</h3>
+
+                        <div class="form-group position-relative">
+                            <label class="form-label"><i class="fas fa-university me-2"></i>Trường Đại học</label>
+                            <select name="uni_b" id="uni_b" class="custom-select-box" required onchange="loadMajors('uni_b', 'major_b', 'loader_b')">
+                                <option value="" disabled selected>-- Chọn trường mong muốn --</option>
+                                <?php foreach ($universities as $uni): ?>
+                                    <option value="<?= $uni['id'] ?>"><?= htmlspecialchars($uni['name']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="form-group position-relative">
+                            <label class="form-label"><i class="fas fa-graduation-cap me-2"></i>Ngành học đào tạo</label>
+                            <select name="major_b" id="major_b" class="custom-select-box" disabled required>
+                                <option value="" disabled selected>-- Vui lòng chọn trường trước --</option>
+                            </select>
+                            <div id="loader_b" class="loader"></div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="text-center mt-5">
-                <button type="submit" class="btn-analyze-battle">
+                <button type="submit" class="btn-compare-start">
                     <i class="fas fa-bolt me-2"></i> Bắt đầu so sánh thực tế
                 </button>
             </div>
         </form>
     </div>
-</section>
+</div>
 
 <script>
-// Giữ nguyên các hàm JS của bạn vì chúng đã viết đúng logic
-async function loadMajorsRealtime(side) {
-    const uniId = document.getElementById(`uni${side}`).value;
-    const majorSelect = document.getElementById(`major${side}`);
-    majorSelect.innerHTML = '<option disabled selected>Đang lấy dữ liệu...</option>';
+    /**
+     * Hàm tải danh sách ngành động
+     * @param {string} uniSelectId - ID của select trường (vd: uni_a)
+     * @param {string} majorSelectId - ID của select ngành cần đổ dữ liệu (vd: major_a)
+     * @param {string} loaderId - ID của biểu tượng loading (vd: loader_a)
+     */
+    function loadMajors(uniSelectId, majorSelectId, loaderId) {
+        const uniId = document.getElementById(uniSelectId).value;
+        const majorSelect = document.getElementById(majorSelectId);
+        const loader = document.getElementById(loaderId);
 
-    try {
-        const response = await fetch(`index.php?page=compare&action=getMajorsByUni&uni_id=${uniId}`);
-        const data = await response.json();
-
-        majorSelect.innerHTML = '<option value="" disabled selected>-- Chọn ngành học --</option>';
-        data.forEach(m => {
-            let opt = document.createElement('option');
-            opt.value = m.id;
-            opt.text = m.name;
-            opt.setAttribute('data-name', m.name);
-            majorSelect.appendChild(opt);
-        });
-
-        const other = side === 1 ? 2 : 1;
-        if(document.getElementById(`major${other}`).value) syncOtherSide(other);
-    } catch (e) {
-        majorSelect.innerHTML = '<option disabled>Không thể tải ngành học</option>';
-    }
-}
-
-function syncOtherSide(sourceSide) {
-    const targetSide = sourceSide === 1 ? 2 : 1;
-    const sourceSelect = document.getElementById(`major${sourceSide}`);
-    const targetSelect = document.getElementById(`major${targetSide}`);
-    
-    if (!sourceSelect.value) return;
-
-    // Lấy tên ngành đang chọn ở bên A
-    const selectedName = sourceSelect.options[sourceSelect.selectedIndex].getAttribute('data-name');
-    const options = Array.from(targetSelect.options).filter(opt => opt.value !== "");
-
-    options.forEach(opt => {
-        // So sánh: Nếu cùng tên ngành thì cho phép chọn và đẩy lên đầu
-        const isMatch = opt.getAttribute('data-name') === selectedName;
+        // 1. Reset trạng thái
+        majorSelect.innerHTML = '<option value="" disabled selected>Đang tải dữ liệu...</option>';
+        majorSelect.disabled = true;
         
-        if (isMatch) {
-            opt.disabled = false;
-            opt.classList.add('sync-success');
-            opt.text = "✓ " + opt.getAttribute('data-name');
-            opt.setAttribute('data-sort', 1);
-        } else {
-            opt.disabled = true;
-            opt.classList.remove('sync-success');
-            opt.text = opt.getAttribute('data-name') + " (Trường kia không có)";
-            opt.setAttribute('data-sort', 2);
-        }
-    });
+        // Hiện loader
+        if(loader) loader.style.display = 'block';
 
-    // Sắp xếp lại danh sách
-    const sorted = options.sort((a, b) => a.getAttribute('data-sort') - b.getAttribute('data-sort'));
-    const def = targetSelect.options[0];
-    targetSelect.innerHTML = "";
-    targetSelect.add(def);
-    sorted.forEach(o => targetSelect.add(o));
-}
+        if (uniId) {
+            // 2. Gọi API AJAX từ Controller
+            fetch(`index.php?page=compare&action=getMajorsByUni&uni_id=${uniId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Ẩn loader
+                    if(loader) loader.style.display = 'none';
+
+                    // 3. Xử lý dữ liệu trả về
+                    if (data.length > 0) {
+                        majorSelect.innerHTML = '<option value="" disabled selected>-- Chọn ngành học --</option>';
+                        
+                        data.forEach(item => {
+                            const option = document.createElement('option');
+                            option.value = item.id;
+                            option.textContent = item.name;
+                            majorSelect.appendChild(option);
+                        });
+                        
+                        majorSelect.disabled = false; // Mở khóa cho chọn
+                        // Hiệu ứng nháy nhẹ màu viền
+                        majorSelect.style.borderColor = '#00b894';
+                        setTimeout(() => { majorSelect.style.borderColor = ''; }, 500);
+                        
+                    } else {
+                        majorSelect.innerHTML = '<option value="" disabled selected>Trường này chưa cập nhật ngành</option>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    if(loader) loader.style.display = 'none';
+                    majorSelect.innerHTML = '<option value="" disabled selected>Lỗi tải dữ liệu!</option>';
+                });
+        } else {
+            if(loader) loader.style.display = 'none';
+            majorSelect.innerHTML = '<option value="" disabled selected>-- Vui lòng chọn trường trước --</option>';
+        }
+    }
 </script>
 
 <?php require_once 'views/layouts/footer.php'; ?>
