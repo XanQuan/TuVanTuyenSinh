@@ -186,6 +186,7 @@
                                 <li><a href="index.php?page=mentors">🤝 Kết nối Chuyên gia</a></li>
                                 <li><a href="index.php?page=resources">📚 Tài nguyên học tập</a></li>
                                 <li><a href="index.php?page=faq">❓ Câu hỏi thường gặp</a></li>
+                               <li><a href="index.php?page=ai_consultant"><i class="fa-solid fa-robot me-2"></i> Trợ lý ảo AI (Mới)</a></li>
                             </ul>
                           </li>
 

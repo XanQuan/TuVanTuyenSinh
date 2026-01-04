@@ -39,51 +39,48 @@
         </div>
 
         <div class="row">
-            <?php if(isset($courses) && count($courses) > 0): ?>
-                <?php foreach($courses as $c): ?>
-                <div class="col-lg-4 mb-5">
-                    <div class="course-card-pro">
-                        <div class="thumb-container">
-                            <div class="price-badge">
-                                <span><?= htmlspecialchars($c['tuition'] ?? 'Liên hệ') ?></span>
-                            </div>
-                            <a href="index.php?page=courses&action=detail&id=<?= $c['id'] ?>">
-                                <img src="public/assets/images/<?= htmlspecialchars(!empty($c['image']) ? $c['image'] : 'default.jpg') ?>" 
-                                     alt="<?= htmlspecialchars($c['name']) ?>" class="course-img">
-                            </a>
-                        </div>
-                        
-                        <div class="content-body">
-                            <div class="category-tag">UniGuide Elite</div>
-                            <a href="index.php?page=courses&action=detail&id=<?= $c['id'] ?>">
-                                <h4 class="course-title"><?= htmlspecialchars($c['name']) ?></h4>
-                            </a>
-                            
-                            <div class="meta-info d-flex justify-content-between">
-                                <span class="instructor"><i class="fa fa-user-tie me-2"></i><?= htmlspecialchars($c['teacher']) ?></span>
-                                <span class="rating-pro"><i class="fa fa-star me-1"></i><?= $c['rating'] ?></span>
-                            </div>
+          <?php if(isset($courses) && count($courses) > 0): ?>
+    <?php foreach($courses as $c): ?>
+    <div class="col-lg-4 mb-5">
+        <div class="course-card-pro" 
+             onclick="window.location.href='index.php?page=courses&action=detail&id=<?= $c['id'] ?>'" 
+             style="cursor: pointer;">
+            
+            <div class="thumb-container">
+                <div class="price-badge">
+                    <span><?= htmlspecialchars($c['tuition'] ?? 'Liên hệ') ?></span>
+                </div>
+                <a href="index.php?page=courses&action=detail&id=<?= $c['id'] ?>">
+                    <img src="public/assets/images/<?= htmlspecialchars(!empty($c['image']) ? $c['image'] : 'default.jpg') ?>" 
+                         alt="<?= htmlspecialchars($c['name']) ?>" class="course-img">
+                </a>
+            </div>
+            
+            <div class="content-body">
+                <div class="category-tag">UniGuide Elite</div>
+                <h4 class="course-title"><?= htmlspecialchars($c['name']) ?></h4>
+                
+                <div class="meta-info d-flex justify-content-between">
+                    <span class="instructor"><i class="fa fa-user-tie me-2"></i><?= htmlspecialchars($c['teacher']) ?></span>
+                    <span class="rating-pro"><i class="fa fa-star me-1"></i><?= $c['rating'] ?></span>
+                </div>
 
-                            <p class="course-desc">
-                                <?= mb_substr(htmlspecialchars($c['description'] ?? ''), 0, 95) ?>...
-                            </p>
-                            
-                            <div class="button-group">
-                                <a href="index.php?page=courses&action=register&id=<?= $c['id'] ?>" class="btn-register-pro">
-                                    <span>ĐĂNG KÝ NGAY</span>
-                                    <i class="fa fa-arrow-right ms-2"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                <p class="course-desc">
+                    <?= mb_substr(htmlspecialchars($c['description'] ?? ''), 0, 95) ?>...
+                </p>
+                
+                <div class="button-group">
+                    <a href="index.php?page=courses&action=register&id=<?= $c['id'] ?>" 
+                       class="btn-register-pro" 
+                       onclick="event.stopPropagation();"> <span>ĐĂNG KÝ NGAY</span>
+                        <i class="fa fa-arrow-right ms-2"></i>
+                    </a>
                 </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="col-12 text-center py-5">
-                    <img src="public/assets/images/no-data.png" alt="No data" style="width: 150px; opacity: 0.5;">
-                    <p class="mt-3 text-muted">Không tìm thấy khóa học nào phù hợp với yêu cầu của bạn.</p>
-                </div>
-            <?php endif; ?>
+            </div>
+        </div>
+    </div>
+    <?php endforeach; ?>
+<?php endif; ?>
         </div>
     </div>
 </section>

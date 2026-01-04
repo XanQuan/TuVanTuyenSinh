@@ -163,18 +163,41 @@ switch ($page) {
             }
         }
         break;
-    // === MODULE MỞ RỘNG ===
-    case 'events':
-        require_once 'controllers/EventController.php';
-        $events = new EventController($conn);
-        $events->index();
-        break;
+// === MODULE MỞ RỘNG (SỰ KIỆN) ===
+case 'events':
+    require_once 'controllers/EventController.php';
+    $eventsController = new EventController($conn);
+    
+    // ƯU TIÊN XỬ LÝ AJAX TRƯỚC: Nếu là hành động đăng ký, xử lý rồi ngắt ngay (exit)
+    if ($action == 'register_participation') {
+        $eventsController->register_participation();
+        exit; // BẮT BUỘC: Không cho phép chạy tiếp xuống các phần nạp HTML
+    } 
+    
+    // Nếu là các trang hiển thị thông thường
+    if ($action == 'detail') {
+        $eventsController->detail();
+    } else {
+        $eventsController->index();
+    }
+    break;
+case 'mentors':
+    require_once 'controllers/MentorController.php';
+    $mentors = new MentorController($conn);
 
-    case 'mentors':
-        require_once 'controllers/MentorController.php';
-        $mentors = new MentorController($conn);
-        $mentors->index();
-        break;
+    // XỬ LÝ AJAX/JSON TRƯỚC: Ngắt luồng ngay để tránh lỗi "is not valid JSON"
+    if ($action == 'register_participation') {
+        $mentors->register_participation();
+        exit; // Dòng này cực kỳ quan trọng
+    }
+
+    // ĐIỀU HƯỚNG GIAO DIỆN
+    if ($action == 'detail') {
+        $mentors->detail(); // Hiển thị trang chi tiết chuyên gia
+    } else {
+        $mentors->index(); // Hiển thị danh sách chuyên gia
+    }
+    break;
 
     case 'resources':
     require_once 'controllers/ResourceController.php';
@@ -223,6 +246,18 @@ switch ($page) {
             $course->index();
         }
         break;
+        // chat 
+        case 'ai_consultant':
+    require_once 'controllers/AIController.php';
+    $ai = new AIController($conn);
+    if ($action == 'send_message') {
+        $ai->send_message();
+    } elseif ($action == 'history') { // Thêm action này
+        $ai->history();
+    } else {
+        $ai->index();
+    }
+    break;
     // === TRANG KHÔNG TỒN TẠI HOẶC MẶC ĐỊNH ===
     default:
         // Quay về trang chủ tư vấn
