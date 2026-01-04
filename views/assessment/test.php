@@ -1,4 +1,5 @@
 <?php 
+// views/assessment/test.php
 // Đường dẫn vào layouts/header.php
 include __DIR__ . '/../layouts/header.php'; 
 ?>
@@ -21,26 +22,24 @@ include __DIR__ . '/../layouts/header.php';
     .test-banner {
         background: linear-gradient(180deg, #d32f2f 0%, var(--primary-red) 100%);
         color: var(--white);
-        padding: 120px 0 160px; /* Tăng padding trên để không bị Menu đè */
+        padding: 120px 0 160px;
         text-align: center;
         position: relative;
     }
 
-    /* CHỮ TIÊU ĐỀ NỔI BẬT */
     .test-banner h1 {
-        font-size: 3rem; /* Chữ rất to */
+        font-size: 3rem;
         font-weight: 800;
         letter-spacing: -1px;
         margin-bottom: 15px;
         color: var(--white);
-        /* Hiệu ứng bóng đổ giúp chữ nổi khối trên nền đỏ */
         text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     .test-banner p {
         font-size: 1.25rem;
         font-weight: 500;
-        color: rgba(255, 255, 255, 0.9); /* Màu trắng hơi trong suốt để dịu mắt */
+        color: rgba(255, 255, 255, 0.9);
         max-width: 700px;
         margin: 0 auto;
     }
@@ -50,7 +49,7 @@ include __DIR__ . '/../layouts/header.php';
         background: var(--white);
         border-radius: 30px;
         padding: 45px;
-        margin: -100px auto 80px; /* Đè lên banner đỏ một cách hợp lý */
+        margin: -100px auto 80px;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
         position: relative;
         z-index: 20;
@@ -87,7 +86,7 @@ include __DIR__ . '/../layouts/header.php';
     }
 
     .q-text {
-        font-size: 1.15rem; /* Chữ câu hỏi to rõ */
+        font-size: 1.15rem;
         font-weight: 600;
         color: #1e293b;
         line-height: 1.6;
@@ -124,12 +123,23 @@ include __DIR__ . '/../layouts/header.php';
     <div class="assessment-card">
         <form action="index.php?page=assessment&action=submit" method="POST">
             <div class="questions-grid">
-                <?php foreach ($questions as $q): ?>
-                <label class="q-item">
-                    <input type="checkbox" name="answers[]" value="<?= $q['holland_group'] ?>" style="width: 24px; height: 24px; accent-color: var(--primary-red); margin-bottom: 15px;">
-                    <p class="q-text"><?= $q['question_text'] ?></p>
-                </label>
-                <?php endforeach; ?>
+                <?php if (isset($questions) && is_array($questions) && count($questions) > 0): ?>
+                    
+                    <?php foreach ($questions as $q): ?>
+                    <label class="q-item">
+                        <input type="checkbox" name="answers[]" value="<?= $q['group_code'] ?>" 
+                               style="width: 24px; height: 24px; accent-color: var(--primary-red); margin-bottom: 15px;">
+                        
+                        <p class="q-text"><?= $q['content'] ?></p>
+                    </label>
+                    <?php endforeach; ?>
+
+                <?php else: ?>
+                    <div class="col-12 text-center text-danger">
+                        <h4>⚠️ Lỗi: Không tìm thấy câu hỏi trong Database!</h4>
+                        <p>Hãy kiểm tra lại bảng 'questions' trong phpMyAdmin.</p>
+                    </div>
+                <?php endif; ?>
             </div>
 
             <div class="text-center">
