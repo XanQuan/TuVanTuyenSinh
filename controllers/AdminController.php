@@ -17,51 +17,42 @@ class AdminController {
     }
 
     // Trang chính của Admin (Dashboard)
-    public function index() {
+    // Trang chính của Admin (Dashboard)
+public function index() {
     $count_users = 0;
     $count_visits = 0;
     $count_unis = 0;
-    $count_questions = 0;
+    $count_ai_requests = 0; // Thống kê tư vấn AI hôm nay
 
-    // 1. Đếm User
-    $sql_users = "SELECT COUNT(*) as total FROM users WHERE role != 'admin'";
-    $stmt = $this->conn->prepare($sql_users);
-    if ($stmt) {
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($row = $result->fetch_assoc()) $count_users = $row['total'];
-        $stmt->close();
-    }
+    // 1. Đếm User (Học sinh)
+    $res = $this->conn->query("SELECT COUNT(*) as total FROM users WHERE role = 'student'");
+    if ($res) $count_users = $res->fetch_assoc()['total'];
 
-    // 2. Đếm Lịch sử tra cứu (Sửa tên bảng thành search_history)
-    $sql_history = "SELECT COUNT(*) as total FROM search_history"; 
-    $stmt = $this->conn->prepare($sql_history);
-    if ($stmt) {
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($row = $result->fetch_assoc()) $count_visits = $row['total'];
-        $stmt->close();
-    }
+    // 2. Đếm Lịch sử tra cứu (Tổng lượt truy cập hệ thống)
+    $res = $this->conn->query("SELECT COUNT(*) as total FROM search_history"); 
+    if ($res) $count_visits = $res->fetch_assoc()['total'];
 
     // 3. Đếm Trường ĐH
-    $sql_unis = "SELECT COUNT(*) as total FROM universities";
-    $stmt = $this->conn->prepare($sql_unis);
-    if ($stmt) {
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($row = $result->fetch_assoc()) $count_unis = $row['total'];
-        $stmt->close();
+    $res = $this->conn->query("SELECT COUNT(*) as total FROM universities");
+    if ($res) $count_unis = $res->fetch_assoc()['total'];
+
+    // 4. Đếm yêu cầu tư vấn AI mới trong hôm nay
+    $today = date('Y-m-d');
+    $res = $this->conn->query("SELECT COUNT(*) as total FROM ai_chats WHERE DATE(created_at) = '$today'");
+    if ($res) $count_ai_requests = $res->fetch_assoc()['total'];
+
+    // 5. Lấy 5 Hoạt động gần đây nhất (Nhật ký chat AI)
+    $recent_activities = [];
+    $sql_act = "SELECT ai_chats.*, users.fullname 
+                FROM ai_chats 
+                LEFT JOIN users ON ai_chats.user_id = users.id 
+                ORDER BY ai_chats.created_at DESC LIMIT 5";
+    $res_act = $this->conn->query($sql_act);
+    if ($res_act) {
+        while($row = $res_act->fetch_assoc()) { $recent_activities[] = $row; }
     }
 
     // Gửi ra View
-    $data = [
-        'count_users'  => $count_users,
-        'count_visits' => $count_visits,
-        'count_unis'   => $count_unis,
-        'count_questions' => $count_questions
-    ];
-    extract($data);
-
     require_once 'views/admin/dashboard.php';
 }
     
@@ -392,16 +383,32 @@ public function delete_question() {
 
 // 14. Xem lịch sử chat của tất cả người dùng với AI
 public function chat_logs() {
-    $logs = [];
-    $sql = "SELECT ai_chats.*, users.full_name 
+    $users_chatted = [];
+    // Nhóm theo user_id để lấy danh sách những người đã từng hỏi AI
+    $sql = "SELECT ai_chats.user_id, users.fullname, MAX(ai_chats.created_at) as last_chat, COUNT(*) as total_messages
             FROM ai_chats 
-            JOIN users ON ai_chats.user_id = users.id 
-            ORDER BY ai_chats.created_at DESC LIMIT 100";
+            LEFT JOIN users ON ai_chats.user_id = users.id 
+            GROUP BY ai_chats.user_id 
+            ORDER BY last_chat DESC";
+            
     $result = $this->conn->query($sql);
     if ($result) {
-        while($row = $result->fetch_assoc()) { $logs[] = $row; }
+        while($row = $result->fetch_assoc()) { $users_chatted[] = $row; }
     }
     require 'views/admin/chat_logs/index.php';
+}
+
+// 2. Hàm hiển thị chi tiết hội thoại của 1 người (gọi qua AJAX hoặc trang mới)
+public function chat_detail() {
+    $user_id = $_GET['user_id'] ?? 0;
+    $details = [];
+    $stmt = $this->conn->prepare("SELECT * FROM ai_chats WHERE user_id = ? ORDER BY created_at ASC");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while($row = $result->fetch_assoc()) { $details[] = $row; }
+    
+    require 'views/admin/chat_logs/detail.php'; // Bạn sẽ tạo file này sau
 }
 // 15. Thống kê kết quả trắc nghiệm
 public function assessment_stats() {
@@ -415,6 +422,53 @@ public function assessment_stats() {
     }
     // Gửi dữ liệu này qua View để vẽ biểu đồ tròn bằng Chart.js
     require 'views/admin/stats/assessment.php';
+}
+// 16. Danh sách người dùng
+public function users() {
+    $users = [];
+    // QUAN TRỌNG: Phải có 'status' trong câu lệnh SELECT
+    $sql = "SELECT id, fullname, username, role, status, created_at FROM users WHERE role != 'admin' ORDER BY created_at DESC";
+    $result = $this->conn->query($sql);
+    
+    if ($result) {
+        while($row = $result->fetch_assoc()) {
+            $users[] = $row;
+        }
+    }
+    require 'views/admin/users/index.php';
+}
+// 17. Xử lý khóa/mở khóa người dùng
+public function toggle_user_status() {
+    $id = $_GET['id'] ?? 0;
+    $status = $_GET['status'] ?? 'active';
+    
+    $stmt = $this->conn->prepare("UPDATE users SET status = ? WHERE id = ?");
+    $stmt->bind_param("si", $status, $id);
+    $stmt->execute();
+    
+    header("Location: index.php?page=admin&action=users&status=updated");
+    exit;
+}
+
+// 18. Chỉnh sửa thông tin người dùng
+public function edit_user() {
+    $id = $_GET['id'] ?? 0;
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $fullname = $_POST['fullname'];
+        $role = $_POST['role'];
+        
+        $stmt = $this->conn->prepare("UPDATE users SET fullname = ?, role = ? WHERE id = ?");
+        $stmt->bind_param("ssi", $fullname, $role, $id);
+        $stmt->execute();
+        header("Location: index.php?page=admin&action=users&status=success");
+        exit;
+    }
+    
+    $stmt = $this->conn->prepare("SELECT * FROM users WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $user = $stmt->get_result()->fetch_assoc();
+    require 'views/admin/users/edit.php';
 }
 }
 ?>

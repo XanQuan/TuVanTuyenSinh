@@ -232,61 +232,84 @@
             </div>
 
             <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card card-stat bg-white">
-                        <div class="card-body">
-                            <div class="stat-text">
-                                <p>Tổng lượt truy cập</p>
-                                <h2>150</h2>
-                            </div>
-                            <div class="stat-icon bg-red-light">
-                                <i class="fas fa-eye"></i>
-                            </div>
-                        </div>
-                    </div>
+    <div class="col-md-4">
+        <div class="card card-stat bg-white">
+            <div class="card-body">
+                <div class="stat-text">
+                    <p>Tổng lượt tra cứu</p>
+                    <h2><?= number_format($count_visits) ?></h2>
                 </div>
-
-                <div class="col-md-4">
-                    <div class="card card-stat bg-white">
-                        <div class="card-body">
-                            <div class="stat-text">
-                                <p>Tài khoản mới</p>
-                                <h2>12</h2>
-                            </div>
-                            <div class="stat-icon bg-blue-light">
-                                <i class="fas fa-user-plus"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="card card-stat bg-white">
-                        <div class="card-body">
-                            <div class="stat-text">
-                                <p>Yêu cầu tư vấn</p>
-                                <h2>5</h2>
-                            </div>
-                            <div class="stat-icon bg-green-light">
-                                <i class="fas fa-comments"></i>
-                            </div>
-                        </div>
-                    </div>
+                <div class="stat-icon bg-red-light">
+                    <i class="fas fa-eye"></i>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card-stat bg-white">
+            <div class="card-body">
+                <div class="stat-text">
+                    <p>Tổng số học sinh</p>
+                    <h2><?= number_format($count_users) ?></h2>
+                </div>
+                <div class="stat-icon bg-blue-light">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card-stat bg-white">
+            <div class="card-body">
+                <div class="stat-text">
+                    <p>Tổng số trường ĐH</p>
+                    <h2><?= number_format($count_unis) ?></h2>
+                </div>
+                <div class="stat-icon bg-green-light">
+                    <i class="fas fa-university"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
             <div class="row mt-4">
-                <div class="col-12">
-                    <div class="card border-0 shadow-sm" style="min-height: 400px; border-radius: 15px;">
-                        <div class="card-header bg-white py-3 border-0">
-                            <h5 class="fw-bold mb-0"><i class="fas fa-list"></i> Hoạt động gần đây</h5>
-                        </div>
-                        <div class="card-body">
-                            <p class="text-center text-muted mt-5">Chưa có dữ liệu mới...</p>
-                        </div>
-                    </div>
-                </div>
+    <div class="col-12">
+        <div class="card border-0 shadow-sm" style="min-height: 400px; border-radius: 15px;">
+            <div class="card-header bg-white py-3 border-0">
+                <h5 class="fw-bold mb-0"><i class="fas fa-list"></i> Hoạt động gần đây (Tư vấn AI)</h5>
             </div>
+            <div class="card-body">
+                <?php if (!empty($recent_activities)): ?>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Người dùng</th>
+                                    <th>Câu hỏi</th>
+                                    <th>Thời gian</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($recent_activities as $act): ?>
+                                <tr>
+                                    <td><strong><?= htmlspecialchars($act['fullname']) ?></strong></td>
+                                    <td class="text-muted"><?= mb_substr(htmlspecialchars($act['user_message']), 0, 80) ?>...</td>
+                                    <td><small class="text-muted"><?= date('H:i d/m/Y', strtotime($act['created_at'])) ?></small></td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <p class="text-center text-muted mt-5">Chưa có dữ liệu hoạt động mới...</p>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
 
         </div>
     </div>
