@@ -1,154 +1,250 @@
 <?php 
 // views/assessment/test.php
-// Đường dẫn vào layouts/header.php
+// Kết nối Header
 include __DIR__ . '/../layouts/header.php'; 
 ?>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <style>
     :root {
         --primary-red: #be1e2d;
-        --white: #ffffff;
+        --primary-hover: #a01825;
+        --bg-light: #f8f9fa;
+        --card-bg: #ffffff;
+        --text-main: #2d3436;
+        --shadow-soft: 0 10px 30px rgba(0,0,0,0.08);
+        --shadow-hover: 0 15px 35px rgba(190, 30, 45, 0.15);
     }
 
     body {
-        background-color: #f1f5f9;
+        background-color: var(--bg-light);
         font-family: 'Inter', sans-serif;
     }
 
-    /* BANNER ĐỎ NỔI BẬT */
+    /* 1. BANNER HIỆN ĐẠI */
     .test-banner {
-        background: linear-gradient(180deg, #d32f2f 0%, var(--primary-red) 100%);
-        color: var(--white);
-        padding: 120px 0 160px;
+        background: linear-gradient(135deg, #be1e2d 0%, #ff5b5b 100%);
+        padding: 140px 0 100px;
         text-align: center;
-        position: relative;
+        color: white;
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        margin-bottom: -60px; /* Để phần nội dung đè lên */
     }
 
     .test-banner h1 {
-        font-size: 3rem;
         font-weight: 800;
-        letter-spacing: -1px;
+        font-size: 2.8rem;
+        text-shadow: 0 4px 10px rgba(0,0,0,0.2);
         margin-bottom: 15px;
-        color: var(--white);
-        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     .test-banner p {
-        font-size: 1.25rem;
-        font-weight: 500;
-        color: rgba(255, 255, 255, 0.9);
-        max-width: 700px;
+        font-size: 1.1rem;
+        opacity: 0.9;
+        max-width: 600px;
         margin: 0 auto;
     }
 
-    /* KHUNG TRẮNG CÂU HỎI */
-    .assessment-card {
-        background: var(--white);
-        border-radius: 30px;
-        padding: 45px;
-        margin: -100px auto 80px;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-        position: relative;
-        z-index: 20;
+    /* 2. CONTAINER CHÍNH */
+    .test-container {
         max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px 80px;
+        position: relative;
+        z-index: 10;
     }
 
-    /* GRID 4 CỘT - 3 DÒNG */
+    /* 3. LƯỚI CÂU HỎI (RESPONSIVE GRID) */
     .questions-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 24px;
-        max-height: 650px; 
-        overflow-y: auto;
-        padding: 10px;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Tự động co giãn */
+        gap: 20px;
     }
 
-    /* THẺ CÂU HỎI */
-    .q-item {
-        background: #f8fafc;
-        border: 2px solid #e2e8f0;
-        border-radius: 20px;
-        padding: 30px 20px;
+    /* 4. THẺ CÂU HỎI (CARD STYLE) */
+    .q-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: var(--shadow-soft);
         cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        height: 190px;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        align-items: center;
+        gap: 15px;
+        user-select: none; /* Chống bôi đen text khi bấm nhanh */
     }
 
-    .q-item:hover {
-        border-color: var(--primary-red);
-        background: var(--white);
+    /* Hiệu ứng khi di chuột */
+    .q-card:hover {
         transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+        border-color: rgba(190, 30, 45, 0.3);
     }
 
-    .q-text {
-        font-size: 1.15rem;
+    /* Hiệu ứng KHI ĐƯỢC CHỌN (Sẽ được JS thêm class .selected) */
+    .q-card.selected {
+        background-color: #fff5f5;
+        border-color: var(--primary-red);
+        box-shadow: 0 5px 15px rgba(190, 30, 45, 0.2);
+    }
+
+    .q-card.selected .check-circle {
+        background: var(--primary-red);
+        border-color: var(--primary-red);
+        color: white;
+    }
+
+    /* Nút tròn giả checkbox */
+    .check-circle {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        border: 2px solid #ddd;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+        color: transparent;
+        font-size: 14px;
+    }
+
+    /* Nội dung câu hỏi */
+    .q-content {
+        font-size: 1rem;
         font-weight: 600;
-        color: #1e293b;
-        line-height: 1.6;
+        color: var(--text-main);
+        line-height: 1.5;
     }
 
-    /* NÚT BẤM */
+    /* Ẩn input checkbox thật đi */
+    .q-card input[type="checkbox"] {
+        display: none;
+    }
+
+    /* 5. NÚT SUBMIT NỔI */
+    .action-bar {
+        position: sticky;
+        bottom: 20px;
+        text-align: center;
+        margin-top: 40px;
+        z-index: 100;
+        pointer-events: none; /* Để click xuyên qua vùng trống */
+    }
+
     .btn-submit {
         background: var(--primary-red);
-        color: var(--white);
-        padding: 20px 60px;
-        border-radius: 100px;
+        color: white;
+        padding: 16px 50px;
+        border-radius: 50px;
         font-weight: 700;
         font-size: 1.2rem;
         border: none;
-        margin-top: 50px;
-        transition: 0.4s;
-        box-shadow: 0 10px 25px rgba(190, 30, 45, 0.3);
+        box-shadow: 0 10px 20px rgba(190, 30, 45, 0.4);
+        transition: 0.3s;
+        pointer-events: auto; /* Bật lại click cho nút */
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
     }
 
     .btn-submit:hover {
-        transform: translateY(-3px) scale(1.03);
-        box-shadow: 0 15px 35px rgba(190, 30, 45, 0.4);
+        background: var(--primary-hover);
+        transform: scale(1.05);
+        box-shadow: 0 15px 30px rgba(190, 30, 45, 0.5);
+    }
+
+    /* Thanh tiến độ (Trang trí) */
+    .progress-info {
+        background: rgba(255,255,255,0.9);
+        padding: 8px 20px;
+        border-radius: 20px;
+        display: inline-block;
+        margin-bottom: 15px;
+        font-weight: 600;
+        color: var(--primary-red);
+        backdrop-filter: blur(5px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        pointer-events: auto;
     }
 </style>
 
-<section class="test-banner">
+<div class="test-banner">
     <div class="container">
-        <h1>TRẮC NGHIỆM HOLLAND</h1>
-        <p>Khám phá bản thân ngay hôm nay - Đi đến Tương Lai sau này.</p>
-    </div>
-</section>
-
-<div class="container">
-    <div class="assessment-card">
-        <form action="index.php?page=assessment&action=submit" method="POST">
-            <div class="questions-grid">
-                <?php if (isset($questions) && is_array($questions) && count($questions) > 0): ?>
-                    
-                    <?php foreach ($questions as $q): ?>
-                    <label class="q-item">
-                        <input type="checkbox" name="answers[]" value="<?= $q['group_code'] ?>" 
-                               style="width: 24px; height: 24px; accent-color: var(--primary-red); margin-bottom: 15px;">
-                        
-                        <p class="q-text"><?= $q['content'] ?></p>
-                    </label>
-                    <?php endforeach; ?>
-
-                <?php else: ?>
-                    <div class="col-12 text-center text-danger">
-                        <h4>⚠️ Lỗi: Không tìm thấy câu hỏi trong Database!</h4>
-                        <p>Hãy kiểm tra lại bảng 'questions' trong phpMyAdmin.</p>
-                    </div>
-                <?php endif; ?>
-            </div>
-
-            <div class="text-center">
-                <button type="submit" class="btn btn-submit">
-                    KHÁM PHÁ KẾT QUẢ NGAY <i class="fas fa-bolt ms-2"></i>
-                </button>
-            </div>
-        </form>
+        <h1>KHÁM PHÁ BẢN THÂN</h1>
+        <p>Chọn những mô tả bên dưới mà bạn thấy <strong>đúng</strong> hoặc <strong>yêu thích</strong> nhất.</p>
     </div>
 </div>
+
+<div class="test-container">
+    <form action="index.php?page=assessment&action=submit" method="POST" id="testForm">
+        
+        <div class="questions-grid">
+            <?php if (!empty($questions)): ?>
+                <?php foreach ($questions as $index => $q): ?>
+                
+                <label class="q-card" id="card-<?= $index ?>">
+                    
+                    <input type="checkbox" name="answers[]" 
+                           value="<?= htmlspecialchars($q['group_code']) ?>" 
+                           onchange="toggleCard(this, 'card-<?= $index ?>')">
+                    
+                    <div class="check-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+
+                    <div class="q-content">
+                        <?= htmlspecialchars($q['content']) ?>
+                    </div>
+                </label>
+
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="col-12 text-center py-5">
+                    <h3 class="text-muted">⚠️ Chưa có dữ liệu câu hỏi!</h3>
+                    <p>Vui lòng liên hệ Admin để cập nhật ngân hàng câu hỏi.</p>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <div class="action-bar">
+            <div class="mb-3">
+                <span class="progress-info">
+                    <i class="fas fa-tasks me-2"></i> Đã chọn: <span id="countDisplay">0</span> mục
+                </span>
+            </div>
+            <button type="submit" class="btn-submit">
+                XEM KẾT QUẢ PHÂN TÍCH <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    // Hàm đổi màu thẻ khi được chọn
+    function toggleCard(checkbox, cardId) {
+        const card = document.getElementById(cardId);
+        if (checkbox.checked) {
+            card.classList.add('selected');
+        } else {
+            card.classList.remove('selected');
+        }
+        updateCount();
+    }
+
+    // Hàm đếm số lượng đã chọn
+    function updateCount() {
+        const checkboxes = document.querySelectorAll('input[name="answers[]"]:checked');
+        document.getElementById('countDisplay').innerText = checkboxes.length;
+    }
+</script>
 
 <?php include __DIR__ . '/../layouts/footer.php'; ?>
