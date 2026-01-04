@@ -172,6 +172,22 @@
                         <i class="fas fa-chart-line"></i> Quản lý Điểm Chuẩn
                     </a>
                 </li>
+                <li>
+    <a href="index.php?page=admin&action=questions">
+        <i class="fas fa-question-circle"></i> Quản lý Câu hỏi Test
+    </a>
+</li>
+<li>
+    <a href="index.php?page=admin&action=chat_logs">
+        <i class="fas fa-history"></i> Nhật ký Tư vấn AI
+    </a>
+</li>
+<li>
+    <a href="index.php?page=admin&action=users">
+        <i class="fas fa-users-cog"></i> Quản lý Người dùng
+    </a>
+</li>
+
                 <li style="margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.1);">
                     <a href="index.php?page=logout">
                         <i class="fas fa-sign-out-alt"></i> Đăng xuất

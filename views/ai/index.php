@@ -60,15 +60,21 @@ function sendMessage() {
     const formData = new FormData();
     formData.append('message', msg);
 
-    fetch('index.php?page=ai_consultant&action=send_message', { method: 'POST', body: formData })
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById(loadingId).remove();
-        // DÒNG QUAN TRỌNG NHẤT: Xử lý định dạng văn bản
+   fetch('index.php?page=ai_consultant&action=send_message', { method: 'POST', body: formData })
+.then(res => res.json())
+.then(data => {
+    // Luôn xóa vòng xoay khi có phản hồi (kể cả lỗi)
+    document.getElementById(loadingId).remove(); 
+    
+    if (data.status === 'success') {
         const formattedReply = marked.parse(data.reply);
         box.innerHTML += `<div class="message-row ai-msg"><div class="msg-content shadow-sm p-3 bg-white rounded-3">${formattedReply}</div></div>`;
-        box.scrollTop = box.scrollHeight;
-    });
+    } else {
+        // Hiện lỗi màu đỏ để bạn biết chính xác tại sao không chạy
+        box.innerHTML += `<div class="message-row ai-msg"><div class="msg-content shadow-sm p-3 bg-white rounded-3 text-danger">⚠️ ${data.message}</div></div>`;
+    }
+    box.scrollTop = box.scrollHeight;
+})
 }
 document.getElementById('user-input').addEventListener('keypress', (e) => { if(e.key === 'Enter') sendMessage(); });
 </script>

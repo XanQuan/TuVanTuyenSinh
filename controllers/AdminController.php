@@ -21,6 +21,7 @@ class AdminController {
     $count_users = 0;
     $count_visits = 0;
     $count_unis = 0;
+    $count_questions = 0;
 
     // 1. Đếm User
     $sql_users = "SELECT COUNT(*) as total FROM users WHERE role != 'admin'";
@@ -56,7 +57,8 @@ class AdminController {
     $data = [
         'count_users'  => $count_users,
         'count_visits' => $count_visits,
-        'count_unis'   => $count_unis
+        'count_unis'   => $count_unis,
+        'count_questions' => $count_questions
     ];
     extract($data);
 
@@ -326,27 +328,93 @@ class AdminController {
         exit;
     }
     // xử Lý thêm câu hỏi holland code
-    public function save_question() {
+ public function save_question() {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $text = $_POST['question_text'];
-        $group = $_POST['holland_group'];
+        $text = $_POST['question_text'] ?? '';
+        $group = $_POST['holland_group'] ?? '';
         $image_name = null;
 
         // Xử lý upload ảnh
         if (!empty($_FILES['question_image']['name'])) {
-            $image_name = time() . '_' . $_FILES['question_image']['name'];
-            move_uploaded_file($_FILES['question_image']['tmp_name'], "uploads/questions/" . $image_name);
+            $target_dir = "uploads/questions/";
+            if (!is_dir($target_dir)) { mkdir($target_dir, 0777, true); }
+            $image_name = time() . '_' . basename($_FILES['question_image']['name']);
+            move_uploaded_file($_FILES['question_image']['tmp_name'], $target_dir . $image_name);
         }
 
-        // Lưu vào DB
-        $sql = "INSERT INTO questions (question_text, holland_group, image_url) VALUES (?, ?, ?)";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("sss", $text, $group, $image_name);
-        
-        if ($stmt->execute()) {
-            header("Location: index.php?page=admin&action=list_questions&status=success");
+        if (!empty($text) && !empty($group)) {
+            // Đảm bảo tên cột khớp 100% với DB sau khi chạy lệnh ALTER ở Bước 1
+            $sql = "INSERT INTO questions (content, group_code, image_url) VALUES (?, ?, ?)";
+            $stmt = $this->conn->prepare($sql);
+            
+            if ($stmt) { // Kiểm tra prepare thành công mới bind_param
+                $stmt->bind_param("sss", $text, $group, $image_name);
+                if ($stmt->execute()) {
+                    $stmt->close();
+                    header("Location: index.php?page=admin&action=questions&status=success");
+                    exit;
+                } else {
+                    die("Lỗi thực thi: " . $stmt->error);
+                }
+            } else {
+                die("Lỗi Prepare SQL: " . $this->conn->error . ". Hãy kiểm tra xem bạn đã thêm cột 'image_url' vào bảng 'questions' chưa?");
+            }
         }
     }
+}
+// 12. Danh sách câu hỏi trắc nghiệm
+public function questions() {
+        $questions = [];
+        // SỬA: Lấy dữ liệu theo tên cột thực tế trong DB: content, group_code
+        $result = $this->conn->query("SELECT * FROM questions ORDER BY group_code ASC, id ASC");
+        if ($result) {
+            while($row = $result->fetch_assoc()) {
+                $questions[] = $row;
+            }
+        }
+        // Gọi đến file giao diện đồng bộ
+        require 'views/admin/questions/index.php';
+    }
+
+// 13. Xóa câu hỏi
+public function delete_question() {
+        if (isset($_GET['id'])) {
+            $id = (int)$_GET['id'];
+            $stmt = $this->conn->prepare("DELETE FROM questions WHERE id = ?");
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+        }
+        header("Location: index.php?page=admin&action=questions");
+        exit;
+    }
+// 13.1 lưu câu hỏi 
+// Hàm xử lý lưu câu hỏi mới
+
+// 14. Xem lịch sử chat của tất cả người dùng với AI
+public function chat_logs() {
+    $logs = [];
+    $sql = "SELECT ai_chats.*, users.full_name 
+            FROM ai_chats 
+            JOIN users ON ai_chats.user_id = users.id 
+            ORDER BY ai_chats.created_at DESC LIMIT 100";
+    $result = $this->conn->query($sql);
+    if ($result) {
+        while($row = $result->fetch_assoc()) { $logs[] = $row; }
+    }
+    require 'views/admin/chat_logs/index.php';
+}
+// 15. Thống kê kết quả trắc nghiệm
+public function assessment_stats() {
+    $stats = [];
+    $sql = "SELECT dominant_type, COUNT(*) as count 
+            FROM assessment_results 
+            GROUP BY dominant_type";
+    $result = $this->conn->query($sql);
+    if ($result) {
+        while($row = $result->fetch_assoc()) { $stats[] = $row; }
+    }
+    // Gửi dữ liệu này qua View để vẽ biểu đồ tròn bằng Chart.js
+    require 'views/admin/stats/assessment.php';
 }
 }
 ?>
