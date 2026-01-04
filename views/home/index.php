@@ -11,9 +11,14 @@
         --dark-bg: #1f272b;
     }
 
-    body { font-family: 'Inter', sans-serif; background-color: #f8faff; }
+    body { 
+        font-family: 'Inter', sans-serif; 
+        background-color: #f0f2f5; 
+        overflow-x: hidden; 
+        scroll-behavior: smooth; 
+    }
 
-    /* BANNER VIDEO HIỆN ĐẠI */
+    /* 1. BANNER VIDEO HIỆN ĐẠI */
     .main-banner { position: relative; overflow: hidden; height: 100vh; }
     #bg-video { width: 100%; height: 100%; object-fit: cover; }
     .video-overlay { 
@@ -24,134 +29,108 @@
     .caption h2 { font-size: 3.5rem; font-weight: 800; color: #fff; text-transform: uppercase; }
     .caption h2 span { color: var(--secondary-yellow); }
 
-    /* NÚT BẤM STYLE MỚI */
-    .btn-custom {
-        padding: 15px 35px; border-radius: 50px; font-weight: 700;
-        transition: 0.3s; display: inline-block; text-decoration: none; border: none;
-    }
-    .btn-red { background: var(--primary-red); color: #fff; }
-    .btn-yellow { background: var(--secondary-yellow); color: #fff; }
-    .btn-outline { background: rgba(255,255,255,0.2); color: #fff; border: 1px solid #fff; backdrop-filter: blur(5px); }
-    .btn-custom:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); color: #fff; }
+    /* 2. HIỆU ỨNG 3D CHO CÁC Ô CHỌN (TOOL CARDS) */
+    .tools-container { perspective: 1500px; }
 
-    /* CÔNG CỤ HỖ TRỢ (Grid Layout) */
+    .tool-card-link {
+        text-decoration: none !important;
+        display: block;
+        height: 100%;
+        transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
     .tool-card {
-        background: #fff; border-radius: 24px; padding: 40px 30px;
-        transition: 0.3s; border: 1px solid #eee; text-align: center;
-        height: 100%; /* Để các thẻ bằng nhau */
-    }
-    .tool-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
-    .icon-box { 
-        width: 70px; height: 70px; background: #fff1f2; color: var(--primary-red);
-        border-radius: 50%; display: flex; align-items: center; justify-content: center;
-        margin: 0 auto 20px; font-size: 24px;
+        background: #ffffff;
+        border-radius: 30px;
+        padding: 45px 30px;
+        border: 1px solid rgba(0,0,0,0.03);
+        text-align: center;
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        transition: all 0.4s ease;
+        height: 100%;
     }
 
-    /* KHU VỰC TRA CỨU THÔNG MINH */
+    .tool-card-link:hover {
+        transform: translateY(-15px) rotateX(8deg) rotateY(-8deg);
+    }
+
+    .tool-card-link:hover .tool-card {
+        box-shadow: 25px 40px 80px rgba(190, 30, 45, 0.15);
+        border-color: var(--primary-red);
+    }
+
+    .icon-box {
+        width: 85px; height: 85px;
+        background: #fff1f2;
+        color: var(--primary-red);
+        border-radius: 25px;
+        display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 25px;
+        font-size: 32px;
+        transition: all 0.5s ease;
+        transform: translateZ(30px); /* Hiệu ứng nổi icon */
+    }
+
+    .tool-card-link:hover .icon-box {
+        background: var(--primary-red);
+        color: #fff;
+        transform: scale(1.15) rotate(12deg);
+        box-shadow: 0 10px 25px rgba(190, 30, 45, 0.3);
+    }
+
+    .tool-card h4 { font-weight: 800; color: #333; margin-bottom: 15px; }
+    .btn-text { color: var(--primary-red); font-weight: 800; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; display: block; margin-top: 20px; }
+
+    /* 3. KHU VỰC TRA CỨU PREMIUM */
     .consulting-wrapper {
         background: linear-gradient(135deg, #a71d2a 0%, #3a0a0e 100%);
-        border-radius: 40px; padding: 60px; color: #fff;
-        box-shadow: 0 20px 50px rgba(167, 29, 42, 0.3);
-    }
-    
-    /* KẾT QUẢ DẠNG LIST CÓ CUỘN */
-    .result-box {
-        background: #fff; border-radius: 24px; color: #333; padding: 30px;
-        height: 100%; min-height: 450px;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-    }
-    .scroll-results { 
-        max-height: 400px; 
-        overflow-y: auto; 
-        padding-right: 10px; 
-    }
-    /* Tùy chỉnh thanh cuộn cho đẹp */
-    .scroll-results::-webkit-scrollbar { width: 6px; }
-    .scroll-results::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
-    .scroll-results::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
-    .scroll-results::-webkit-scrollbar-thumb:hover { background: var(--primary-red); }
-
-    .uni-item {
-        background: #f8fafc; border-radius: 15px; padding: 20px;
-        margin-bottom: 15px; border-left: 5px solid var(--primary-red);
-        transition: transform 0.2s;
-    }
-    .uni-item:hover { transform: translateX(5px); }
-
-    .form-label-highlight {
-        color: #ffeb3b !important; 
-        font-weight: 700;
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        letter-spacing: 1px;
-        margin-bottom: 10px;
-        display: block;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        border-radius: 50px; padding: 70px; color: #fff;
+        box-shadow: 0 30px 70px rgba(167, 29, 42, 0.4);
     }
 
-    /* Ô nhập liệu với độ tương phản cao */
-    .glass-input-premium {
-        background: rgba(255, 255, 255, 0.15) !important;
-        border: 2px solid rgba(255, 255, 255, 0.4) !important;
-        border-radius: 15px;
-        padding: 14px 20px;
-        color: #ffffff !important; 
-        width: 100%;
-        font-weight: 600;
-        transition: 0.3s;
-        outline: none;
-    }
-
-    .glass-input-premium:focus {
-        border-color: #ffeb3b !important;
-        background: rgba(255, 255, 255, 0.25) !important;
-    }
-    /* Placeholder màu trắng mờ */
-    .glass-input-premium::placeholder { color: rgba(255, 255, 255, 0.7) !important; }
-
-    /* Nhãn tiêu đề nghệ thuật màu vàng chanh */
-    .form-label-premium {
-        color: #ffeb3b !important;
-        font-weight: 800;
-        text-transform: uppercase;
-        font-size: 0.8rem;
-        letter-spacing: 1.2px;
-        margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-    .form-label-premium i { margin-right: 10px; font-size: 1.1rem; }
-
-    /* Ô nhập liệu & Select bo góc 25px */
     .input-premium {
         background: rgba(255, 255, 255, 0.12) !important;
-        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        border: 2px solid rgba(255, 255, 255, 0.25) !important;
         border-radius: 25px !important; 
-        padding: 16px 25px !important;
+        padding: 18px 25px !important;
         color: #ffffff !important;
-        font-size: 1.1rem !important;
-        font-weight: 600 !important;
-        transition: all 0.4s ease !important;
-        backdrop-filter: blur(12px);
+        font-size: 1.1rem;
+        transition: all 0.4s ease;
+        backdrop-filter: blur(15px);
         width: 100%;
-        appearance: none; /* Xóa style mặc định của trình duyệt */
-        cursor: pointer;
+        outline: none;
     }
 
     .input-premium:focus {
-        background: rgba(255, 255, 255, 0.25) !important;
-        border-color: #ffeb3b !important;
-        box-shadow: 0 0 25px rgba(255, 235, 59, 0.3) !important;
-        outline: none;
+        background: rgba(255, 255, 255, 0.22) !important;
+        border-color: var(--secondary-yellow) !important;
+        box-shadow: 0 0 25px rgba(245, 164, 37, 0.3) !important;
     }
 
-    /* Sửa lỗi chữ bị che trong danh sách chọn */
-    .input-premium option {
-        color: #1a202c !important;
-        background: #ffffff !important;
-        padding: 15px !important;
-        font-weight: 500;
+    .input-premium option { color: #333; background: #fff; }
+
+    /* 4. KẾT QUẢ UNI-ITEM */
+    .result-box {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 35px; color: #333; padding: 40px;
+        height: 100%; min-height: 500px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    }
+
+    .uni-item {
+        background: #ffffff; border-radius: 20px; padding: 25px;
+        margin-bottom: 20px; border-left: 6px solid var(--primary-red);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        transition: all 0.3s ease;
+    }
+
+    .uni-item:hover { transform: scale(1.02) translateX(10px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); }
+
+    .btn-glow:hover {
+        box-shadow: 0 0 30px rgba(245, 164, 37, 0.6);
+        transform: translateY(-3px);
     }
 </style>
 
@@ -162,13 +141,14 @@
     <div class="video-overlay">
         <div class="container text-center">
             <div class="caption">
-                <h6>Chào mừng bạn đến với UniGuide</h6>
-                <h2>Hệ Thống <span>Tư Vấn Tuyển Sinh</span></h2>
-                <p class="text-white opacity-75 fs-5 mb-5">Khám phá ngôi trường đại học mơ ước dựa trên năng lực và sở thích của riêng bạn.</p>
+                <h6 class="text-white-50 text-uppercase letter-spacing-2">Kiến tạo tương lai cùng UniGuide</h6>
+                <h2>Hệ Thống <span>Tư Vấn Tuyển Sinh</span> AI</h2>
+                <p class="text-white opacity-75 fs-5 mb-5 mx-auto" style="max-width: 700px;">
+                    Định hướng nghề nghiệp thông minh dựa trên mô hình tâm lý học Holland và thuật toán phân tích điểm chuẩn chính xác nhất.
+                </p>
                 <div class="d-flex justify-content-center gap-3 flex-wrap">
-                    <a href="#consulting" class="btn-custom btn-red">🔍 Tra cứu ngay</a>
-                    <a href="index.php?page=assessment" class="btn-custom btn-yellow">🧩 Test Năng lực</a>
-                    <a href="index.php?page=compare" class="btn-custom btn-outline">⚖️ So sánh</a>
+                    <a href="#consulting" class="btn btn-danger rounded-pill px-5 py-3 fw-bold shadow">🔍 TRA CỨU ĐIỂM</a>
+                    <a href="index.php?page=assessment" class="btn btn-warning rounded-pill px-5 py-3 fw-bold shadow">🧩 TEST HOLLAND</a>
                 </div>
             </div>
         </div>
@@ -178,33 +158,75 @@
 <section class="py-5" id="tools">
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h2 class="fw-bold text-dark">Công cụ hỗ trợ thí sinh</h2>
-            <p class="text-muted">Lựa chọn công cụ phù hợp để định hướng tương lai</p>
+            <h2 class="fw-bold text-dark" style="font-size: 2.8rem;">Hệ sinh thái <span class="text-danger">UniGuide</span></h2>
+            <p class="text-muted fs-5">Lựa chọn công cụ phù hợp để bắt đầu hành trình đại học của bạn</p>
         </div>
-        <div class="row g-4">
-            <div class="col-lg-4">
-                <div class="tool-card">
-                    <div class="icon-box"><i class="fas fa-user-astronaut"></i></div>
-                    <h4>Trắc Nghiệm</h4>
-                    <p>Khám phá bản thân qua 6 nhóm tính cách Holland để chọn nghề chuẩn xác nhất.</p>
-                    <a href="index.php?page=assessment" class="btn btn-link text-danger fw-bold">Bắt đầu ngay →</a>
-                </div>
+        
+        <div class="row g-4 tools-container">
+            <div class="col-lg-4 col-md-6">
+                <a href="index.php?page=assessment" class="tool-card-link">
+                    <div class="tool-card">
+                        <div class="icon-box"><i class="fas fa-brain"></i></div>
+                        <h4>Trắc Nghiệm</h4>
+                        <p class="text-muted">Khám phá bản thân qua 6 nhóm tính cách Holland để chọn đúng ngành nghề.</p>
+                        <span class="btn-text">BẮT ĐẦU NGAY →</span>
+                    </div>
+                </a>
             </div>
-            <div class="col-lg-4">
-                <div class="tool-card">
-                    <div class="icon-box"><i class="fas fa-university"></i></div>
-                    <h4>Tra Cứu Điểm Chuẩn</h4>
-                    <p>Phân tích điểm số của bạn để gợi ý danh sách các trường có tỷ lệ đậu cao nhất.</p>
-                    <a href="#consulting" class="btn btn-link text-danger fw-bold">Khám phá ngay →</a>
-                </div>
+
+            <div class="col-lg-4 col-md-6">
+                <a href="index.php?page=majors" class="tool-card-link">
+                    <div class="tool-card">
+                        <div class="icon-box"><i class="fas fa-graduation-cap"></i></div>
+                        <h4>Ngành Đào Tạo</h4>
+                        <p class="text-muted">Cập nhật thông tin chi tiết về các nhóm ngành triển vọng năm 2026.</p>
+                        <span class="btn-text">KHÁM PHÁ NGÀNH →</span>
+                    </div>
+                </a>
             </div>
-            <div class="col-lg-4">
-                <div class="tool-card">
-                    <div class="icon-box"><i class="fas fa-balance-scale"></i></div>
-                    <h4>So Sánh Trường</h4>
-                    <p>Đặt các ngôi trường lên bàn cân về học phí, cơ sở vật chất và cơ hội việc làm.</p>
-                    <a href="index.php?page=compare" class="btn btn-link text-danger fw-bold">So sánh ngay →</a>
-                </div>
+
+            <div class="col-lg-4 col-md-6">
+                <a href="#consulting" class="tool-card-link">
+                    <div class="tool-card">
+                        <div class="icon-box"><i class="fas fa-chart-bar"></i></div>
+                        <h4>Tra Cứu Điểm</h4>
+                        <p class="text-muted">Dựa trên điểm thi để tìm trường có tỷ lệ đậu cao nhất cho bạn.</p>
+                        <span class="btn-text">TRA CỨU NGAY →</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <a href="index.php?page=events" class="tool-card-link">
+                    <div class="tool-card">
+                        <div class="icon-box"><i class="fas fa-calendar-alt"></i></div>
+                        <h4>Sự Kiện</h4>
+                        <p class="text-muted">Tham gia các buổi workshop tư vấn trực tiếp cùng đại diện các trường.</p>
+                        <span class="btn-text">XEM LỊCH TRÌNH →</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <a href="index.php?page=compare" class="tool-card-link">
+                    <div class="tool-card">
+                        <div class="icon-box"><i class="fas fa-balance-scale"></i></div>
+                        <h4>So Sánh</h4>
+                        <p class="text-muted">Đặt lên bàn cân các ngôi trường về học phí, môi trường và đầu ra.</p>
+                        <span class="btn-text">SO SÁNH NGAY →</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <a href="index.php?page=resources" class="tool-card-link">
+                    <div class="tool-card">
+                        <div class="icon-box"><i class="fas fa-book-open"></i></div>
+                        <h4>Tài Nguyên</h4>
+                        <p class="text-muted">Kho đề thi thử, tài liệu ôn thi THPT Quốc gia đạt điểm tối ưu.</p>
+                        <span class="btn-text">TẢI VỀ NGAY →</span>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
@@ -212,52 +234,33 @@
 
 <section class="container pb-5" id="consulting">
     <div class="consulting-wrapper">
-        <div class="row g-5">
+        <div class="row g-5 align-items-center">
             <div class="col-lg-5">
-                <h3 class="fw-bold mb-4 text-white">Trợ lý ảo UniGuide</h3>
-                <p class="mb-5 opacity-75">Hãy nhập thông tin để chúng tôi bắt đầu phân tích dữ liệu cho bạn.</p>
+                <h2 class="fw-bold mb-4"><i class="fas fa-robot text-warning me-2"></i>UniBot AI</h2>
+                <p class="mb-5 fs-5 opacity-75">UniBot đang sử dụng dữ liệu tuyển sinh thực tế để phân tích cơ hội cho bạn.</p>
                 
                 <form method="POST" action="index.php?page=advice&action=result#consulting">
                     <div class="mb-4">
-                        <label class="form-label-highlight">TỔNG ĐIỂM THI (3 MÔN)</label>
-                        <input type="number" step="0.01" name="score" class="glass-input-premium" 
-                               placeholder="Ví dụ: 25.75" required 
+                        <label class="fw-bold text-warning small mb-2 text-uppercase">Tổng điểm thi dự kiến (3 môn)</label>
+                        <input type="number" step="0.01" name="score" class="input-premium" 
+                               placeholder="Ví dụ: 25.50" required 
                                value="<?= isset($_POST['score']) ? htmlspecialchars($_POST['score']) : '' ?>">
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label-premium">
-                            <i class="fa-solid fa-layer-group"></i> NHÓM NGÀNH QUAN TÂM
-                        </label>
-                        <div style="position: relative;">
-                            <select name="group" class="input-premium" required>
-                                <option value="" disabled selected>-- Chọn lĩnh vực bạn yêu thích --</option>
-                                
-                                <?php if (isset($major_groups) && is_array($major_groups) && count($major_groups) > 0): ?>
-                                    <?php foreach ($major_groups as $g): ?>
-                                        <?php 
-                                            // Tự động tìm ID (thử các trường hợp phổ biến: group_code, code, id...)
-                                            $val = $g['group_code'] ?? $g['code'] ?? $g['id'] ?? '';
-
-                                            // Tự động tìm Tên hiển thị (group_name, name, ten_nhom...)
-                                            $name = $g['group_name'] ?? $g['name'] ?? $g['ten_nhom'] ?? 'Chưa đặt tên';
-                                        ?>
-                                        <option value="<?= htmlspecialchars($val) ?>" 
-                                            <?= (isset($_POST['group']) && $_POST['group'] == $val) ? 'selected' : '' ?>>
-                                            <?= htmlspecialchars($name) ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <option value="" disabled>Đang cập nhật dữ liệu...</option>
-                                <?php endif; ?>
-                            </select>
-                            <i class="fa-solid fa-chevron-down" style="position: absolute; right: 25px; top: 50%; transform: translateY(-50%); color: #fff; pointer-events: none;"></i>
-                        </div>
+                        <label class="fw-bold text-warning small mb-2 text-uppercase">Lĩnh vực bạn quan tâm</label>
+                        <select name="group" class="input-premium" required>
+                            <option value="" disabled selected>-- Chọn nhóm ngành --</option>
+                            <?php if (!empty($major_groups)): foreach ($major_groups as $g): ?>
+                                <option value="<?= $g['group_code'] ?>" <?= (isset($_POST['group']) && $_POST['group'] == $g['group_code']) ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($g['group_name']) ?>
+                                </option>
+                            <?php endforeach; endif; ?>
+                        </select>
                     </div>
 
-                    <button type="submit" name="submit_advice" class="btn-custom btn-yellow w-100" 
-                            style="color: #000 !important; font-weight: 800; box-shadow: 0 10px 25px rgba(245, 164, 37, 0.4);">
-                        PHÂN TÍCH DỮ LIỆU NGAY
+                    <button type="submit" name="submit_advice" class="btn btn-warning w-100 py-3 rounded-pill fw-bold btn-glow" style="font-size: 1.1rem;">
+                        🚀 PHÂN TÍCH CƠ HỘI NGAY
                     </button>
                 </form>
             </div>
@@ -265,47 +268,32 @@
             <div class="col-lg-7">
                 <div class="result-box">
                     <?php if (isset($results)): ?>
-                        <h5 class="fw-bold mb-4">
-                            Kết quả phù hợp cho mức điểm <span class="text-danger"><?= htmlspecialchars($searchScore) ?></span>:
-                        </h5>
-                        
-                        <div class="scroll-results">
-                            <?php if (count($results) > 0): ?>
-                                <?php foreach ($results as $row): ?>
-                                    <div class="uni-item shadow-sm">
-                                        <div class="d-flex justify-content-between align-items-start">
-                                            <div>
-                                                <h6 class="fw-bold text-danger m-0 mb-1"><?= htmlspecialchars($row['uni_name']) ?></h6>
-                                                <p class="small text-muted mb-0"><i class="fas fa-graduation-cap me-1"></i> Ngành: <strong><?= htmlspecialchars($row['major_name']) ?></strong></p>
-                                            </div>
-                                            <span class="badge bg-success rounded-pill px-3 py-2">Tỷ lệ đậu cao</span>
-                                        </div>
-                                        
-                                        <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-secondary-subtle">
-                                            <span class="small fw-bold">Điểm chuẩn: <b class="text-dark fs-6"><?= $row['score'] ?></b></span>
-                                            <?php $diff = round($searchScore - $row['score'], 2); ?>
-                                            <span class="small fw-bold text-primary">
-                                                Dư điểm: +<?= $diff ?>
-                                            </span>
-                                        </div>
+                        <h5 class="fw-bold mb-4 text-dark">Kết quả phù hợp nhất:</h5>
+                        <div class="scroll-results" style="max-height: 450px; overflow-y: auto;">
+                            <?php if (count($results) > 0): foreach ($results as $row): ?>
+                                <div class="uni-item shadow-sm">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="fw-bold text-danger mb-1"><?= htmlspecialchars($row['uni_name']) ?></h6>
+                                        <span class="badge bg-success rounded-pill px-3">Tỷ lệ đậu cao</span>
                                     </div>
-                                <?php endforeach; ?>
-                            <?php else: ?>
+                                    <p class="small text-muted mb-2"><i class="fas fa-check-circle me-1"></i> Ngành: <?= htmlspecialchars($row['major_name']) ?></p>
+                                    <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+                                        <span class="small">Điểm chuẩn: <strong><?= $row['score'] ?></strong></span>
+                                        <span class="text-primary fw-bold small">Dư: +<?= round($searchScore - $row['score'], 2) ?></span>
+                                    </div>
+                                </div>
+                            <?php endforeach; else: ?>
                                 <div class="text-center py-5">
-                                    <i class="fas fa-search-minus fa-3x text-muted mb-3"></i>
-                                    <h5 class="text-muted">Không tìm thấy trường phù hợp!</h5>
-                                    <p class="text-secondary">Điểm số của bạn có thể hơi thấp so với ngành này, hoặc chưa có dữ liệu. Hãy thử chọn nhóm ngành khác.</p>
+                                    <i class="fas fa-search-minus fa-3x text-muted mb-3 opacity-50"></i>
+                                    <p class="text-muted">Không tìm thấy trường phù hợp. Thử lại với ngành khác nhé!</p>
                                 </div>
                             <?php endif; ?>
                         </div>
                     <?php else: ?>
                         <div class="text-center py-5 h-100 d-flex flex-column justify-content-center align-items-center">
-                            <img src="public/assets/images/search-illustration.png" 
-                                 style="max-width: 200px; opacity: 0.8;" 
-                                 class="mb-4"
-                                 onerror="this.src='https://cdn-icons-png.flaticon.com/512/6104/6104865.png'"> 
-                            <h5 class="fw-bold text-dark">UniBot đang chờ thông tin...</h5>
-                            <p class="text-muted">Nhập điểm thi và chọn ngành bên trái để nhận gợi ý chính xác nhất.</p>
+                            <img src="https://cdn-icons-png.flaticon.com/512/6104/6104865.png" width="150" class="mb-4 opacity-50">
+                            <h5 class="fw-bold text-muted">Đang chờ dữ liệu đầu vào...</h5>
+                            <p class="small text-muted px-5">UniBot cần bạn nhập điểm và chọn ngành để bắt đầu so sánh cơ sở dữ liệu.</p>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -314,35 +302,36 @@
     </div>
 </section>
 
-<footer class="bg-dark text-white pt-5">
-    <div class="container">
-        <div class="row g-4 pb-5">
+<footer class="bg-dark text-white pt-5 mt-5">
+    <div class="container py-5">
+        <div class="row g-4">
             <div class="col-lg-4">
-                <h4 class="fw-bold mb-4 text-warning">UniGuide</h4>
-                <p class="opacity-75">Hệ thống hỗ trợ thí sinh chọn trường đại học dựa trên năng lực thực tế. Luôn đồng hành cùng bạn trên con đường chinh phục tri thức.</p>
+                <h4 class="fw-bold mb-4 text-warning">UniGuide 2026</h4>
+                <p class="opacity-75">Hệ thống tư vấn tuyển sinh thông minh hàng đầu Việt Nam, giúp học sinh chạm tay tới ước mơ.</p>
             </div>
             <div class="col-lg-4">
-                <h4 class="fw-bold mb-4 text-warning">Liên hệ</h4>
+                <h4 class="fw-bold mb-4 text-warning">Truy cập nhanh</h4>
                 <ul class="list-unstyled opacity-75">
-                    <li class="mb-3"><i class="fas fa-phone me-2 text-danger"></i> 090.123.4567</li>
-                    <li class="mb-3"><i class="fas fa-envelope me-2 text-danger"></i> info@uniguide.edu.vn</li>
-                    <li><i class="fas fa-map-marker-alt me-2 text-danger"></i> TP. Hồ Chí Minh</li>
+                    <li class="mb-2"><a href="index.php?page=assessment" class="text-white text-decoration-none">Làm trắc nghiệm Holland</a></li>
+                    <li class="mb-2"><a href="index.php?page=universities" class="text-white text-decoration-none">Danh sách trường đại học</a></li>
+                    <li><a href="index.php?page=advice" class="text-white text-decoration-none">Tư vấn chọn trường</a></li>
                 </ul>
             </div>
             <div class="col-lg-4">
-                <h4 class="fw-bold mb-4 text-warning">Bản tin</h4>
-                <p class="small opacity-75">Đăng ký để nhận thông tin tuyển sinh mới nhất.</p>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Email của bạn">
-                    <button class="btn btn-danger">Đăng ký</button>
-                </div>
+                <h4 class="fw-bold mb-4 text-warning">Hỗ trợ</h4>
+                <p class="opacity-75 mb-1"><i class="fas fa-envelope me-2"></i> info@uniguide.edu.vn</p>
+                <p class="opacity-75"><i class="fas fa-phone me-2"></i> 1900 8888</p>
             </div>
-        </div>
-        <hr class="border-secondary">
-        <div class="text-center py-4">
-            <p class="m-0 small opacity-50">Copyright © 2025 UniGuide System. Designed by <strong>Minh Quan</strong></p>
         </div>
     </div>
 </footer>
+
+<script src="https://unpkg.com/scrollreveal"></script>
+<script>
+    ScrollReveal().reveal('.tool-card-link', { 
+        delay: 200, distance: '50px', origin: 'bottom', interval: 100,
+        rotate: { x: 15, z: 0 }, opacity: 0, easing: 'cubic-bezier(0.5, 0, 0, 1)'
+    });
+</script>
 
 <?php require_once 'views/layouts/footer.php'; ?>
