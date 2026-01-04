@@ -17,249 +17,135 @@ $has_valid_result = (isset($result) && $total_points > 0);
 ?>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-    :root {
-        --primary-color: #be1e2d;
-        --primary-gradient: linear-gradient(135deg, #be1e2d 0%, #ff5b5b 100%);
-        --text-dark: #1f2937;
-        --text-muted: #6b7280;
-        --bg-body: #f3f4f6;
-    }
-
-    body {
-        background-color: var(--bg-body);
-        font-family: 'Inter', sans-serif;
-        color: var(--text-dark);
-    }
-
-    /* CONTAINER */
-    .result-container {
-        max-width: 1200px;
-        margin: 40px auto;
-        padding: 0 20px;
-    }
-
-    /* CARDS */
-    .custom-card {
+    /* Card kết quả */
+    .result-card {
         background: #fff;
-        border-radius: 24px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.04);
-        border: 1px solid rgba(0,0,0,0.02);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
         overflow: hidden;
-        height: 100%;
-        transition: transform 0.3s ease;
+        margin-bottom: 30px;
+        border: none;
     }
-
-    .custom-card:hover {
-        transform: translateY(-5px);
-    }
-
-    .card-header-gradient {
-        background: var(--primary-gradient);
+    
+    .card-header-custom {
+        background: linear-gradient(135deg, #be1e2d 0%, #ff5b5b 100%);
         color: white;
         padding: 20px 30px;
-        font-weight: 700;
-        font-size: 1.1rem;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        letter-spacing: 0.5px;
     }
 
-    /* BADGE KẾT QUẢ - ĐIỂM NHẤN */
-    .dominant-wrapper {
+    /* Badge điểm nổi bật */
+    .dominant-badge {
+        font-size: 1.2rem;
+        font-weight: 800;
+        background: #fff;
+        color: #be1e2d;
+        padding: 10px 25px;
+        border-radius: 50px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        display: inline-block;
+        margin-top: -30px;
         position: relative;
-        margin-top: -40px;
-        text-align: center;
         z-index: 10;
     }
 
-    .dominant-badge {
-        background: #fff;
-        color: var(--primary-color);
-        font-weight: 800;
-        padding: 15px 40px;
-        border-radius: 50px;
-        box-shadow: 0 10px 25px rgba(190, 30, 45, 0.15);
-        display: inline-block;
-        border: 4px solid #fff5f5;
-        font-size: 1.8rem;
-    }
-
-    .dominant-label {
-        display: block;
-        font-size: 0.85rem;
-        color: var(--text-muted);
-        font-weight: 600;
-        margin-top: 5px;
-        text-transform: uppercase;
-    }
-
-    /* LIST NGÀNH HỌC */
-    .major-list-item {
-        background: #fff;
-        border: 1px solid #f1f1f1;
-        border-radius: 16px;
-        padding: 20px 25px;
-        margin-bottom: 15px;
-        transition: all 0.3s ease;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .major-list-item::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 6px;
-        background: var(--primary-color);
-        border-radius: 6px 0 0 6px;
-    }
-
-    .major-list-item:hover {
-        transform: translateX(5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        border-color: #ffdce0;
-    }
-
-    .btn-detail {
-        background: #fff0f1;
-        color: var(--primary-color);
-        font-weight: 600;
-        border: none;
-        padding: 10px 24px;
-        border-radius: 50px;
+    /* Danh sách ngành */
+    .major-item {
+        border-left: 4px solid #be1e2d;
+        background: #f8f9fa;
         transition: 0.3s;
-        font-size: 0.9rem;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 0 10px 10px 0;
     }
-
-    .btn-detail:hover {
-        background: var(--primary-color);
-        color: #fff;
-        box-shadow: 0 4px 12px rgba(190, 30, 45, 0.3);
-    }
-
-    /* EMPTY STATE (KHI CHƯA CÓ KẾT QUẢ) */
-    .empty-state-card {
-        text-align: center;
-        padding: 80px 20px;
+    .major-item:hover {
         background: #fff;
-        border-radius: 24px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    }
-    .empty-icon {
-        font-size: 5rem;
-        color: #e5e7eb;
-        margin-bottom: 20px;
-    }
-
-    /* TEXT BOX */
-    .desc-box {
-        background: #fff9fa;
-        padding: 25px;
-        border-radius: 16px;
-        border: 1px dashed #fcc;
-        color: #4b5563;
-        line-height: 1.7;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transform: translateX(5px);
     }
 </style>
 
 <div class="result-container">
     
     <div class="text-center mb-5">
-        <h1 class="fw-bold" style="color: #111; letter-spacing: -1px;">Hồ Sơ Năng Lực</h1>
-        <p class="text-muted fs-5">Kết quả phân tích định hướng nghề nghiệp Holland Code (RIASEC)</p>
+        <h2 class="fw-bold text-uppercase">Hồ sơ năng lực của bạn</h2>
+        <p class="text-muted">Dưới đây là kết quả phân tích dựa trên trắc nghiệm Holland Code</p>
     </div>
 
-    <?php if ($has_valid_result): ?>
-    <div class="row g-4">
-        
-        <div class="col-lg-5">
-            <div class="custom-card">
-                <div class="card-header-gradient">
-                    <i class="fas fa-chart-pie"></i> BIỂU ĐỒ NĂNG LỰC
+    <div class="row">
+        <div class="col-lg-5 mb-4">
+            <div class="result-card h-100 pb-4">
+                <div class="card-header-custom text-center">
+                    <h5 class="m-0"><i class="fas fa-chart-pie me-2"></i> BIỂU ĐỒ TÍNH CÁCH</h5>
                 </div>
-                <div class="card-body p-0 pb-4">
-                    <div class="dominant-wrapper">
-                        <div class="dominant-badge">
-                            <?= htmlspecialchars($result['dominant_type']) ?>
-                            <span class="dominant-label">Nhóm nổi bật</span>
-                        </div>
+                <div class="card-body text-center">
+                    <div class="dominant-badge">
+                        Nhóm nổi bật: <?= htmlspecialchars($result['dominant_type']) ?>
                     </div>
-
-                    <div class="px-3 mt-2" style="position: relative; height: 350px; width: 100%;">
+                    
+                    <div class="mt-4" style="position: relative; height:300px;">
                         <canvas id="hollandChart"></canvas>
                     </div>
 
-                    <div class="text-center px-4 mt-3">
-                        <small class="text-muted fst-italic">
-                            Biểu đồ thể hiện mức độ phù hợp của bạn với 6 nhóm tính cách đặc trưng.
-                        </small>
+                    <div class="mt-4 px-3 text-start">
+                        <p class="small text-muted"><i class="fas fa-info-circle"></i> <strong>Giải thích:</strong> Biểu đồ càng mở rộng về phía nào thì bạn càng có xu hướng phù hợp với nhóm tính cách đó.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-7">
-            <div class="custom-card">
-                <div class="card-header-gradient" style="background: #2d3748;">
-                    <i class="fas fa-compass"></i> ĐỊNH HƯỚNG CHI TIẾT
+        <div class="col-lg-7 mb-4">
+            <div class="result-card h-100">
+                <div class="card-header-custom bg-dark text-white">
+                    <h5 class="m-0"><i class="fas fa-lightbulb me-2"></i> ĐỊNH HƯỚNG NGHỀ NGHIỆP</h5>
                 </div>
                 <div class="card-body p-4 p-md-5">
                     
-                    <div class="mb-5">
-                        <h5 class="fw-bold text-dark mb-3"><i class="fas fa-user-check me-2 text-danger"></i>Bạn là người thế nào?</h5>
-                        <div class="desc-box">
-                            <?php 
-                            $descriptions = [
-                                'R' => '<strong>(R) Realistic - Người Thực tế:</strong> Bạn thực tế, thích hành động hơn suy ngẫm. Bạn yêu thích làm việc với máy móc, công cụ, cây cối hoặc con vật. Phong cách của bạn là trực quan và cụ thể.',
-                                'I' => '<strong>(I) Investigative - Người Nghiên cứu:</strong> Bạn là nhà tư duy, thích quan sát, phân tích và giải quyết các vấn đề phức tạp. Bạn coi trọng tri thức, khoa học và sự chính xác.',
-                                'A' => '<strong>(A) Artistic - Người Nghệ thuật:</strong> Bạn sáng tạo, giàu trí tưởng tượng và cảm xúc. Bạn không thích sự gò bó, rập khuôn và luôn tìm kiếm sự độc đáo trong công việc.',
-                                'S' => '<strong>(S) Social - Người Xã hội:</strong> Bạn nhân hậu và thích kết nối. Niềm vui của bạn là giúp đỡ, giảng dạy, chữa trị hoặc phục vụ cộng đồng. Bạn có khả năng giao tiếp tuyệt vời.',
-                                'E' => '<strong>(E) Enterprising - Người Quản lý:</strong> Bạn năng động, tự tin và có tham vọng. Bạn thích lãnh đạo, thuyết phục người khác để đạt được mục tiêu kinh tế hoặc tổ chức.',
-                                'C' => '<strong>(C) Conventional - Người Nghiệp vụ:</strong> Bạn ngăn nắp, tỉ mỉ và đáng tin cậy. Bạn thích làm việc với số liệu, hồ sơ theo quy trình rõ ràng và có tổ chức.'
-                            ];
-                            echo $descriptions[$result['dominant_type']] ?? 'Bạn có tính cách đa dạng và cân bằng giữa các nhóm.';
-                            ?>
-                        </div>
-                    </div>
+                    <h5 class="fw-bold text-danger mb-3">1. Đặc điểm của bạn (Nhóm <?= htmlspecialchars($result['dominant_type']) ?>)</h5>
+                    <p class="text-muted">
+                        <?php 
+                        $descriptions = [
+                            'R' => 'Bạn là người thực tế, thích làm việc với công cụ, máy móc và các vật thể cụ thể. Bạn ưa thích các hoạt động ngoài trời và vận động.',
+                            'I' => 'Bạn là người thích nghiên cứu, tìm tòi, phân tích và giải quyết các vấn đề khoa học. Bạn có tư duy logic và độc lập.',
+                            'A' => 'Bạn là người sáng tạo, giàu trí tưởng tượng và yêu thích nghệ thuật. Bạn thích sự tự do và không gò bó.',
+                            'S' => 'Bạn là người hướng về cộng đồng, thích giúp đỡ, chữa trị hoặc giảng dạy cho người khác. Bạn có khả năng giao tiếp tốt.',
+                            'E' => 'Bạn là người dám nghĩ dám làm, thích lãnh đạo và thuyết phục người khác. Bạn quan tâm đến kinh tế và quản trị.',
+                            'C' => 'Bạn là người tỉ mỉ, cẩn thận, thích làm việc với số liệu và tuân thủ quy trình. Bạn phù hợp với môi trường văn phòng.'
+                        ];
+                        echo $descriptions[$result['dominant_type']] ?? 'Bạn có tính cách đa dạng và linh hoạt.';
+                        ?>
+                    </p>
 
-                    <div>
-                        <h5 class="fw-bold text-dark mb-3"><i class="fas fa-graduation-cap me-2 text-danger"></i>Ngành học đề xuất</h5>
-                        <div class="majors-list">
-                            <?php if (!empty($suggested_majors)): ?>
-                                <?php foreach ($suggested_majors as $major): ?>
-                                    <div class="major-list-item">
-                                        <div>
-                                            <h6 class="fw-bold m-0 text-dark mb-1"><?= htmlspecialchars($major['name']) ?></h6>
-                                            <span class="badge bg-light text-secondary border">Mã: <?= htmlspecialchars($major['group_code']) ?></span>
-                                        </div>
-                                        <a href="index.php?page=majors&id=<?= $major['id'] ?>" class="btn-detail">
-                                            Xem <i class="fas fa-arrow-right ms-1"></i>
-                                        </a>
+                    <hr class="my-4">
+
+                    <h5 class="fw-bold text-danger mb-3">2. Ngành học phù hợp nhất</h5>
+                    <?php if (!empty($suggested_majors)): ?>
+                        <div class="list-group list-group-flush">
+                            <?php foreach ($suggested_majors as $major): ?>
+                                <div class="major-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="fw-bold m-0"><?= htmlspecialchars($major['name']) ?></h6>
+                                        <small class="text-muted"><?= htmlspecialchars($major['code']) ?></small>
                                     </div>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <div class="alert alert-light border text-center text-muted">
-                                    Hệ thống đang cập nhật dữ liệu ngành phù hợp.
+                                    <a href="index.php?page=majors&id=<?= $major['id'] ?>" class="btn btn-sm btn-outline-danger rounded-pill">
+                                        Chi tiết <i class="fas fa-arrow-right"></i>
+                                    </a>
                                 </div>
-                            <?php endif; ?>
+                            <?php endforeach; ?>
                         </div>
-                    </div>
-
-                    <div class="d-flex justify-content-end gap-2 mt-5 border-top pt-4">
-                        <a href="index.php?page=assessment" class="btn btn-light rounded-pill px-4 fw-bold">
-                            <i class="fas fa-redo me-2"></i>Làm lại
+                    <?php else: ?>
+                        <div class="alert alert-warning">
+                            Chưa tìm thấy dữ liệu ngành phù hợp trong hệ thống.
+                        </div>
+                    <?php endif; ?>
+                    
+                    <div class="mt-4 text-center">
+                        <a href="index.php?page=assessment" class="btn btn-secondary rounded-pill me-2">
+                            <i class="fas fa-redo"></i> Làm lại
                         </a>
-                        <a href="index.php?page=advice" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">
-                            Tra cứu điểm chuẩn <i class="fas fa-search ms-2"></i>
+                        <a href="index.php?page=advice" class="btn btn-danger rounded-pill">
+                            <i class="fas fa-search"></i> Tra cứu điểm chuẩn ngay
                         </a>
                     </div>
 
@@ -267,48 +153,31 @@ $has_valid_result = (isset($result) && $total_points > 0);
             </div>
         </div>
     </div>
-
-    <?php else: ?>
-    <div class="empty-state-card">
-        <div class="empty-icon">
-            <i class="fas fa-clipboard-list"></i>
-        </div>
-        <h3 class="fw-bold text-dark">Bạn chưa thực hiện bài trắc nghiệm</h3>
-        <p class="text-muted mb-4" style="max-width: 500px; margin: 0 auto;">
-            Để có được hồ sơ năng lực và gợi ý ngành nghề chính xác, vui lòng dành ít phút để hoàn thành bài trắc nghiệm Holland Code.
-        </p>
-        <a href="index.php?page=assessment" class="btn btn-danger btn-lg rounded-pill px-5 shadow">
-            Bắt đầu làm bài ngay <i class="fas fa-arrow-right ms-2"></i>
-        </a>
-    </div>
-    <?php endif; ?>
-
 </div>
 
-<?php if ($has_valid_result): ?>
 <script>
     const ctx = document.getElementById('hollandChart').getContext('2d');
-    
-    // Data PHP -> JS
-    const dataPoints = [<?= $r ?>, <?= $i ?>, <?= $a ?>, <?= $s ?>, <?= $e ?>, <?= $c ?>];
-    
-    // Cấu hình Chart
     const hollandChart = new Chart(ctx, {
         type: 'radar',
         data: {
             labels: ['Thực tế (R)', 'Nghiên cứu (I)', 'Nghệ thuật (A)', 'Xã hội (S)', 'Quản lý (E)', 'Nghiệp vụ (C)'],
             datasets: [{
-                label: 'Điểm số',
-                data: dataPoints,
-                backgroundColor: 'rgba(190, 30, 45, 0.15)',
-                borderColor: '#be1e2d',
-                borderWidth: 2.5,
-                pointBackgroundColor: '#fff',
-                pointBorderColor: '#be1e2d',
-                pointHoverBackgroundColor: '#be1e2d',
-                pointHoverBorderColor: '#fff',
-                pointRadius: 5,
-                pointHoverRadius: 7
+                label: 'Điểm số của bạn',
+                data: [
+                    <?= $result['r_score'] ?>, 
+                    <?= $result['i_score'] ?>, 
+                    <?= $result['a_score'] ?>, 
+                    <?= $result['s_score'] ?>, 
+                    <?= $result['e_score'] ?>, 
+                    <?= $result['c_score'] ?>
+                ],
+                backgroundColor: 'rgba(190, 30, 45, 0.2)', // Màu đỏ nhạt
+                borderColor: 'rgba(190, 30, 45, 1)',      // Viền đỏ đậm
+                borderWidth: 2,
+                pointBackgroundColor: 'rgba(190, 30, 45, 1)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgba(190, 30, 45, 1)'
             }]
         },
         options: {
@@ -316,16 +185,9 @@ $has_valid_result = (isset($result) && $total_points > 0);
             maintainAspectRatio: false,
             scales: {
                 r: {
-                    angleLines: { display: true, color: '#f0f0f0' },
-                    grid: { color: '#f0f0f0', circular: true },
-                    pointLabels: {
-                        font: { size: 11, family: 'Inter', weight: '600' },
-                        color: '#4b5563'
-                    },
-                    ticks: { display: false, stepSize: 2 }, // Ẩn số trên trục cho gọn
+                    angleLines: { display: true },
                     suggestedMin: 0,
-                    // Tự động scale max theo điểm cao nhất + 2 để biểu đồ thoáng hơn
-                    suggestedMax: Math.max(...dataPoints) + 2 
+                    suggestedMax: 5 // Thang điểm tối đa (tùy số câu hỏi)
                 }
             },
             plugins: {
