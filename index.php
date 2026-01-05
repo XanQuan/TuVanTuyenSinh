@@ -33,12 +33,14 @@ if (!isset($_SESSION['user'])) {
     $userRole = isset($_SESSION['user']['role']) ? $_SESSION['user']['role'] : (isset($_SESSION['role']) ? $_SESSION['role'] : 'user');
 
     if ($userRole == 'admin') {
-        // Nếu đang cố truy cập trang khác ngoài 'admin' và 'logout' -> Đá về Admin Dashboard
-        if ($page !== 'admin' && $page !== 'logout') {
-            header("Location: index.php?page=admin");
-            exit;
-        }
+    // Thêm 'majors', 'courses', 'advice' vào danh sách cho phép nếu muốn Admin xem được
+    $allowed_for_admin = ['admin', 'logout', 'majors', 'courses', 'advice']; 
+    
+    if (!in_array($page, $allowed_for_admin)) {
+        header("Location: index.php?page=admin");
+        exit;
     }
+}
 }
 // ==========================================================
 

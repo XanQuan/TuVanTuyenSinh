@@ -3,9 +3,9 @@
 
 $servername = "localhost"; 
 $username = "root";        
-$password = "";            // Nếu máy bạn đặt mật khẩu MySQL thì điền vào đây
+$password = "123456";            // Nếu máy bạn đặt mật khẩu MySQL thì điền vào đây
 $dbname = "tuvan_db";     
-$port = 2511;                // Thay đổi port nếu cần
+$port = 3306;                // Thay đổi port nếu cần
 
 /* Mẹo đồng bộ: Kiểm tra xem đang chạy ở máy nào để tự đổi PORT
   Giả sử máy bạn dùng port 3306 (mặc định MySQL), máy bạn kia dùng 2511 (XAMPP)

@@ -180,13 +180,13 @@
                           <li class="has-sub">
                             <a href="javascript:void(0)">Khám phá</a>
                             <ul class="sub-menu">
-                                <li><a href="index.php?page=majors">🎓 Ngành đào tạo</a></li>
-                                <li><a href="index.php?page=courses">💻 Các Khóa học</a></li> 
-                                <li><a href="index.php?page=events">📅 Sự kiện & Hội thảo</a></li>
-                                <li><a href="index.php?page=mentors">🤝 Kết nối Chuyên gia</a></li>
-                                <li><a href="index.php?page=resources">📚 Tài nguyên học tập</a></li>
-                                <li><a href="index.php?page=faq">❓ Câu hỏi thường gặp</a></li>
-                               <li><a href="index.php?page=ai_consultant"><i class="fa-solid fa-robot me-2"></i> Trợ lý ảo AI (Mới)</a></li>
+                                <li><a href="index.php?page=majors"> Ngành đào tạo</a></li>
+                                <li><a href="index.php?page=courses"> Các Khóa học</a></li> 
+                                <li><a href="index.php?page=events"> Sự kiện & Hội thảo</a></li>
+                                <li><a href="index.php?page=mentors"> Kết nối Chuyên gia</a></li>
+                                <li><a href="index.php?page=resources"> Tài nguyên học tập</a></li>
+                                <li><a href="index.php?page=faq"> Câu hỏi thường gặp</a></li>
+                               <li><a href="index.php?page=ai_consultant"></i> Trợ lý ảo AI </a></li>
                             </ul>
                           </li>
 
