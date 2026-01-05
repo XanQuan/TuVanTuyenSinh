@@ -20,9 +20,16 @@
                         <?php foreach($majors as $m): ?>
                         <div class="col-lg-4 mb-4">
                             <div class="meeting-item h-100">
-                                <div class="thumb">
-                                    <img src="public/assets/images/meeting-02.jpg" alt="Major" style="height: 200px; object-fit: cover;">
-                                </div>
+                               <div class="thumb">
+    <?php 
+        // Lấy tên file từ cột 'image' trong DB, nếu trống dùng ảnh mặc định
+        $imgName = !empty($m['image']) ? $m['image'] : 'meeting-02.jpg'; 
+        $imgPath = "public/assets/images/" . $imgName;
+    ?>
+    <img src="<?= $imgPath ?>" alt="<?= htmlspecialchars($m['name']) ?>" 
+         style="height: 220px; width: 100%; object-fit: cover; border-radius: 10px 10px 0 0;"
+         onerror="this.src='public/assets/images/meeting-02.jpg'">
+</div>
                                 <div class="down-content h-100 d-flex flex-column">
                                     <h4 class="mb-2"><?= htmlspecialchars($m['name']) ?></h4>
                                    <p class="text-danger fw-bold small">Mã ngành: <?= htmlspecialchars($m['code'] ?? 'Chưa cập nhật') ?></p>

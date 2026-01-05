@@ -25,12 +25,29 @@
         
         /* Table Style */
         .table-card { border: none; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.05); overflow: hidden; }
-        .table thead th { background-color: #a71d2a; color: white; border: none; padding: 15px; font-weight: 600; text-align: center; }
+        .table thead th { background-color: #a71d2a; color: white; border: none; padding: 15px; font-weight: 600; text-align: center; vertical-align: middle; }
         .table tbody td { padding: 12px 15px; vertical-align: middle; border-bottom: 1px solid #f0f0f0; }
         
+        /* Thumbnail Pro Style */
+        .major-img { 
+            width: 70px; 
+            height: 45px; 
+            object-fit: cover; 
+            border-radius: 8px; 
+            border: 1px solid #eee; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .major-img:hover { 
+            transform: scale(1.15) rotate(2deg); 
+            box-shadow: 0 5px 15px rgba(167, 29, 42, 0.2);
+            z-index: 10;
+        }
+
         /* Buttons */
         .btn-action { width: 35px; height: 35px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.2s; }
         .btn-action:hover { transform: scale(1.1); }
+        .badge-group { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px; }
     </style>
 </head>
 <body>
@@ -39,7 +56,7 @@
         <div class="sidebar-header">
             <h3 class="fw-bold"><i class="fas fa-graduation-cap"></i> UniGuide</h3>
             <small>Admin Panel</small>
-      </div>
+        </div>
         <div class="sidebar-menu">
             <ul>
                 <li><a href="index.php?page=admin"><i class="fas fa-tachometer-alt"></i> Bảng điều khiển</a></li>
@@ -56,7 +73,7 @@
 
     <div class="main-content">
         <div class="top-navbar">
-            <h4 class="m-0 text-dark fw-bold">🎓 Danh sách Ngành Đào Tạo</h4>
+            <h4 class="m-0 text-dark fw-bold">🎓 Quản lý Ngành Đào Tạo</h4>
             <div class="user-info">
                 <a href="index.php" class="btn btn-outline-dark btn-sm rounded-pill px-3">
                     <i class="fas fa-home"></i> Xem Trang Chủ
@@ -66,62 +83,74 @@
 
         <div class="container-fluid p-4">
             
-            <div class="d-flex justify-content-end mb-3">
-                <a href="index.php?page=admin&action=add_major" class="btn btn-success shadow-sm px-4">
-                    <i class="fas fa-plus-circle"></i> Thêm Ngành Mới
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <p class="text-muted mb-0">Hiển thị danh sách các ngành nghề đào tạo trong hệ thống.</p>
+                <a href="index.php?page=admin&action=add_major" class="btn btn-success shadow-sm px-4 rounded-pill">
+                    <i class="fas fa-plus-circle me-2"></i>Thêm Ngành Mới
                 </a>
             </div>
 
-            <div class="card table-card bg-white">
+            <div class="card table-card bg-white border-0 shadow-sm">
                 <div class="card-body p-0">
-                    <table class="table table-hover mb-0">
-                        <thead>
-                            <tr>
-                                <th width="10%">ID</th>
-                                <th class="text-start">Tên Ngành</th>
-                                <th width="20%">Nhóm Ngành</th>
-                                <th width="15%">Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (isset($majors) && count($majors) > 0): ?>
-                                <?php foreach ($majors as $row): ?>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0 align-middle">
+                            <thead>
                                 <tr>
-                                    <td class="text-center fw-bold text-muted">#<?= $row['id'] ?></td>
-                                    
-                                    <td class="fw-bold text-dark"><?= htmlspecialchars($row['name']) ?></td>
-                                    
-                                    <td class="text-center">
-                                        <span class="badge bg-info text-dark rounded-pill px-3">
-                                            <?= htmlspecialchars($row['group_code']) ?>
-                                        </span>
-                                    </td>
-                                    
-                                    <td class="text-center">
-                                        <a href="index.php?page=admin&action=delete_major&id=<?= $row['id'] ?>" 
-                                           class="btn btn-danger btn-action btn-sm text-white" 
-                                           onclick="return confirm('CẢNH BÁO: Xóa ngành này sẽ xóa luôn các điểm chuẩn liên quan!\nBạn có chắc chắn muốn xóa không?');"
-                                           title="Xóa ngành">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </a>
-                                    </td>
+                                    <th width="8%">ID</th>
+                                    <th width="12%">Hình ảnh</th>
+                                    <th class="text-start">Tên Ngành</th>
+                                    <th width="15%">Nhóm Ngành</th>
+                                    <th width="10%">Hành động</th>
                                 </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="4" class="text-center py-5 text-muted">
-                                        <i class="fas fa-folder-open fa-3x mb-3 text-secondary"></i><br>
-                                        Chưa có dữ liệu ngành học nào.
-                                    </td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php if (isset($majors) && count($majors) > 0): ?>
+                                    <?php foreach ($majors as $row): ?>
+                                    <tr>
+                                        <td class="text-center fw-bold text-muted">#<?= $row['id'] ?></td>
+                                        
+                                        <td class="text-center">
+                                            <?php 
+                                                $imgFile = !empty($row['image']) ? $row['image'] : 'course-01.jpg';
+                                                $imgPath = "public/assets/images/" . $imgFile;
+                                            ?>
+                                            <img src="<?= $imgPath ?>" 
+                                                 class="major-img" 
+                                                 onerror="this.src='https://placehold.co/70x45?text=No+Img'">
+                                        </td>
+                                        
+                                        <td class="fw-bold text-dark px-3"><?= htmlspecialchars($row['name']) ?></td>
+                                        
+                                        <td class="text-center">
+                                            <span class="badge bg-info text-dark rounded-pill px-3 badge-group">
+                                                <i class="fas fa-tag me-1 small"></i><?= htmlspecialchars($row['group_code']) ?>
+                                            </span>
+                                        </td>
+                                        
+                                        <td class="text-center">
+                                            <a href="index.php?page=admin&action=delete_major&id=<?= $row['id'] ?>" 
+                                               class="btn btn-danger btn-action text-white shadow-sm" 
+                                               onclick="return confirm('CẢNH BÁO: Xóa ngành này sẽ xóa luôn các dữ liệu liên quan!\nBạn chắc chắn chứ?');"
+                                               title="Xóa ngành">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="5" class="text-center py-5 text-muted">
+                                            <i class="fas fa-folder-open fa-3x mb-3 text-secondary opacity-50"></i><br>
+                                            Chưa có dữ liệu ngành học nào được nạp.
+                                        </td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

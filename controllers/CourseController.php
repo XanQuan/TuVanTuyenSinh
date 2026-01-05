@@ -8,61 +8,31 @@ class CourseController {
 
     // 1. Hiển thị danh sách khóa học kèm điểm đánh giá trung bình
    public function index() {
-    $search = isset($_GET['search']) ? $this->conn->real_escape_string($_GET['search']) : '';
+        $search = isset($_GET['search']) ? $this->conn->real_escape_string($_GET['search']) : '';
 
-    $sql = "SELECT m.*, 
-            IFNULL(AVG(r.rating), 5.0) as average_rating";
+        // SỬA: Query trực tiếp từ bảng courses
+        $sql = "SELECT * FROM courses";
 
-    // Thêm logic tính điểm ưu tiên (Priority) dựa trên từ khóa tìm kiếm
-    if (!empty($search)) {
-        $sql .= ", (CASE 
-                    WHEN m.name LIKE '$search' THEN 1           -- Khớp chính xác tên ngành
-                    WHEN m.name LIKE '$search%' THEN 2          -- Tên ngành bắt đầu bằng từ khóa
-                    WHEN m.name LIKE '%$search%' THEN 3         -- Tên ngành chứa từ khóa
-                    WHEN m.description LIKE '%$search%' THEN 4  -- Mô tả chứa từ khóa
-                    ELSE 5 END) as priority";
-    }
-
-    $sql .= " FROM majors m 
-              LEFT JOIN course_reviews r ON m.id = r.course_id ";
-
-    if (!empty($search)) {
-        $sql .= " WHERE m.name LIKE '%$search%' OR m.description LIKE '%$search%' ";
-    }
-
-    $sql .= " GROUP BY m.id ";
-
-    // Sắp xếp theo độ ưu tiên (priority tăng dần: 1 là cao nhất)
-    if (!empty($search)) {
-        $sql .= " ORDER BY priority ASC, m.id DESC";
-    } else {
-        $sql .= " ORDER BY m.id DESC";
-    }
-
-    $result = $this->conn->query($sql);
-
-    $courses = []; 
-    if ($result && $result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $courses[] = [
-                'id'          => $row['id'],
-                'name'        => $row['name'],
-                'description' => $row['description'],
-                'tuition'     => $row['tuition'],
-                'image'       => $row['image'],
-                'teacher'     => 'UniGuide', // Bạn có thể thay bằng $row['teacher_name'] nếu bảng có cột này
-                'rating'      => number_format((float)$row['average_rating'], 1, '.', '')
-            ];
+        if (!empty($search)) {
+            $sql .= " WHERE name LIKE '%$search%' OR description LIKE '%$search%' ";
         }
+        $sql .= " ORDER BY id DESC";
+
+        $result = $this->conn->query($sql);
+        $courses = []; 
+        if ($result && $result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $courses[] = $row;
+            }
+        }
+        require 'views/courses/index.php'; 
     }
-    require 'views/courses/index.php'; 
-}
     // 2. Chi tiết khóa học & 5 đánh giá mới nhất
-    public function detail() {
+ public function detail() {
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
         
-        // Sử dụng Prepared Statement để lấy thông tin khóa học
-        $stmt = $this->conn->prepare("SELECT * FROM majors WHERE id = ?");
+        // SỬA: Lấy từ bảng courses
+        $stmt = $this->conn->prepare("SELECT * FROM courses WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $course = $stmt->get_result()->fetch_assoc();
@@ -72,19 +42,12 @@ class CourseController {
             exit;
         }
 
-        // Lấy 5 đánh giá gần nhất (Sử dụng u.fullname theo cấu trúc bảng users của bạn)
+        // Lấy đánh giá liên quan
         $review_sql = "SELECT r.*, u.fullname as user_name FROM course_reviews r 
                        JOIN users u ON r.user_id = u.id 
                        WHERE r.course_id = ? 
-                       ORDER BY r.created_at DESC 
-                       LIMIT 5";
-
+                       ORDER BY r.created_at DESC LIMIT 5";
         $stmt_rev = $this->conn->prepare($review_sql);
-
-        if ($stmt_rev === false) {
-            die("Lỗi SQL: " . $this->conn->error); 
-        }
-
         $stmt_rev->bind_param("i", $id);
         $stmt_rev->execute();
         $reviews = $stmt_rev->get_result();
