@@ -29,7 +29,7 @@ public function send_message() {
             if (!$user_msg) throw new Exception("Tin nhắn trống");
 
             // 2. Lấy API Key sạch bạn vừa tạo (Chọn "Default Gemini Project")
-            $apiKey = "AIzaSyBynSO33_GZc6owihiMDRg2-fBIyxoWCE0"; 
+            $apiKey = "AIzaSyAiqpNX8Z6ACkcasAgMG_WhlA1k0-N3L4U"; 
             $apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" . $apiKey;
 
             // 3. Chuẩn bị dữ liệu gửi đi (Đã tắt tính năng Search để chạy nhanh nhất)
@@ -90,4 +90,5 @@ public function send_message() {
         $chat_history = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         require_once 'views/ai/history.php';
     }
+    
 }

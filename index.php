@@ -89,6 +89,15 @@ switch ($page) {
         $auth = new AuthController($conn);
         $auth->login();
         break;
+        case 'profile':
+        require_once 'controllers/ProfileController.php';
+        $profile = new ProfileController($conn);
+        if ($action == 'update') {
+            $profile->update();
+        } else {
+            $profile->index();
+        }
+        break;
 
     // === XỬ LÝ ĐĂNG KÝ ===
     case 'register':
@@ -221,11 +230,15 @@ case 'mentors':
         break;
 
     // === TRANG DANH SÁCH NGÀNH ===
-    case 'majors':
-        require_once 'controllers/MajorController.php';
-        $major = new MajorController($conn);
+   case 'majors':
+    require_once 'controllers/MajorController.php';
+    $major = new MajorController($conn);
+    if ($action == 'detail') {
+        $major->detail();
+    } else {
         $major->index();
-        break;
+    }
+    break;
    // === TRANG KHÓA HỌC ===
     case 'courses':
         require_once 'controllers/CourseController.php';

@@ -232,7 +232,7 @@
     </div>
 </section>
 
-<section class="container pb-5" id="consulting">
+<section class="container pb-5" id="search-section">
     <div class="consulting-wrapper">
         <div class="row g-5 align-items-center">
             <div class="col-lg-5">

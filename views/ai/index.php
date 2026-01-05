@@ -2,6 +2,50 @@
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <style>
+    /* 1. Màu chữ chính cho nội dung AI rendered */
+.ai-rendered-content {
+    color: #ffffff !important; /* Trắng tinh khiết */
+}
+
+/* 2. Ép tất cả các thẻ con bên trong (p, li, span, v.v.) sang màu trắng */
+.ai-rendered-content p, 
+.ai-rendered-content li, 
+.ai-rendered-content span,
+.ai-rendered-content div {
+    color: #ffffff !important;
+    line-height: 1.8;
+}
+
+/* 3. Màu cho các tiêu đề nếu AI trả lời có Header (h1, h2, h3) */
+.ai-rendered-content h1, 
+.ai-rendered-content h2, 
+.ai-rendered-content h3, 
+.ai-rendered-content h4 {
+    color: #ff4d4d !important; /* Màu đỏ nhạt để làm nổi bật tiêu đề trên nền tối */
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+/* 4. Định dạng danh sách (List) cho đẹp */
+.ai-rendered-content ul, 
+.ai-rendered-content ol {
+    padding-left: 20px;
+    color: #ffffff !important;
+}
+
+/* 5. Cải thiện hiển thị khối mã (Code block) nếu AI trả lời code */
+.ai-rendered-content pre {
+    background-color: #161b22 !important;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    overflow-x: auto;
+}
+
+.ai-rendered-content code {
+    color: #f0f6fc !important;
+    font-family: 'Courier New', Courier, monospace;
+}
     /* Nền trang và Layout tổng thể */
     .ai-page-wrapper {
         background-color: #0d1117;

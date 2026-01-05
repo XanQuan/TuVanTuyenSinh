@@ -193,17 +193,23 @@
                           <?php if(isset($_SESSION['user'])): ?>
                              <li><a href="index.php?page=advice&action=history">Lịch sử</a></li>
                              <li class="user-dropdown">
-                                <a href="javascript:void(0)" style="display: flex; align-items: center;">
-                                    <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['user']['fullname']) ?>&background=a71d2a&color=fff" class="user-avatar-small" alt="Avatar">
-                                    Chào, <?= htmlspecialchars($_SESSION['user']['fullname']) ?> <i class="fa fa-angle-down ms-1"></i>
-                                </a>
-                                <div class="user-dropdown-content">
-    <a href="index.php?page=profile"><i class="fa fa-user me-2"></i> Hồ sơ cá nhân</a>
-    <div style="border-top: 1px solid #eee; margin: 5px 0;"></div>
-    <a href="index.php?page=logout" class="logout-btn">
-        <i class="fa fa-sign-out me-2"></i> ĐĂNG XUẤT
+    <a href="javascript:void(0)" style="display: flex; align-items: center;">
+        <?php 
+            $user_avatar = !empty($_SESSION['user']['avatar']) 
+                           ? "public/uploads/avatars/" . $_SESSION['user']['avatar'] 
+                           : "https://ui-avatars.com/api/?name=" . urlencode($_SESSION['user']['fullname']) . "&background=a71d2a&color=fff";
+        ?>
+        <img src="<?= $user_avatar ?>?t=<?= time() ?>" class="user-avatar-small" alt="Avatar">
+        Chào, <?= htmlspecialchars($_SESSION['user']['fullname']) ?> <i class="fa fa-angle-down ms-1"></i>
     </a>
-</div>
+    <div class="user-dropdown-content">
+        <a href="index.php?page=profile"><i class="fa fa-user me-2"></i> Hồ sơ cá nhân</a>
+        <div style="border-top: 1px solid #eee; margin: 5px 0;"></div>
+        <a href="index.php?page=logout" class="logout-btn">
+            <i class="fa fa-sign-out me-2"></i> ĐĂNG XUẤT
+        </a>
+    </div>
+</li>
                              </li>
                           <?php else: ?>
                              <li><a href="index.php?page=auth&action=login" class="btn-login-custom">Đăng nhập</a></li>

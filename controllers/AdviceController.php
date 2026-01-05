@@ -12,12 +12,28 @@ class AdviceController {
     }
 
     // 1. Trang chủ mặc định
-    public function index() {
+   public function index() {
         // Lấy danh sách nhóm ngành để hiển thị vào Select box
         $major_groups = $this->getMajorGroups(); 
         
-        // Mặc định vào trang chủ chưa có kết quả ($results = null)
+        // Mặc định kết quả là null
         $results = null;
+        $searchGroup = "";
+        $searchScore = 0;
+
+        // KIỂM TRA: Nếu có tham số 'group' truyền từ trang chi tiết qua link GET
+        if (isset($_GET['group']) && !empty($_GET['group'])) {
+            $searchGroup = $_GET['group'];
+            // Giả định khi click từ trang chi tiết, ta muốn xem tất cả trường có ngành đó (nên để điểm mặc định cao)
+            $searchScore = 30; 
+            
+            // Lấy ID người dùng nếu có
+            $userId = isset($_SESSION['user']) ? $_SESSION['user']['id'] : null;
+
+            // Gọi Model để lấy danh sách trường thuộc nhóm ngành này ngay lập tức
+            // Lưu ý: Tùy vào Model, bạn có thể truyền điểm 0 hoặc điểm sàn mặc định
+            $results = $this->model->getAdvice($searchScore, $searchGroup, $userId);
+        }
         
         require 'views/home/index.php';
     }

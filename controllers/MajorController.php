@@ -44,4 +44,21 @@ class MajorController {
             exit;
         }
     }
+    public function detail() {
+    $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    
+    // Truy vấn lấy thông tin chi tiết ngành
+    $stmt = $this->conn->prepare("SELECT * FROM majors WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $major = $stmt->get_result()->fetch_assoc();
+
+    if (!$major) {
+        header("Location: index.php?page=majors");
+        exit;
+    }
+
+    // Gọi view chi tiết
+    require 'views/majors/detail.php';
+}
 }
