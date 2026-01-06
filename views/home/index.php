@@ -239,7 +239,7 @@
                 <h2 class="fw-bold mb-4"><i class="fas fa-robot text-warning me-2"></i>UniBot AI</h2>
                 <p class="mb-5 fs-5 opacity-75">UniBot đang sử dụng dữ liệu tuyển sinh thực tế để phân tích cơ hội cho bạn.</p>
                 
-                <form method="POST" action="index.php?page=advice&action=result#consulting">
+                <form method="POST" action="index.php?page=advice&action=result#search-section" id="adviceForm">
                     <div class="mb-4">
                         <label class="fw-bold text-warning small mb-2 text-uppercase">Tổng điểm thi dự kiến (3 môn)</label>
                         <input type="number" step="0.01" name="score" class="input-premium" 
@@ -302,25 +302,34 @@
     </div>
 </section>
 
-<footer class="bg-dark text-white pt-5 mt-5">
-    <div class="container py-5">
-        <div class="row g-4">
-            <div class="col-lg-4">
-                <h4 class="fw-bold mb-4 text-warning">UniGuide 2026</h4>
-                <p class="opacity-75">Hệ thống tư vấn tuyển sinh thông minh hàng đầu Việt Nam, giúp học sinh chạm tay tới ước mơ.</p>
+<footer style="background: #1a1f2b; border-top: 1px solid rgba(255,255,255,0.1); padding: 30px 0;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-4 text-center text-lg-start mb-3 mb-lg-0">
+                <h5 class="fw-800 text-white mb-1" style="letter-spacing: 1px;">UNIGUIDE 2026</h5>
+                <p class="text-white-50 small mb-0">© Hệ thống tư vấn tuyển sinh thông minh.</p>
             </div>
-            <div class="col-lg-4">
-                <h4 class="fw-bold mb-4 text-warning">Truy cập nhanh</h4>
-                <ul class="list-unstyled opacity-75">
-                    <li class="mb-2"><a href="index.php?page=assessment" class="text-white text-decoration-none">Làm trắc nghiệm Holland</a></li>
-                    <li class="mb-2"><a href="index.php?page=universities" class="text-white text-decoration-none">Danh sách trường đại học</a></li>
-                    <li><a href="index.php?page=advice" class="text-white text-decoration-none">Tư vấn chọn trường</a></li>
+
+            <div class="col-lg-5 text-center mb-3 mb-lg-0">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item mx-3">
+                        <a href="index.php?page=assessment" class="text-white text-decoration-none small opacity-75 hover-opacity-100">Trắc nghiệm</a>
+                    </li>
+                    <li class="list-inline-item mx-3">
+                        <a href="index.php?page=majors" class="text-white text-decoration-none small opacity-75 hover-opacity-100">Ngành học</a>
+                    </li>
+                    <li class="list-inline-item mx-3">
+                        <a href="index.php?page=advice" class="text-white text-decoration-none small opacity-75 hover-opacity-100">Tư vấn</a>
+                    </li>
                 </ul>
             </div>
-            <div class="col-lg-4">
-                <h4 class="fw-bold mb-4 text-warning">Hỗ trợ</h4>
-                <p class="opacity-75 mb-1"><i class="fas fa-envelope me-2"></i> info@uniguide.edu.vn</p>
-                <p class="opacity-75"><i class="fas fa-phone me-2"></i> 1900 8888</p>
+
+            <div class="col-lg-3 text-center text-lg-end">
+                <div class="d-flex justify-content-center justify-content-lg-end gap-3">
+                    <a href="mailto:info@uniguide.edu.vn" class="text-white opacity-75" title="Email"><i class="fas fa-envelope"></i></a>
+                    <a href="tel:19008888" class="text-white opacity-75" title="Hotline"><i class="fas fa-phone-alt"></i></a>
+                    <span class="text-white-50 small ml-2">Hotline: 091-111-1114</span>
+                </div>
             </div>
         </div>
     </div>

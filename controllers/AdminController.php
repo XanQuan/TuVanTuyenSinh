@@ -19,56 +19,47 @@ class AdminController {
     // Trang chính của Admin (Dashboard)
     // Trang chính của Admin (Dashboard)
 public function index() {
-    $count_users = 0;
-    $count_visits = 0;
-    $count_unis = 0;
-    $count_ai_requests = 0; // Thống kê tư vấn AI hôm nay
+    $count_users = $this->conn->query("SELECT COUNT(*) as total FROM users WHERE role = 'student'")->fetch_assoc()['total'] ?? 0;
+    $count_visits = $this->conn->query("SELECT COUNT(*) as total FROM search_history")->fetch_assoc()['total'] ?? 0;
+    $count_unis = $this->conn->query("SELECT COUNT(*) as total FROM universities")->fetch_assoc()['total'] ?? 0;
 
-    // 1. Đếm User (Học sinh)
-    $res = $this->conn->query("SELECT COUNT(*) as total FROM users WHERE role = 'student'");
-    if ($res) $count_users = $res->fetch_assoc()['total'];
-
-    // 2. Đếm Lịch sử tra cứu (Tổng lượt truy cập hệ thống)
-    $res = $this->conn->query("SELECT COUNT(*) as total FROM search_history"); 
-    if ($res) $count_visits = $res->fetch_assoc()['total'];
-
-    // 3. Đếm Trường ĐH
-    $res = $this->conn->query("SELECT COUNT(*) as total FROM universities");
-    if ($res) $count_unis = $res->fetch_assoc()['total'];
-
-    // 4. Đếm yêu cầu tư vấn AI mới trong hôm nay
-    $today = date('Y-m-d');
-    $res = $this->conn->query("SELECT COUNT(*) as total FROM ai_chats WHERE DATE(created_at) = '$today'");
-    if ($res) $count_ai_requests = $res->fetch_assoc()['total'];
-
-    // 5. Lấy 5 Hoạt động gần đây nhất (Nhật ký chat AI)
-    $recent_activities = [];
-    $sql_act = "SELECT ai_chats.*, users.fullname 
-                FROM ai_chats 
-                LEFT JOIN users ON ai_chats.user_id = users.id 
-                ORDER BY ai_chats.created_at DESC LIMIT 5";
-    $res_act = $this->conn->query($sql_act);
-    if ($res_act) {
-        while($row = $res_act->fetch_assoc()) { $recent_activities[] = $row; }
+    // 2. Lấy dữ liệu cho biểu đồ Holland - Đảm bảo ép kiểu INT để JS không bị lỗi
+    $res_holland = $this->conn->query("
+        SELECT 
+            SUM(CASE WHEN dominant_type LIKE '%R%' THEN 1 ELSE 0 END) as R,
+            SUM(CASE WHEN dominant_type LIKE '%I%' THEN 1 ELSE 0 END) as I,
+            SUM(CASE WHEN dominant_type LIKE '%A%' THEN 1 ELSE 0 END) as A,
+            SUM(CASE WHEN dominant_type LIKE '%S%' THEN 1 ELSE 0 END) as S,
+            SUM(CASE WHEN dominant_type LIKE '%E%' THEN 1 ELSE 0 END) as E,
+            SUM(CASE WHEN dominant_type LIKE '%C%' THEN 1 ELSE 0 END) as C
+        FROM assessment_results
+    ")->fetch_assoc();
+    
+    // Gán giá trị mặc định là 0 nếu NULL
+    $holland_stats = [];
+    foreach(['R','I','A','S','E','C'] as $key) {
+        $holland_stats[$key] = (int)($res_holland[$key] ?? 0);
     }
 
-    // Gửi ra View
+    // 3. Lấy dữ liệu cho biểu đồ Ngành học (Bar Chart)
+    $major_labels = []; $major_counts = [];
+    $major_res = $this->conn->query("SELECT aspiration, COUNT(*) as count FROM users WHERE aspiration IS NOT NULL AND aspiration != '' GROUP BY aspiration ORDER BY count DESC LIMIT 5");
+    while($row = $major_res->fetch_assoc()){
+        $major_labels[] = $row['aspiration'];
+        $major_counts[] = $row['count'];
+    }
+
+    // 4. Tính tỷ lệ chính xác AI (KNN)
+    $ai_feedback = $this->conn->query("SELECT SUM(CASE WHEN is_verified = 1 THEN 1 ELSE 0 END) as v, COUNT(*) as t FROM assessment_results WHERE user_id IN (SELECT id FROM users WHERE user_type = 'alumni')")->fetch_assoc();
+    $accuracy_rate = ($ai_feedback['t'] > 0) ? round(($ai_feedback['v'] / $ai_feedback['t']) * 100, 1) : 0;
+
+    // 5. Nhật ký hoạt động
+    $recent_activities = [];
+    $res_act = $this->conn->query("SELECT ai_chats.*, users.fullname FROM ai_chats LEFT JOIN users ON ai_chats.user_id = users.id ORDER BY ai_chats.created_at DESC LIMIT 5");
+    if ($res_act) while($row = $res_act->fetch_assoc()) { $recent_activities[] = $row; }
+
     require_once 'views/admin/dashboard.php';
 }
-    
-    // 1. Xem danh sách trường Đại học
-    public function universities() {
-        $sql = "SELECT * FROM universities ORDER BY id DESC";
-        $result = $this->conn->query($sql);
-        
-        $universities = [];
-        if ($result && $result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                $universities[] = $row;
-            }
-        }
-        require 'views/admin/universities/index.php';
-    }
 
     // 2. Thêm trường Đại học mới
     public function add_university() {
@@ -469,6 +460,87 @@ public function edit_user() {
     $stmt->execute();
     $user = $stmt->get_result()->fetch_assoc();
     require 'views/admin/users/edit.php';
+}
+// --- QUẢN LÝ KHÓA HỌC TOÀN DIỆN ---
+
+public function courses() {
+    $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+    $courses = [];
+    
+    if (!empty($search)) {
+        // Chức năng TÌM KIẾM theo tên khóa học hoặc giảng viên
+        $stmt = $this->conn->prepare("SELECT * FROM courses WHERE name LIKE ? OR teacher LIKE ? ORDER BY id DESC");
+        $term = "%$search%";
+        $stmt->bind_param("ss", $term, $term);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    } else {
+        $result = $this->conn->query("SELECT * FROM courses ORDER BY id DESC");
+    }
+
+    if ($result) {
+        while($row = $result->fetch_assoc()) { $courses[] = $row; }
+    }
+    require 'views/admin/courses/index.php';
+}
+
+public function add_course() {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $name = $_POST['name'];
+        $teacher = $_POST['teacher'];
+        $tuition = $_POST['tuition']; // Giữ nguyên chuỗi "2.500.000đ" để đồng bộ DB
+        $rating = min(5.0, (float)$_POST['rating']); // Ép tối đa 5.0
+        $description = $_POST['description'];
+        
+        $image = 'default.jpg';
+        if (!empty($_FILES['image']['name'])) {
+            $image = time() . '_' . $_FILES['image']['name'];
+            move_uploaded_file($_FILES['image']['tmp_name'], "uploads/courses/" . $image);
+        }
+
+        $stmt = $this->conn->prepare("INSERT INTO courses (name, teacher, tuition, rating, description, image) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssdss", $name, $teacher, $tuition, $rating, $description, $image);
+        $stmt->execute();
+        header("Location: index.php?page=admin&action=courses");
+        exit;
+    }
+    require 'views/admin/courses/add.php';
+}
+public function edit_course() {
+    $id = (int)$_GET['id'];
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $name = $_POST['name'];
+        $desc = $_POST['description'];
+        $tuition = $_POST['tuition'];
+        $teacher = $_POST['teacher'];
+        $rating = $_POST['rating'];
+
+        if (!empty($_FILES['image']['name'])) {
+            $image = time() . '_' . $_FILES['image']['name'];
+            move_uploaded_file($_FILES['image']['tmp_name'], "uploads/courses/" . $image);
+            $sql = "UPDATE courses SET name=?, description=?, tuition=?, image=?, teacher=?, rating=? WHERE id=?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("sssssdi", $name, $desc, $tuition, $image, $teacher, $rating, $id);
+        } else {
+            $sql = "UPDATE courses SET name=?, description=?, tuition=?, teacher=?, rating=? WHERE id=?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("ssssdi", $name, $desc, $tuition, $teacher, $rating, $id);
+        }
+        $stmt->execute();
+        header("Location: index.php?page=admin&action=courses");
+        exit;
+    }
+    $course = $this->conn->query("SELECT * FROM courses WHERE id = $id")->fetch_assoc();
+    require 'views/admin/courses/edit.php';
+}
+
+public function delete_course() {
+    if (isset($_GET['id'])) {
+        $id = (int)$_GET['id'];
+        $this->conn->query("DELETE FROM courses WHERE id = $id");
+    }
+    header("Location: index.php?page=admin&action=courses");
+    exit;
 }
 }
 ?>

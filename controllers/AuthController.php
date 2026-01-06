@@ -18,20 +18,21 @@ class AuthController {
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $username = trim($_POST['username']);
-            $password = trim($_POST['password']);
-            $user = $this->model->login($username, $password);
-            
-            if ($user) {
-                $_SESSION['user'] = $user;
-                $this->redirectByUserRole($user['role']);
-            } else {
-                $error = "Sai tên đăng nhập hoặc mật khẩu!";
-                require 'views/auth/login.php';
-            }
+        $username = trim($_POST['username']);
+        $password = trim($_POST['password']);
+        $user = $this->model->login($username, $password);
+        
+        if ($user) {
+            // Lưu toàn bộ mảng user bao gồm cả user_type vào Session
+            $_SESSION['user'] = $user; 
+            $this->redirectByUserRole($user['role']);
         } else {
+            $error = "Sai tên đăng nhập hoặc mật khẩu!";
             require 'views/auth/login.php';
         }
+    } else {
+        require 'views/auth/login.php';
+    }
     }
 
     /**
@@ -43,21 +44,24 @@ class AuthController {
             exit;
         }
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $fullname = trim($_POST['fullname']);
-            $username = trim($_POST['username']);
-            $password = trim($_POST['password']);
+       if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $fullname = trim($_POST['fullname']);
+        $username = trim($_POST['username']);
+        $password = trim($_POST['password']);
+        // Lấy user_type (student/alumni) từ form
+        $user_type = $_POST['user_type'] ?? 'student'; 
 
-            if ($this->model->register($fullname, $username, $password)) {
-                header("Location: index.php?page=login"); 
-                exit;
-            } else {
-                $error = "Đăng ký thất bại (Tên đăng nhập đã tồn tại)!";
-                require 'views/auth/register.php';
-            }
+        // Truyền thêm biến $user_type vào Model
+        if ($this->model->register($fullname, $username, $password, $user_type)) {
+            header("Location: index.php?page=login"); 
+            exit;
         } else {
+            $error = "Đăng ký thất bại (Tên đăng nhập đã tồn tại)!";
             require 'views/auth/register.php';
         }
+    } else {
+        require 'views/auth/register.php';
+    }
     }
 
     /**
