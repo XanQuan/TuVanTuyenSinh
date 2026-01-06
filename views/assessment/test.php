@@ -175,7 +175,12 @@ include __DIR__ . '/../layouts/header.php';
 <div class="test-banner">
     <div class="container">
         <h1>KHÁM PHÁ BẢN THÂN</h1>
-        <p>Chọn những mô tả bên dưới mà bạn thấy <strong>đúng</strong> hoặc <strong>yêu thích</strong> nhất.</p>
+        <?php if ($_SESSION['user']['user_type'] == 'alumni'): ?>
+            <p class="badge bg-warning text-dark p-2">Chế độ: Đóng góp dữ liệu tiền bối</p>
+            <p>Chào tiền bối, kết quả trắc nghiệm của anh/chị sẽ là nguồn dữ liệu quý giá giúp các em khóa sau định hướng nghề nghiệp.</p>
+        <?php else: ?>
+            <p>Chọn những mô tả bên dưới mà bạn thấy <strong>đúng</strong> nhất để AI dự đoán ngành học cho bạn.</p>
+        <?php endif; ?>
     </div>
 </div>
 
