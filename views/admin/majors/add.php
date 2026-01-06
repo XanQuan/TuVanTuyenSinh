@@ -1,43 +1,53 @@
-<?php require_once 'views/layouts/header.php'; ?>
-
-<section class="section" style="padding-top: 120px; min-height: 600px;">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow border-0">
-                    <div class="card-header bg-danger text-white">
-                        <h4 class="fw-bold m-0"><i class="fa fa-plus-circle"></i> Thêm Ngành Mới</h4>
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white py-3">
+        <h5 class="mb-0 text-primary fw-bold">
+            <i class="fas fa-book-open me-2"></i>Thêm Ngành Đào Tạo Mới
+        </h5>
+    </div>
+    <div class="card-body p-4">
+        <form action="" method="POST" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Tên Ngành học</label>
+                        <input type="text" name="name" class="form-control" required placeholder="VD: Công nghệ thông tin...">
                     </div>
-                    <div class="card-body p-4">
-                        <form method="POST" action="">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Tên Ngành:</label>
-                                <input type="text" name="name" class="form-control" placeholder="Ví dụ: An toàn thông tin" required>
-                            </div>
 
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Nhóm Ngành:</label>
-                                <select name="group_code" class="form-select" required>
-                                    <option value="">-- Chọn nhóm ngành --</option>
-                                    <option value="IT">💻 Công nghệ thông tin (IT)</option>
-                                    <option value="KT">💰 Kinh tế & Quản trị (KT)</option>
-                                    <option value="YD">💊 Y Dược (YD)</option>
-                                    <option value="NN">🌏 Ngôn ngữ (NN)</option>
-                                    <option value="CK">⚙️ Kỹ thuật - Cơ khí (CK)</option>
-                                    <option value="SP">📚 Sư phạm (SP)</option>
-                                </select>
-                            </div>
-
-                            <div class="d-flex justify-content-end gap-2 mt-4">
-                                <a href="index.php?page=admin&action=majors" class="btn btn-secondary">Quay lại</a>
-                                <button type="submit" class="btn btn-danger">Lưu lại</button>
-                            </div>
-                        </form>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Mô tả chi tiết</label>
+                        <textarea name="description" class="form-control" rows="6" placeholder="Giới thiệu về ngành, cơ hội việc làm..."></textarea>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<?php require_once 'views/layouts/footer.php'; ?>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nhóm Ngành (Holland)</label>
+                        <select name="group_code" class="form-select" required>
+                            <option value="" disabled selected>-- Chọn nhóm --</option>
+                            <option value="R">R - Kỹ thuật</option>
+                            <option value="I">I - Nghiên cứu</option>
+                            <option value="A">A - Nghệ thuật</option>
+                            <option value="S">S - Xã hội</option>
+                            <option value="E">E - Quản lý</option>
+                            <option value="C">C - Nghiệp vụ</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Hình ảnh minh họa</label>
+                        <input type="file" name="image" class="form-control" accept="image/*">
+                        <div class="mt-2 p-3 bg-light border rounded text-center text-muted small">
+                            <i class="fas fa-image fa-2x mb-2"></i><br>
+                            Kích thước gợi ý: 800x600px
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 fw-bold rounded-pill py-3 mt-2 shadow-sm">
+                        <i class="fas fa-plus-circle me-2"></i> THÊM NGÀNH
+                    </button>
+                    <a href="index.php?page=admin&action=majors" class="btn btn-light border w-100 rounded-pill py-2 mt-3">Hủy bỏ</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
