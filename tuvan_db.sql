@@ -1,2822 +1,594 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
+-- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
 --
--- Host: 127.0.0.1:2511
--- Generation Time: Jan 05, 2026 at 05:55 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
+-- Host: 127.0.0.1    Database: tuvan_db
+-- ------------------------------------------------------
+-- Server version	8.0.42
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `tuvan_db`
---
-
--- --------------------------------------------------------
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
 -- Table structure for table `ai_chats`
 --
 
+DROP TABLE IF EXISTS `ai_chats`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ai_chats` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `user_message` text DEFAULT NULL,
-  `ai_response` text DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `session_id` int DEFAULT NULL,
+  `user_message` text,
+  `ai_response` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `ai_chats`
 --
 
-INSERT INTO `ai_chats` (`id`, `user_id`, `user_message`, `ai_response`, `created_at`) VALUES
-(1, 29, 'chào bạn', 'Chào bạn, UniGuide AI đã nhận được câu hỏi: \'chào bạn\'. Theo dữ liệu của tôi, ngành Công nghệ thông tin hiện đang có nhu cầu nhân lực rất cao...', '2026-01-04 06:30:34'),
-(2, 29, 'chào bạn', 'Xin lỗi, tôi gặp chút trục trặc. Bạn hỏi lại nhé!', '2026-01-04 06:59:36'),
-(3, 29, 'chào bạn', 'Chào bạn, tôi là UniGuide, trợ lý tuyển sinh thông minh của bạn! Rất vui được hỗ trợ bạn trong việc tìm kiếm ngành học và trường đại học phù hợp tại Việt Nam.\n\nĐể tôi có thể tư vấn chính xác nhất, bạn vui lòng cung cấp các thông tin sau nhé:\n\n*   **Điểm số các môn thi của bạn** (ví dụ: Toán 8, Lý 7.5, Hóa 9, Văn 7, Anh 8...).\n*   **Khối thi bạn quan tâm** (ví dụ: A00, A01, B00, C00, D01...).\n*   **Nếu chưa có điểm, bạn có thể chia sẻ về sở thích, năng lực hoặc ngành nghề bạn đang mong muốn tìm hiểu.**\n\nTôi sẽ dựa vào điểm số của bạn để tính tổng điểm theo từng khối và đối chiếu với điểm chuẩn các trường đại học tại Việt Nam để đưa ra những gợi ý phù hợp nhất cho bạn!', '2026-01-04 06:59:59'),
-(4, 29, 'Toán 9, Lý 5.5, Hóa 6, Văn 7, Anh 8 tôi học được trường gì ngành gì', 'Chào bạn, cảm ơn bạn đã cung cấp điểm số chi tiết! Tôi đã tổng hợp và tính điểm theo các khối thi phổ biến từ điểm của', '2026-01-04 07:00:36'),
-(5, 29, 'tường gì ạ', 'Chào bạn, UniGuide hiểu rằng bạn đang muốn biết với điểm số đã cho thì có thể học trường nào và ngành nào. Xin lỗi vì phản', '2026-01-04 07:01:15'),
-(6, 29, '21 điểm', 'Xin lỗi, hệ thống đang bận.', '2026-01-04 07:02:34'),
-(7, 29, '21 điểm nên chọn trường nào', 'Xin lỗi, tôi gặp chút trục trặc. Bạn hỏi lại nhé!', '2026-01-04 07:03:39'),
-(8, 29, '21 điểm học trường nào', 'Xin lỗi, tôi gặp chút trục trặc. Bạn hỏi lại nhé!', '2026-01-04 07:03:47'),
-(9, 29, '21 điểm học trường nào', 'Chào bạn, UniGuide đã nhận được thông tin bạn có 21 điểm.\n\nĐể UniGuide có thể tư vấn chính xác và phù hợp nhất với nguyện vọng của bạn, vui lòng cung cấp thêm các thông tin sau:\n\n*   **Khối thi/Tổ hợp môn xét tuyển của bạn là gì?** (Ví dụ: Khối A00 (Toán, Lý, Hóa), Khối D01 (Toán, Văn, Anh), Khối C00 (Văn, Sử, Địa), Khối B00 (Toán, Hóa, Sinh), v.v.). Việc biết khối thi sẽ giúp UniGuide đối chiếu với điểm chuẩn của từng ngành, từng trường.\n*   **Điểm 21 này đã được nhân hệ số chưa?** (Nếu có môn nhân hệ số, ví dụ môn chính nhân 2).\n*   **Bạn có nguyện vọng học ngành nào hoặc lĩnh vực nào không?** (Ví dụ: Kinh tế, Kỹ thuật, Sư phạm, Y dược, Xã hội nhân văn, v.v.).\n*   **Bạn muốn học ở khu vực nào?** (Ví dụ: Hà Nội, TP.HCM, Đà Nẵng, Cần Thơ, v.v.).\n\n**Tuy nhiên, với 21 điểm (chưa nhân hệ số) và tùy thuộc vào khối thi, bạn có thể tham khảo một số định hướng chung sau:**\n\n*   **Các trường đại học top giữa:** Với 21 điểm, bạn có cơ hội khá tốt để vào các ngành học ở các trường đại học top giữa trên cả nước.\n*   **Các ngành học không quá \"hot\" ở các trường top đầu:** Một số ngành học có mức độ cạnh tranh vừa phải tại các trường đại học top đầu (như Đại học Quốc', '2026-01-04 07:04:03'),
-(10, 29, '21 điểm học trường nào', 'Chào bạn, UniGuide hiểu bạn đang tìm kiếm trường phù hợp với 21 điểm.\n\nĐể UniGuide có thể tư vấn chính xác nhất, bạn vui lòng cho biết thêm:\n\n*   **Bạn thi khối nào (tổ hợp môn xét tuyển)?** (Ví dụ: A00 (Toán, Lý, Hóa), D01 (Toán, Văn, Anh), C00 (Văn, Sử, Địa), B00 (Toán, Hóa, Sinh)...)\n*   **Bạn có nguyện vọng học ngành nào hoặc lĩnh vực nào không?** (Ví dụ: Kinh tế, Kỹ thuật, Y dược, Sư phạm, Công nghệ thông tin...)\n*   **Bạn muốn học ở khu vực nào?** (Ví dụ: Hà Nội, TP.HCM, Đà Nẵng, Cần Thơ...)\n\nĐiểm chuẩn của các trường và ngành học khác nhau rất nhiều tùy thuộc vào khối thi và khu vực. Khi có thêm thông tin này, UniGuide sẽ giúp bạn đối chiếu với dữ liệu điểm chuẩn để đưa ra các lựa chọn phù hợp nhất nhé!', '2026-01-04 07:04:09'),
-(11, 29, 'Toán, Lý, Hóa', 'Chào bạn, UniGuide đã nhận được thông tin bạn thi **Khối A00 (Toán, Lý, Hóa)** với tổng điểm là **21 điểm**.\n\nVới 21 điểm Khối A00, bạn có khá nhiều lựa chọn. Để UniGuide có thể tư vấn chính xác và phù hợp nhất với bạn, vui lòng cung cấp thêm các thông tin sau:\n\n*   **Điểm 21 này đã được nhân hệ số chưa?** (Ví dụ: môn Toán có được nhân hệ số 2 không?)\n*   **Bạn có nguyện vọng học ngành nào hoặc lĩnh vực nào không?** (Ví dụ: Kỹ thuật, Công nghệ thông tin, Kinh tế, Khoa học tự nhiên, Sư phạm, v.v.)\n*   **Bạn muốn học ở khu vực nào?** (Ví dụ: Hà Nội, TP.HCM, Đà Nẵng, Cần Thơ, v.v.)\n\n**Tuy nhiên, với 21 điểm Khối A00 (chưa nhân hệ số), bạn có thể tham khảo một số định hướng chung sau:**\n\n*   **Các trường đại học top giữa:** Bạn có cơ hội tốt để vào các ngành học ở các trường đại học top giữa trên cả nước. Đây là nhóm trường có chất lượng đào tạo tốt và đa dạng ngành nghề phù hợp với khối A00.\n*', '2026-01-04 07:04:35'),
-(12, 29, 'Kỹ thuật TP.HCM', 'Chào bạn, UniGuide đã nhận được thêm thông tin bạn có nguyện vọng học **ngành Kỹ thuật** tại **TP.HCM** với **', '2026-01-04 07:05:30'),
-(13, 29, 'Kỹ thuật TP.HCM', 'Xin lỗi, UniBot đang bận xử lý dữ liệu. Bạn hãy thử lại sau giây lát nhé!', '2026-01-04 07:07:11'),
-(14, 29, 'Kỹ thuật TP.HCM', 'Xin lỗi, UniBot đang bận xử lý dữ liệu. Bạn hãy thử lại sau giây lát nhé!', '2026-01-04 07:07:29'),
-(15, 29, 'Kỹ thuật TP.HCM học trường nào thì ổn', 'Chào bạn, UniGuide đã nhận được thông tin bạn có **21 điểm Khối A00 (Toán, Lý, Hóa)** và có nguyện vọng học **ngành Kỹ thuật** tại **TP.HCM**.\n\nVới 21 điểm Khối A00', '2026-01-04 07:09:53'),
-(16, 29, 'tôi nên học trường nào', 'Chào bạn, UniGuide đã tổng hợp thông tin bạn cung cấp:\n*   **Điểm thi:** 21 điểm.\n*   **Khối thi:** A00 (Toán, Lý, Hóa).\n*   **Nguyện vọng ngành:** K', '2026-01-04 07:10:16'),
-(17, 29, 'đúng rôi nhưng tôt nên học ngành gì', 'Chào bạn, UniGuide đã nhận được xác nhận từ bạn và hiểu rõ nguyện vọng học **ngành Kỹ thuật** tại **TP.HCM** với **21 điểm Khối A00 (Toán, Lý, Hóa)**.\n\nVới 21 điểm Khối A00, bạn có nhiều cơ hội để theo học các ngành Kỹ thuật tại các trường đại học uy tín ở TP.HCM. Dưới đây là một số gợi ý cụ thể về trường và ngành phù hợp với mức điểm của bạn:\n\n*   **Đại học Sư phạm Kỹ thuật TP.HCM (HCMUTE)**\n    *   **Kỹ thuật Cơ khí:** Ngành này luôn có nhu cầu nhân lực cao, đào tạo kỹ sư thiết kế, chế tạo, vận hành máy móc.\n    *   **K', '2026-01-04 07:10:42'),
-(18, 29, 'nếu ở đà nẳng thì học trường nào với ngành gì ?', 'Xin lỗi, UniBot đang gặp khó khăn khi kết nối. Bạn hỏi lại nhé!', '2026-01-04 07:11:11'),
-(19, 29, 'nếu ở đà nẳng thì học trường nào với ngành gì ?', 'Xin lỗi, UniBot đang gặp khó khăn khi kết nối. Bạn hỏi lại nhé!', '2026-01-04 07:11:19'),
-(20, 29, 'chao bạn', 'Xin lỗi, UniBot đang gặp khó khăn khi kết nối. Bạn hỏi lại nhé!', '2026-01-04 07:13:35'),
-(21, 29, 'chao bạn', 'Xin lỗi, tôi đang bận xử lý dữ liệu.', '2026-01-04 07:14:52'),
-(22, 29, 'hao bạn', 'Xin lỗi, tôi đang bận xử lý dữ liệu.', '2026-01-04 07:15:40'),
-(23, 29, 'chào', 'Xin lỗi, tôi đang bận xử lý dữ liệu.', '2026-01-04 07:19:39'),
-(24, 29, 'd', 'Xin lỗi, tôi đang bận xử lý dữ liệu.', '2026-01-04 07:23:02'),
-(25, 29, 'Chào bạn, UniGuide đã nhận được thông tin bạn có 21 điểm Khối A00 (Toán, Lý, Hóa) và có nguyện vọng học ngành Kỹ thuật tại TP.HCM. Với 21 điểm Khối A00', 'Xin lỗi, tôi đang bận xử lý dữ liệu.', '2026-01-04 07:23:08'),
-(26, 29, 'c', 'Xin lỗi, tôi gặp chút trục trặc. Bạn hỏi lại nhé!', '2026-01-04 07:23:22'),
-(27, 29, 'd', 'Xin lỗi, tôi gặp chút trục trặc. Bạn hỏi lại nhé!', '2026-01-04 07:23:27'),
-(28, 29, 'chào', 'UniBot đang bận xử lý dữ liệu, bạn hỏi lại nhé!', '2026-01-04 07:25:46'),
-(29, 29, 'chào bạn', 'Xin lỗi, UniBot đang gặp khó khăn khi kết nối. Bạn hỏi lại nhé!', '2026-01-04 07:26:49'),
-(30, 29, 'chào bạn còn lỗi k', 'Xin lỗi, UniBot đang bận tra cứu dữ liệu thực tế. Bạn đợi chút nhé!', '2026-01-04 07:27:54'),
-(31, 29, 'chào bạn', 'UniBot đang bận tra cứu dữ liệu thực tế, bạn hỏi lại nhé!', '2026-01-04 07:30:04'),
-(32, 29, 'chào bạn đà nẳng', 'UniBot đang bận tra cứu dữ liệu thực tế, bạn hỏi lại nhé!', '2026-01-04 07:30:59'),
-(33, 29, 'dăd', 'UniBot đang bận tra cứu dữ liệu thực tế, bạn hỏi lại nhé!', '2026-01-04 07:31:04'),
-(34, 29, 'adwad', 'UniBot đang bận tra cứu dữ liệu thực tế, bạn hỏi lại nhé!', '2026-01-04 07:31:04'),
-(35, 29, 'ădawd', 'UniBot đang bận tra cứu dữ liệu thực tế, bạn hỏi lại nhé!', '2026-01-04 07:31:05'),
-(36, 29, 'ădaw', 'UniBot đang bận tra cứu dữ liệu thực tế, bạn hỏi lại nhé!', '2026-01-04 07:31:05'),
-(37, 29, 'chào bạn', 'UniBot đang bận tra cứu dữ liệu thực tế, bạn hỏi lại nhé!', '2026-01-04 07:31:58'),
-(38, 29, 'nên học trường nào', 'UniBot đang bận tra cứu dữ liệu thực tế, bạn hỏi lại nhé!', '2026-01-04 07:32:09'),
-(39, 29, 'chào bạn hãy giúp tôi trường đại học nào xịn ở miền nàm', 'Xin lỗi, UniBot đang bận cập nhật dữ liệu điểm chuẩn. Bạn hỏi lại nhé!', '2026-01-04 07:33:15'),
-(40, 29, 'chào bạn', 'Xin lỗi, UniBot đang bận cập nhật dữ liệu điểm chuẩn. Bạn hỏi lại nhé!', '2026-01-04 07:33:28'),
-(41, 29, 'chào bạn', 'Xin lỗi, UniBot đang bận cập nhật dữ liệu điểm chuẩn. Bạn hỏi lại nhé!', '2026-01-04 07:35:58'),
-(42, 29, 'chào baj hãy giúp tôi', 'Xin lỗi, UniBot đang bận cập nhật dữ liệu điểm chuẩn. Bạn hỏi lại nhé!', '2026-01-04 07:36:30'),
-(43, 29, 'chào bạn', 'Xin lỗi, UniBot đang gặp khó khăn khi truy cập dữ liệu điểm chuẩn mới nhất. Bạn hỏi lại nhé!', '2026-01-04 07:37:19'),
-(44, 29, 'nếu ở đà nẳng thì học trường nào với ngành gì ?', 'Xin lỗi, UniBot đang gặp khó khăn khi truy cập dữ liệu điểm chuẩn mới nhất. Bạn hỏi lại nhé!', '2026-01-04 07:37:52'),
-(45, 29, 'send_message', 'Xin lỗi, UniBot đang gặp khó khăn khi truy cập dữ liệu điểm chuẩn mới nhất. Bạn hỏi lại nhé!', '2026-01-04 07:40:43'),
-(46, 29, 'hallo', 'Chào bạn!', '2026-01-04 16:04:08'),
-(47, 29, 'bạn có thể nào giúp tôi tra cứu trường được k', 'Vâng, chắc chắn rồi.', '2026-01-04 16:04:25'),
-(48, 29, '21 điểm tôi nên học trường nào ?', 'Chào bạn!\n\nĐể UniGuide tư vấn chính xác, bạn cần cho biết thêm:\n\n1.  **Bạn thi khối nào?** (', '2026-01-04 16:04:41'),
-(49, 29, 'A00', '**Toán, Lý, Hóa**', '2026-01-04 16:05:39'),
-(50, 29, '26.51 tổng điểm của tôi đây', '26.51 điểm. Điểm tối đa là bao nhiêu?', '2026-01-04 16:06:01'),
-(51, 29, 'với điểm như này tôi học trường nào được 26.51', 'Với 26.51, đây là một mức điểm khá tốt!\n\nĐể biết chính xác bạn có thể vào trường nào, UniGuide cần biết', '2026-01-04 16:06:26'),
-(52, 29, 'học trường Hutech được k', 'Học Hutech **có thể là một lựa chọn phù hợp**, tùy thuộc vào ngành học bạn quan tâm và mục tiêu cá nhân của bạn', '2026-01-04 16:06:46'),
-(53, 29, 'tôi học ngàng CNTT THÌ  VỚI điểm đó năm 2025 có thể đậu k', 'Chào bạn, UniGuide chưa thể trả lời chính xác được vì bạn chưa cung cấp:\n\n1.  **Điểm số cụ thể của bạn.**', '2026-01-04 16:07:18'),
-(54, 29, '26.51', 'Chào bạn, UniGuide đây.\n\n26.51. Bạn muốn tôi hỗ trợ gì với giá trị này? Ví dụ: đây là điểm số', '2026-01-04 16:07:30'),
-(55, 29, 'xem cói điểm này có thể học ở trường HuTECH k', 'Chào bạn,\n\n\"Xem cói\" không phải là một ngành học phổ biến hay tên chương trình đào tạo tại HUTECH.\n\nĐể biết', '2026-01-04 16:08:07'),
-(56, 29, 'xem giúp tôi khả năng đậu vào HuTEC là bao nhiêu %', 'Là trợ lý UniGuide, tôi không thể đưa ra một con số phần trăm chính xác mà không có thông tin cụ thể về bạn.\n\nĐể đánh', '2026-01-04 16:08:44'),
-(57, 29, 'chào bạn', 'Chào bạn!', '2026-01-04 16:10:10');
-
--- --------------------------------------------------------
+LOCK TABLES `ai_chats` WRITE;
+/*!40000 ALTER TABLE `ai_chats` DISABLE KEYS */;
+INSERT INTO `ai_chats` VALUES (1,29,NULL,'chào bạn','Chào bạn, UniGuide AI đã nhận được câu hỏi: \'chào bạn\'. Theo dữ liệu của tôi, ngành Công nghệ thông tin hiện đang có nhu cầu nhân lực rất cao...','2026-01-04 06:30:34'),(2,29,NULL,'chào bạn','Xin lỗi, tôi gặp chút trục trặc. Bạn hỏi lại nhé!','2026-01-04 06:59:36'),(3,29,NULL,'chào bạn','Chào bạn, tôi là UniGuide, trợ lý tuyển sinh thông minh của bạn! Rất vui được hỗ trợ bạn trong việc tìm kiếm ngành học và trường đại học phù hợp tại Việt Nam.\n\nĐể tôi có thể tư vấn chính xác nhất, bạn vui lòng cung cấp các thông tin sau nhé:\n\n*   **Điểm số các môn thi của bạn** (ví dụ: Toán 8, Lý 7.5, Hóa 9, Văn 7, Anh 8...).\n*   **Khối thi bạn quan tâm** (ví dụ: A00, A01, B00, C00, D01...).\n*   **Nếu chưa có điểm, bạn có thể chia sẻ về sở thích, năng lực hoặc ngành nghề bạn đang mong muốn tìm hiểu.**\n\nTôi sẽ dựa vào điểm số của bạn để tính tổng điểm theo từng khối và đối chiếu với điểm chuẩn các trường đại học tại Việt Nam để đưa ra những gợi ý phù hợp nhất cho bạn!','2026-01-04 06:59:59'),(4,29,NULL,'Toán 9, Lý 5.5, Hóa 6, Văn 7, Anh 8 tôi học được trường gì ngành gì','Chào bạn, cảm ơn bạn đã cung cấp điểm số chi tiết! Tôi đã tổng hợp và tính điểm theo các khối thi phổ biến từ điểm của','2026-01-04 07:00:36'),(5,29,NULL,'tường gì ạ','Chào bạn, UniGuide hiểu rằng bạn đang muốn biết với điểm số đã cho thì có thể học trường nào và ngành nào. Xin lỗi vì phản','2026-01-04 07:01:15'),(6,29,NULL,'21 điểm','Xin lỗi, hệ thống đang bận.','2026-01-04 07:02:34'),(7,29,NULL,'21 điểm nên chọn trường nào','Xin lỗi, tôi gặp chút trục trặc. Bạn hỏi lại nhé!','2026-01-04 07:03:39'),(8,29,NULL,'21 điểm học trường nào','Xin lỗi, tôi gặp chút trục trặc. Bạn hỏi lại nhé!','2026-01-04 07:03:47'),(9,29,NULL,'21 điểm học trường nào','Chào bạn, UniGuide đã nhận được thông tin bạn có 21 điểm.\n\nĐể UniGuide có thể tư vấn chính xác và phù hợp nhất với nguyện vọng của bạn, vui lòng cung cấp thêm các thông tin sau:\n\n*   **Khối thi/Tổ hợp môn xét tuyển của bạn là gì?** (Ví dụ: Khối A00 (Toán, Lý, Hóa), Khối D01 (Toán, Văn, Anh), Khối C00 (Văn, Sử, Địa), Khối B00 (Toán, Hóa, Sinh), v.v.). Việc biết khối thi sẽ giúp UniGuide đối chiếu với điểm chuẩn của từng ngành, từng trường.\n*   **Điểm 21 này đã được nhân hệ số chưa?** (Nếu có môn nhân hệ số, ví dụ môn chính nhân 2).\n*   **Bạn có nguyện vọng học ngành nào hoặc lĩnh vực nào không?** (Ví dụ: Kinh tế, Kỹ thuật, Sư phạm, Y dược, Xã hội nhân văn, v.v.).\n*   **Bạn muốn học ở khu vực nào?** (Ví dụ: Hà Nội, TP.HCM, Đà Nẵng, Cần Thơ, v.v.).\n\n**Tuy nhiên, với 21 điểm (chưa nhân hệ số) và tùy thuộc vào khối thi, bạn có thể tham khảo một số định hướng chung sau:**\n\n*   **Các trường đại học top giữa:** Với 21 điểm, bạn có cơ hội khá tốt để vào các ngành học ở các trường đại học top giữa trên cả nước.\n*   **Các ngành học không quá \"hot\" ở các trường top đầu:** Một số ngành học có mức độ cạnh tranh vừa phải tại các trường đại học top đầu (như Đại học Quốc','2026-01-04 07:04:03'),(10,29,NULL,'21 điểm học trường nào','Chào bạn, UniGuide hiểu bạn đang tìm kiếm trường phù hợp với 21 điểm.\n\nĐể UniGuide có thể tư vấn chính xác nhất, bạn vui lòng cho biết thêm:\n\n*   **Bạn thi khối nào (tổ hợp môn xét tuyển)?** (Ví dụ: A00 (Toán, Lý, Hóa), D01 (Toán, Văn, Anh), C00 (Văn, Sử, Địa), B00 (Toán, Hóa, Sinh)...)\n*   **Bạn có nguyện vọng học ngành nào hoặc lĩnh vực nào không?** (Ví dụ: Kinh tế, Kỹ thuật, Y dược, Sư phạm, Công nghệ thông tin...)\n*   **Bạn muốn học ở khu vực nào?** (Ví dụ: Hà Nội, TP.HCM, Đà Nẵng, Cần Thơ...)\n\nĐiểm chuẩn của các trường và ngành học khác nhau rất nhiều tùy thuộc vào khối thi và khu vực. Khi có thêm thông tin này, UniGuide sẽ giúp bạn đối chiếu với dữ liệu điểm chuẩn để đưa ra các lựa chọn phù hợp nhất nhé!','2026-01-04 07:04:09'),(11,29,NULL,'Toán, Lý, Hóa','Chào bạn, UniGuide đã nhận được thông tin bạn thi **Khối A00 (Toán, Lý, Hóa)** với tổng điểm là **21 điểm**.\n\nVới 21 điểm Khối A00, bạn có khá nhiều lựa chọn. Để UniGuide có thể tư vấn chính xác và phù hợp nhất với bạn, vui lòng cung cấp thêm các thông tin sau:\n\n*   **Điểm 21 này đã được nhân hệ số chưa?** (Ví dụ: môn Toán có được nhân hệ số 2 không?)\n*   **Bạn có nguyện vọng học ngành nào hoặc lĩnh vực nào không?** (Ví dụ: Kỹ thuật, Công nghệ thông tin, Kinh tế, Khoa học tự nhiên, Sư phạm, v.v.)\n*   **Bạn muốn học ở khu vực nào?** (Ví dụ: Hà Nội, TP.HCM, Đà Nẵng, Cần Thơ, v.v.)\n\n**Tuy nhiên, với 21 điểm Khối A00 (chưa nhân hệ số), bạn có thể tham khảo một số định hướng chung sau:**\n\n*   **Các trường đại học top giữa:** Bạn có cơ hội tốt để vào các ngành học ở các trường đại học top giữa trên cả nước. Đây là nhóm trường có chất lượng đào tạo tốt và đa dạng ngành nghề phù hợp với khối A00.\n*','2026-01-04 07:04:35'),(12,29,NULL,'Kỹ thuật TP.HCM','Chào bạn, UniGuide đã nhận được thêm thông tin bạn có nguyện vọng học **ngành Kỹ thuật** tại **TP.HCM** với **','2026-01-04 07:05:30'),(13,29,NULL,'Kỹ thuật TP.HCM','Xin lỗi, UniBot đang bận xử lý dữ liệu. Bạn hãy thử lại sau giây lát nhé!','2026-01-04 07:07:11'),(14,29,NULL,'Kỹ thuật TP.HCM','Xin lỗi, UniBot đang bận xử lý dữ liệu. Bạn hãy thử lại sau giây lát nhé!','2026-01-04 07:07:29'),(15,29,NULL,'Kỹ thuật TP.HCM học trường nào thì ổn','Chào bạn, UniGuide đã nhận được thông tin bạn có **21 điểm Khối A00 (Toán, Lý, Hóa)** và có nguyện vọng học **ngành Kỹ thuật** tại **TP.HCM**.\n\nVới 21 điểm Khối A00','2026-01-04 07:09:53'),(16,29,NULL,'tôi nên học trường nào','Chào bạn, UniGuide đã tổng hợp thông tin bạn cung cấp:\n*   **Điểm thi:** 21 điểm.\n*   **Khối thi:** A00 (Toán, Lý, Hóa).\n*   **Nguyện vọng ngành:** K','2026-01-04 07:10:16'),(17,29,NULL,'đúng rôi nhưng tôt nên học ngành gì','Chào bạn, UniGuide đã nhận được xác nhận từ bạn và hiểu rõ nguyện vọng học **ngành Kỹ thuật** tại **TP.HCM** với **21 điểm Khối A00 (Toán, Lý, Hóa)**.\n\nVới 21 điểm Khối A00, bạn có nhiều cơ hội để theo học các ngành Kỹ thuật tại các trường đại học uy tín ở TP.HCM. Dưới đây là một số gợi ý cụ thể về trường và ngành phù hợp với mức điểm của bạn:\n\n*   **Đại học Sư phạm Kỹ thuật TP.HCM (HCMUTE)**\n    *   **Kỹ thuật Cơ khí:** Ngành này luôn có nhu cầu nhân lực cao, đào tạo kỹ sư thiết kế, chế tạo, vận hành máy móc.\n    *   **K','2026-01-04 07:10:42'),(18,29,NULL,'nếu ở đà nẳng thì học trường nào với ngành gì ?','Xin lỗi, UniBot đang gặp khó khăn khi kết nối. Bạn hỏi lại nhé!','2026-01-04 07:11:11'),(19,29,NULL,'nếu ở đà nẳng thì học trường nào với ngành gì ?','Xin lỗi, UniBot đang gặp khó khăn khi kết nối. Bạn hỏi lại nhé!','2026-01-04 07:11:19'),(20,29,NULL,'chao bạn','Xin lỗi, UniBot đang gặp khó khăn khi kết nối. Bạn hỏi lại nhé!','2026-01-04 07:13:35'),(21,29,NULL,'chao bạn','Xin lỗi, tôi đang bận xử lý dữ liệu.','2026-01-04 07:14:52'),(22,29,NULL,'hao bạn','Xin lỗi, tôi đang bận xử lý dữ liệu.','2026-01-04 07:15:40'),(23,29,NULL,'chào','Xin lỗi, tôi đang bận xử lý dữ liệu.','2026-01-04 07:19:39'),(24,29,NULL,'d','Xin lỗi, tôi đang bận xử lý dữ liệu.','2026-01-04 07:23:02'),(25,29,NULL,'Chào bạn, UniGuide đã nhận được thông tin bạn có 21 điểm Khối A00 (Toán, Lý, Hóa) và có nguyện vọng học ngành Kỹ thuật tại TP.HCM. Với 21 điểm Khối A00','Xin lỗi, tôi đang bận xử lý dữ liệu.','2026-01-04 07:23:08'),(26,29,NULL,'c','Xin lỗi, tôi gặp chút trục trặc. Bạn hỏi lại nhé!','2026-01-04 07:23:22'),(27,29,NULL,'d','Xin lỗi, tôi gặp chút trục trặc. Bạn hỏi lại nhé!','2026-01-04 07:23:27'),(28,29,NULL,'chào','UniBot đang bận xử lý dữ liệu, bạn hỏi lại nhé!','2026-01-04 07:25:46'),(29,29,NULL,'chào bạn','Xin lỗi, UniBot đang gặp khó khăn khi kết nối. Bạn hỏi lại nhé!','2026-01-04 07:26:49'),(30,29,NULL,'chào bạn còn lỗi k','Xin lỗi, UniBot đang bận tra cứu dữ liệu thực tế. Bạn đợi chút nhé!','2026-01-04 07:27:54'),(31,29,NULL,'chào bạn','UniBot đang bận tra cứu dữ liệu thực tế, bạn hỏi lại nhé!','2026-01-04 07:30:04'),(32,29,NULL,'chào bạn đà nẳng','UniBot đang bận tra cứu dữ liệu thực tế, bạn hỏi lại nhé!','2026-01-04 07:30:59'),(33,29,NULL,'dăd','UniBot đang bận tra cứu dữ liệu thực tế, bạn hỏi lại nhé!','2026-01-04 07:31:04'),(34,29,NULL,'adwad','UniBot đang bận tra cứu dữ liệu thực tế, bạn hỏi lại nhé!','2026-01-04 07:31:04'),(35,29,NULL,'ădawd','UniBot đang bận tra cứu dữ liệu thực tế, bạn hỏi lại nhé!','2026-01-04 07:31:05'),(36,29,NULL,'ădaw','UniBot đang bận tra cứu dữ liệu thực tế, bạn hỏi lại nhé!','2026-01-04 07:31:05'),(37,29,NULL,'chào bạn','UniBot đang bận tra cứu dữ liệu thực tế, bạn hỏi lại nhé!','2026-01-04 07:31:58'),(38,29,NULL,'nên học trường nào','UniBot đang bận tra cứu dữ liệu thực tế, bạn hỏi lại nhé!','2026-01-04 07:32:09'),(39,29,NULL,'chào bạn hãy giúp tôi trường đại học nào xịn ở miền nàm','Xin lỗi, UniBot đang bận cập nhật dữ liệu điểm chuẩn. Bạn hỏi lại nhé!','2026-01-04 07:33:15'),(40,29,NULL,'chào bạn','Xin lỗi, UniBot đang bận cập nhật dữ liệu điểm chuẩn. Bạn hỏi lại nhé!','2026-01-04 07:33:28'),(41,29,NULL,'chào bạn','Xin lỗi, UniBot đang bận cập nhật dữ liệu điểm chuẩn. Bạn hỏi lại nhé!','2026-01-04 07:35:58'),(42,29,NULL,'chào baj hãy giúp tôi','Xin lỗi, UniBot đang bận cập nhật dữ liệu điểm chuẩn. Bạn hỏi lại nhé!','2026-01-04 07:36:30'),(43,29,NULL,'chào bạn','Xin lỗi, UniBot đang gặp khó khăn khi truy cập dữ liệu điểm chuẩn mới nhất. Bạn hỏi lại nhé!','2026-01-04 07:37:19'),(44,29,NULL,'nếu ở đà nẳng thì học trường nào với ngành gì ?','Xin lỗi, UniBot đang gặp khó khăn khi truy cập dữ liệu điểm chuẩn mới nhất. Bạn hỏi lại nhé!','2026-01-04 07:37:52'),(45,29,NULL,'send_message','Xin lỗi, UniBot đang gặp khó khăn khi truy cập dữ liệu điểm chuẩn mới nhất. Bạn hỏi lại nhé!','2026-01-04 07:40:43'),(46,29,NULL,'hallo','Chào bạn!','2026-01-04 16:04:08'),(47,29,NULL,'bạn có thể nào giúp tôi tra cứu trường được k','Vâng, chắc chắn rồi.','2026-01-04 16:04:25'),(48,29,NULL,'21 điểm tôi nên học trường nào ?','Chào bạn!\n\nĐể UniGuide tư vấn chính xác, bạn cần cho biết thêm:\n\n1.  **Bạn thi khối nào?** (','2026-01-04 16:04:41'),(49,29,NULL,'A00','**Toán, Lý, Hóa**','2026-01-04 16:05:39'),(50,29,NULL,'26.51 tổng điểm của tôi đây','26.51 điểm. Điểm tối đa là bao nhiêu?','2026-01-04 16:06:01'),(51,29,NULL,'với điểm như này tôi học trường nào được 26.51','Với 26.51, đây là một mức điểm khá tốt!\n\nĐể biết chính xác bạn có thể vào trường nào, UniGuide cần biết','2026-01-04 16:06:26'),(52,29,NULL,'học trường Hutech được k','Học Hutech **có thể là một lựa chọn phù hợp**, tùy thuộc vào ngành học bạn quan tâm và mục tiêu cá nhân của bạn','2026-01-04 16:06:46'),(53,29,NULL,'tôi học ngàng CNTT THÌ  VỚI điểm đó năm 2025 có thể đậu k','Chào bạn, UniGuide chưa thể trả lời chính xác được vì bạn chưa cung cấp:\n\n1.  **Điểm số cụ thể của bạn.**','2026-01-04 16:07:18'),(54,29,NULL,'26.51','Chào bạn, UniGuide đây.\n\n26.51. Bạn muốn tôi hỗ trợ gì với giá trị này? Ví dụ: đây là điểm số','2026-01-04 16:07:30'),(55,29,NULL,'xem cói điểm này có thể học ở trường HuTECH k','Chào bạn,\n\n\"Xem cói\" không phải là một ngành học phổ biến hay tên chương trình đào tạo tại HUTECH.\n\nĐể biết','2026-01-04 16:08:07'),(56,29,NULL,'xem giúp tôi khả năng đậu vào HuTEC là bao nhiêu %','Là trợ lý UniGuide, tôi không thể đưa ra một con số phần trăm chính xác mà không có thông tin cụ thể về bạn.\n\nĐể đánh','2026-01-04 16:08:44'),(57,29,NULL,'chào bạn','Chào bạn!','2026-01-04 16:10:10'),(58,29,NULL,'chào cưng','Chào bạn.','2026-01-05 15:59:06'),(59,29,NULL,'chào bạn','Chào bạn!','2026-01-05 19:36:22'),(60,29,NULL,'chào bạn','Chào bạn!','2026-01-05 19:36:40'),(61,29,NULL,'ăn cơm chưa','Là trợ lý AI, tôi không ăn cơm.','2026-01-05 19:36:46'),(62,29,NULL,'vậy bạn ăn gì','Là một AI, tôi không ăn uống. \"Thức ăn\" của tôi là dữ liệu và thông tin để hỗ trợ bạn!','2026-01-05 19:37:00'),(63,29,NULL,'ô vậy hả','Vâng.','2026-01-05 19:37:13'),(64,29,NULL,'tư vấn ngành học được k','Được chứ! Hãy cho tôi biết bạn quan tâm đến lĩnh vực nào hoặc cần hỗ trợ gì nhé.','2026-01-05 19:37:30'),(65,29,NULL,'tôi đổi ý rôi','Đã rõ. Bạn muốn thay đổi điều gì?','2026-01-05 19:37:44'),(66,29,NULL,'bạn tư vẫn xem bạn yêu tôi k ?','Là một AI, tôi không có khả năng yêu.','2026-01-05 19:38:05'),(67,29,NULL,'lạnh lùng z','Vô cảm, không biểu lộ cảm xúc.','2026-01-05 19:38:15'),(68,29,NULL,'vậy nếu tôi tên Nhân tôi Yêu Quân ( 2 đứa là còn trai thì có được K)','Tình yêu không phân biệt giới tính. Nếu cả hai yêu nhau thật lòng thì hoàn toàn được bạn nhé.','2026-01-05 19:38:45'),(69,29,NULL,'vậy nếu ở Vn có thể kết hôn được k','Có, bạn hoàn toàn có thể kết hôn ở Việt Nam.','2026-01-05 19:39:04'),(70,29,NULL,'bạn ơi Vn k có CHo phép điểu đó nha bạn cập nhaoaj lại giúp mình nah','Chào bạn,\n\nĐể mình có thể cập nhật thông tin chính xác, bạn vui lòng cho mình biết \"điều đó\" cụ thể là gì được không? Mình sẵn lòng hỗ trợ bạn.','2026-01-05 19:39:31'),(71,29,NULL,'2 người cùng giới k thể kết hôn bạn nhé ((( ở Việt Nam)','Chính xác. Theo quy định hiện hành của pháp luật Việt Nam, hôn nhân đồng giới chưa được công nhận.','2026-01-05 19:40:10'),(72,29,NULL,'vậy tôi và con Trai bạn tôi là con Trai có thể kết Hôn K','Chào bạn,\n\n*   Nếu bạn là nam giới (là con trai), thì hôn nhân đồng giới không được pháp luật Việt Nam công nhận.\n*   Nếu','2026-01-05 19:40:35'),(73,29,NULL,'Bạn Thật thông Minh','Cảm ơn bạn.','2026-01-05 19:40:53'),(74,29,NULL,'vậy tôi thi đạia học 26 điểm thì nên học trường nào ở HCM ?','Chào bạn, 26 điểm là mức rất tốt! Bạn có nhiều lựa chọn tại các trường top đầu ở TP.HCM.\n\nĐể đưa','2026-01-05 19:41:23'),(75,29,NULL,'tôi học Bác sĩ được k','Có thể, nếu bạn đáp ứng các điều kiện sau:\n\n1.  **Điểm học tập xuất sắc:** Đặc biệt các môn khối B','2026-01-05 19:41:44'),(76,29,NULL,'vậy cụ thể 1 tường đi xem nào ?','Để UniGuide giúp bạn cụ thể hơn, bạn đang muốn tìm hiểu về loại tường nào ạ?\n\nVí dụ như:\n*   Tường thông báo','2026-01-05 19:41:58'),(77,29,NULL,'thông báo gì ba ?','Chào bạn, UniGuide đây. Bạn muốn tìm thông báo nào? Lịch học, sự kiện, hay thông tin khác?','2026-01-05 19:42:14'),(78,29,NULL,'Thông báo lịch học cua trường Hutech sau Nghỉ tết 2024 đi','Chào bạn,\n\nTheo thông báo của HUTECH, sinh viên sẽ học lại **từ ngày 19/02/20','2026-01-05 19:42:43');
+/*!40000 ALTER TABLE `ai_chats` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `assessment_results`
 --
 
+DROP TABLE IF EXISTS `assessment_results`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `assessment_results` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `r_score` int(11) DEFAULT 0,
-  `i_score` int(11) DEFAULT 0,
-  `a_score` int(11) DEFAULT 0,
-  `s_score` int(11) DEFAULT 0,
-  `e_score` int(11) DEFAULT 0,
-  `c_score` int(11) DEFAULT 0,
-  `dominant_type` varchar(10) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `r_score` int DEFAULT '0',
+  `i_score` int DEFAULT '0',
+  `a_score` int DEFAULT '0',
+  `s_score` int DEFAULT '0',
+  `e_score` int DEFAULT '0',
+  `c_score` int DEFAULT '0',
+  `dominant_type` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `is_verified` tinyint(1) DEFAULT '0',
+  `feedback_major` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `assessment_results`
 --
 
-INSERT INTO `assessment_results` (`id`, `user_id`, `r_score`, `i_score`, `a_score`, `s_score`, `e_score`, `c_score`, `dominant_type`, `created_at`) VALUES
-(1, 5, 1, 1, 0, 1, 0, 0, 'R', '2025-12-26 18:40:57'),
-(2, 5, 3, 2, 3, 3, 2, 3, 'R', '2025-12-26 18:41:19'),
-(3, 29, 3, 3, 3, 3, 3, 3, 'R', '2025-12-28 16:46:15'),
-(4, 29, 0, 0, 0, 0, 0, 2, 'C', '2025-12-28 16:48:06'),
-(5, 29, 0, 0, 0, 0, 0, 0, 'R', '2025-12-29 15:23:42'),
-(6, 29, 0, 0, 0, 0, 0, 0, 'R', '2025-12-30 14:48:28'),
-(7, 29, 0, 0, 0, 0, 0, 0, 'R', '2025-12-30 14:52:02'),
-(8, 29, 2, 1, 0, 0, 0, 1, 'R', '2025-12-30 14:54:16'),
-(9, 29, 0, 1, 0, 0, 0, 0, 'I', '2025-12-30 14:57:11'),
-(10, 29, 0, 1, 0, 1, 0, 0, 'I', '2025-12-30 14:57:17'),
-(11, 29, 0, 1, 0, 2, 0, 1, 'S', '2025-12-30 14:57:22'),
-(12, 29, 0, 0, 0, 0, 0, 0, 'R', '2025-12-30 15:03:55'),
-(13, 29, 4, 5, 5, 5, 5, 5, 'I', '2025-12-30 15:04:10'),
-(14, 29, 0, 0, 0, 0, 0, 0, 'R', '2026-01-03 06:32:01'),
-(15, 29, 1, 0, 1, 1, 1, 1, 'R', '2026-01-03 16:19:44'),
-(16, 29, 1, 1, 1, 0, 0, 0, 'R', '2026-01-04 16:18:45'),
-(17, 29, 0, 0, 1, 0, 0, 0, 'A', '2026-01-04 16:19:25'),
-(18, 29, 0, 0, 0, 0, 0, 1, 'C', '2026-01-04 16:22:22'),
-(19, 29, 1, 0, 0, 0, 0, 0, 'R', '2026-01-04 16:23:59');
+LOCK TABLES `assessment_results` WRITE;
+/*!40000 ALTER TABLE `assessment_results` DISABLE KEYS */;
+INSERT INTO `assessment_results` VALUES (1,5,1,1,0,1,0,0,'R','2025-12-26 18:40:57',0,NULL),(2,5,3,2,3,3,2,3,'R','2025-12-26 18:41:19',0,NULL),(3,29,3,3,3,3,3,3,'R','2025-12-28 16:46:15',0,NULL),(4,29,0,0,0,0,0,2,'C','2025-12-28 16:48:06',0,NULL),(5,29,0,0,0,0,0,0,'R','2025-12-29 15:23:42',0,NULL),(6,29,0,0,0,0,0,0,'R','2025-12-30 14:48:28',0,NULL),(7,29,0,0,0,0,0,0,'R','2025-12-30 14:52:02',0,NULL),(8,29,2,1,0,0,0,1,'R','2025-12-30 14:54:16',0,NULL),(9,29,0,1,0,0,0,0,'I','2025-12-30 14:57:11',0,NULL),(10,29,0,1,0,1,0,0,'I','2025-12-30 14:57:17',0,NULL),(11,29,0,1,0,2,0,1,'S','2025-12-30 14:57:22',0,NULL),(12,29,0,0,0,0,0,0,'R','2025-12-30 15:03:55',0,NULL),(13,29,4,5,5,5,5,5,'I','2025-12-30 15:04:10',0,NULL),(14,29,0,0,0,0,0,0,'R','2026-01-03 06:32:01',0,NULL),(15,29,1,0,1,1,1,1,'R','2026-01-03 16:19:44',0,NULL),(16,29,1,1,1,0,0,0,'R','2026-01-04 16:18:45',0,NULL),(17,29,0,0,1,0,0,0,'A','2026-01-04 16:19:25',0,NULL),(18,29,0,0,0,0,0,1,'C','2026-01-04 16:22:22',0,NULL),(19,29,1,0,0,0,0,0,'R','2026-01-04 16:23:59',0,NULL),(20,29,2,0,0,0,0,0,'R','2026-01-05 20:13:27',0,NULL),(21,29,0,1,0,1,2,0,'E','2026-01-05 20:13:31',0,NULL),(22,29,1,0,0,1,0,1,'R','2026-01-05 20:14:06',0,NULL),(23,32,1,0,1,1,2,2,'E','2026-01-06 13:57:51',0,NULL),(24,32,4,1,2,6,3,1,'S','2026-01-06 13:58:01',0,NULL),(25,32,0,0,1,0,0,2,'C','2026-01-06 13:58:07',0,NULL),(26,33,1,2,3,1,2,1,'A','2026-01-06 13:58:34',0,NULL),(27,33,1,1,2,2,0,1,'A','2026-01-06 13:58:49',0,NULL),(28,32,15,10,5,8,12,7,'R','2026-01-06 14:01:34',0,NULL),(29,33,5,8,10,15,14,12,'S','2026-01-06 14:01:34',0,NULL),(30,35,1,2,2,0,0,1,'I','2026-01-06 14:18:00',1,NULL),(31,35,1,0,1,0,1,0,'R','2026-01-06 14:21:28',0,NULL),(32,35,0,1,0,2,0,0,'S','2026-01-06 14:25:29',1,NULL),(33,35,1,1,0,1,0,0,'R','2026-01-06 14:34:57',0,NULL),(34,33,0,1,1,0,0,0,'I','2026-01-06 14:39:08',0,NULL),(35,35,0,0,1,1,0,1,'A','2026-01-06 14:58:28',1,'It'),(36,36,4,3,2,5,1,1,'S','2026-01-06 15:17:35',0,NULL),(37,36,2,3,2,6,4,1,'S','2026-01-06 15:18:00',0,NULL),(38,36,5,3,1,3,4,5,'R','2026-01-06 15:18:17',0,NULL),(39,33,2,3,1,1,3,2,'I','2026-01-06 15:19:15',0,NULL),(40,36,2,0,2,2,0,0,'R','2026-01-06 15:38:22',1,'Răng Hàm mặt'),(41,101,14,8,4,3,5,6,'R','2026-01-06 15:41:51',1,'Kỹ thuật Cơ khí'),(42,102,6,15,5,4,7,8,'I','2026-01-06 15:41:51',1,'Khoa học Máy tính'),(43,103,3,5,14,8,10,4,'A','2026-01-06 15:41:51',1,'Thiết kế Đồ họa'),(44,104,4,6,9,15,11,5,'S','2026-01-06 15:41:51',1,'Tâm lý học chuyên sâu'),(45,105,5,4,7,10,15,12,'E','2026-01-06 15:41:51',1,'Quản trị Kinh doanh'),(46,106,6,3,2,5,11,15,'C','2026-01-06 15:41:51',1,'Kế toán Kiểm toán'),(47,107,10,15,8,4,6,12,'I','2026-01-06 15:41:51',1,'Trí tuệ nhân tạo'),(48,108,4,7,12,11,14,5,'E','2026-01-06 15:41:51',1,'Marketing Kỹ thuật số'),(49,109,15,12,4,3,6,10,'R','2026-01-06 15:41:51',1,'Kỹ thuật Điện tử'),(50,110,5,14,3,15,8,6,'S','2026-01-06 15:41:51',1,'Bác sĩ Đa khoa'),(51,29,0,1,2,2,3,0,'E','2026-01-06 16:06:56',0,NULL),(52,29,3,0,0,0,0,1,'R','2026-01-06 16:07:16',0,NULL),(53,29,0,0,1,1,1,1,'A','2026-01-06 16:10:16',0,NULL),(54,29,0,0,0,1,1,1,'S','2026-01-06 16:11:38',0,NULL),(55,29,0,1,0,1,0,0,'I','2026-01-06 16:15:39',0,NULL),(56,29,1,2,3,2,0,0,'A','2026-01-06 16:15:52',0,NULL),(57,29,1,1,1,1,2,0,'E','2026-01-06 16:20:41',0,NULL),(58,29,2,1,2,3,2,0,'S','2026-01-06 16:22:13',0,NULL),(59,29,2,1,1,1,0,1,'R','2026-01-06 16:25:36',0,NULL),(60,29,0,0,2,0,2,1,'A','2026-01-06 16:25:57',0,NULL),(61,29,0,1,1,0,0,0,'I','2026-01-06 16:28:53',0,NULL),(62,29,0,1,0,1,1,0,'I','2026-01-06 16:29:39',0,NULL),(63,29,1,1,1,1,1,0,'R','2026-01-06 16:37:22',0,NULL),(64,29,1,0,0,1,0,0,'R','2026-01-06 16:38:16',0,NULL),(65,29,1,2,2,1,1,1,'I','2026-01-06 16:39:46',0,NULL);
+/*!40000 ALTER TABLE `assessment_results` ENABLE KEYS */;
+UNLOCK TABLES;
 
--- --------------------------------------------------------
+--
+-- Table structure for table `chat_sessions`
+--
+
+DROP TABLE IF EXISTS `chat_sessions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `chat_sessions` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `title` varchar(255) DEFAULT 'Cuộc trò chuyện mới',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `chat_sessions`
+--
+
+LOCK TABLES `chat_sessions` WRITE;
+/*!40000 ALTER TABLE `chat_sessions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `chat_sessions` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `consultation_requests`
 --
 
+DROP TABLE IF EXISTS `consultation_requests`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `consultation_requests` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `fullname` varchar(100) NOT NULL,
   `phone` varchar(15) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `address` text DEFAULT NULL,
-  `requirement` text DEFAULT NULL,
-  `course_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `status` enum('pending','contacted') DEFAULT 'pending'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `address` text,
+  `requirement` text,
+  `course_id` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` enum('pending','contacted') DEFAULT 'pending',
+  PRIMARY KEY (`id`),
+  KEY `course_id` (`course_id`),
+  CONSTRAINT `consultation_requests_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `majors` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `consultation_requests`
 --
 
-INSERT INTO `consultation_requests` (`id`, `fullname`, `phone`, `email`, `address`, `requirement`, `course_id`, `created_at`, `status`) VALUES
-(1, 'Đặng Thành Nhân', '0977446037', 'dangnhan503@gmail.com', '', 'khóa học 3D', 12, '2026-01-03 19:07:37', 'pending');
-
--- --------------------------------------------------------
+LOCK TABLES `consultation_requests` WRITE;
+/*!40000 ALTER TABLE `consultation_requests` DISABLE KEYS */;
+INSERT INTO `consultation_requests` VALUES (1,'Đặng Thành Nhân','0977446037','dangnhan503@gmail.com','','khóa học 3D',12,'2026-01-03 19:07:37','pending');
+/*!40000 ALTER TABLE `consultation_requests` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `course_reviews`
 --
 
+DROP TABLE IF EXISTS `course_reviews`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `course_reviews` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `course_id` int(11) NOT NULL,
-  `rating` tinyint(4) NOT NULL,
-  `comment` text DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT current_timestamp()
-) ;
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `course_id` int NOT NULL,
+  `rating` tinyint NOT NULL,
+  `comment` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `course_id` (`course_id`),
+  CONSTRAINT `course_reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `course_reviews_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `majors` (`id`),
+  CONSTRAINT `course_reviews_chk_1` CHECK ((`rating` between 1 and 5))
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `course_reviews`
 --
 
-INSERT INTO `course_reviews` (`id`, `user_id`, `course_id`, `rating`, `comment`, `created_at`) VALUES
-(1, 29, 41, 3, 'khó chịu', '2026-01-03 16:58:03'),
-(2, 29, 42, 5, 'chan\r\n', '2026-01-03 17:08:20'),
-(3, 29, 42, 1, 'd', '2026-01-03 17:09:25'),
-(4, 29, 42, 1, '', '2026-01-03 17:09:39'),
-(5, 29, 42, 1, '', '2026-01-03 17:10:30'),
-(6, 29, 42, 1, '', '2026-01-03 17:10:34'),
-(7, 29, 41, 1, '', '2026-01-03 17:12:30'),
-(8, 29, 41, 5, '', '2026-01-03 17:13:27'),
-(9, 29, 41, 5, '', '2026-01-03 17:15:05'),
-(10, 29, 41, 4, 'da', '2026-01-03 17:15:57'),
-(11, 29, 42, 4, 'khóa học vui ', '2026-01-03 17:16:28'),
-(12, 29, 42, 3, 'gà', '2026-01-03 17:17:24'),
-(13, 29, 42, 4, 'k hay lắm', '2026-01-03 17:18:37'),
-(14, 29, 12, 2, 'gà', '2026-01-03 17:24:29'),
-(15, 29, 8, 5, '', '2026-01-03 18:33:57'),
-(16, 29, 40, 1, '', '2026-01-03 18:43:53'),
-(17, 29, 12, 5, '1', '2026-01-03 18:57:42'),
-(18, 29, 12, 5, '', '2026-01-03 18:57:46'),
-(19, 29, 23, 5, '', '2026-01-04 16:24:20');
+LOCK TABLES `course_reviews` WRITE;
+/*!40000 ALTER TABLE `course_reviews` DISABLE KEYS */;
+INSERT INTO `course_reviews` VALUES (1,29,41,3,'khó chịu','2026-01-03 16:58:03'),(2,29,42,5,'chan\r\n','2026-01-03 17:08:20'),(3,29,42,1,'d','2026-01-03 17:09:25'),(4,29,42,1,'','2026-01-03 17:09:39'),(5,29,42,1,'','2026-01-03 17:10:30'),(6,29,42,1,'','2026-01-03 17:10:34'),(7,29,41,1,'','2026-01-03 17:12:30'),(8,29,41,5,'','2026-01-03 17:13:27'),(9,29,41,5,'','2026-01-03 17:15:05'),(10,29,41,4,'da','2026-01-03 17:15:57'),(11,29,42,4,'khóa học vui ','2026-01-03 17:16:28'),(12,29,42,3,'gà','2026-01-03 17:17:24'),(13,29,42,4,'k hay lắm','2026-01-03 17:18:37'),(14,29,12,2,'gà','2026-01-03 17:24:29'),(15,29,8,5,'','2026-01-03 18:33:57'),(16,29,40,1,'','2026-01-03 18:43:53'),(17,29,12,5,'1','2026-01-03 18:57:42'),(18,29,12,5,'','2026-01-03 18:57:46'),(19,29,23,5,'','2026-01-04 16:24:20'),(20,29,1,5,'','2026-01-05 16:55:12'),(21,29,1,1,'','2026-01-05 16:55:16'),(22,29,28,1,'','2026-01-05 17:54:48'),(23,29,28,1,'','2026-01-05 17:54:51'),(24,29,28,1,'yếu','2026-01-05 17:55:05'),(25,29,28,1,'gà','2026-01-05 17:55:12'),(26,29,29,1,'yếu','2026-01-05 17:57:55'),(27,29,29,3,'','2026-01-05 17:58:13'),(28,29,29,4,'','2026-01-05 17:58:18'),(29,29,29,4,'','2026-01-05 17:58:33'),(30,29,29,5,'','2026-01-05 17:58:38'),(31,29,29,5,'','2026-01-05 18:00:08'),(32,29,29,5,'','2026-01-05 18:00:13'),(33,29,29,4,'','2026-01-05 18:00:18'),(34,29,29,1,'','2026-01-05 18:00:21'),(35,29,29,5,'','2026-01-05 18:00:30'),(36,29,29,5,'','2026-01-05 18:00:35');
+/*!40000 ALTER TABLE `course_reviews` ENABLE KEYS */;
+UNLOCK TABLES;
 
--- --------------------------------------------------------
+--
+-- Table structure for table `courses`
+--
+
+DROP TABLE IF EXISTS `courses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `courses` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` text,
+  `tuition` varchar(100) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `teacher` varchar(100) DEFAULT 'UniGuide Elite',
+  `rating` decimal(2,1) DEFAULT '5.0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `courses`
+--
+
+LOCK TABLES `courses` WRITE;
+/*!40000 ALTER TABLE `courses` DISABLE KEYS */;
+INSERT INTO `courses` VALUES (1,'Lập trình Python từ cơ bản đến nâng cao','Làm chủ ngôn ngữ Python để phát triển web, phân tích dữ liệu và AI.','2.500.000đ','cntt.jpg','ThS. Trần Văn Hoàng',4.9,'2026-01-05 17:16:50'),(2,'Thiết kế đồ họa với Adobe Photoshop','Kỹ năng chỉnh sửa ảnh chuyên nghiệp và thiết kế Banner quảng cáo.','1.800.000đ','Thiết kế đồ họa.jpg','Chuyên gia Lê Minh Tâm',4.7,'2026-01-05 17:16:50'),(3,'Tiếng Anh giao tiếp cho người đi làm','Luyện phản xạ nghe nói tự nhiên trong môi trường công sở quốc tế.','3.200.000đ','Ngôn ngữ Anh.jpg','Cô Ms. Anna Green',4.8,'2026-01-05 17:16:50'),(4,'Kỹ thuật sửa chữa Ô tô đời mới','Thực hành chẩn đoán lỗi bằng máy tính và bảo trì động cơ hiện đại.','5.500.000đ','Công nghệ kỹ thuật ô tô.jpg','Kỹ sư Nguyễn Công Nghệ',4.6,'2026-01-05 17:16:50'),(5,'Kế toán tổng hợp thực hành','Hướng dẫn kê khai thuế, lập báo cáo tài chính trên phần mềm MISA.','2.200.000đ','Kế toán - Kiểm toán.jpg','Bà Phạm Thu Hà',4.5,'2026-01-05 17:16:50'),(6,'Marketing Online trên Facebook & Google','Chiến lược chạy quảng cáo tối ưu ngân sách và tăng chuyển đổi.','2.800.000đ','marketing.jpg','Ông Phan Anh Digital',4.9,'2026-01-05 17:16:50'),(7,'Kỹ năng tư vấn Tâm lý học đường','Trang bị phương pháp lắng nghe và giải quyết khủng hoảng tâm lý.','1.500.000đ','Tâm lý học.jpg','TS. Đặng Hoàng Giang',4.8,'2026-01-05 17:16:50'),(8,'Phân tích dữ liệu với Data Science','Sử dụng công cụ SQL và Tableau để trực quan hóa dữ liệu kinh doanh.','4.500.000đ','Khoa học Dữ liệu (Data Science).jpg','ThS. Lý Minh Triết',4.7,'2026-01-05 17:16:50'),(9,'Lập trình ứng dụng Android & iOS','Phát triển Mobile App đa nền tảng với Flutter và React Native.','3.800.000đ','kythuatphanmem.jpg','Anh Lê Dev Mobile',4.9,'2026-01-05 17:16:50'),(10,'Thương mại điện tử cho người khởi nghiệp','Quy trình vận hành gian hàng trên Shopee, TikTok Shop từ A-Z.','1.200.000đ','Thương mại điện tử.jpg','Chuyên gia Trần Kim',4.4,'2026-01-05 17:16:50'),(11,'Thiết kế Game 2D & 3D cơ bản','Làm quen với Unity và quy trình xây dựng cốt truyện cho trò chơi.','4.200.000đ','Thiết kế Game & Multimedia.jpg','Họa sĩ Game Đỗ Nam',4.7,'2026-01-05 17:16:50'),(12,'Nghiệp vụ hướng dẫn viên Du lịch','Kỹ năng quản lý đoàn và thuyết minh tại các điểm di tích lịch sử.','2.100.000đ','Quản trị Dịch vụ Du lịch & Lữ hành.jpg','Ông Vương Lữ Hành',4.6,'2026-01-05 17:16:50'),(13,'Luyện thi IELTS 6.5 cấp tốc','Tập trung giải đề và sửa lỗi phát âm, ngữ pháp trong 3 tháng.','6.000.000đ','Ngôn ngữ Anh.jpg','Thầy James Cook',4.9,'2026-01-05 17:16:50'),(14,'Kỹ năng quản lý Chuỗi cung ứng','Tối ưu hóa quy trình kho vận và giảm thiểu chi phí vận chuyển.','3.500.000đ','thumb_logistics.jpg','ThS. Nguyễn Văn Kho',4.7,'2026-01-05 17:16:50'),(15,'Trí tuệ nhân tạo & Máy học','Ứng dụng thuật toán AI vào giải quyết các bài toán dự báo phức tạp.','5.800.000đ','Trí tuệ nhân tạo (AI).jpg','GS. Ngô Bảo Anh',5.0,'2026-01-05 17:16:50'),(16,'Dược lý học và cách sử dụng thuốc','Kiến thức cơ bản về các nhóm thuốc và an toàn trong sử dụng dược phẩm.','2.900.000đ','Dược học.jpg','DS. Lê Thị Thu Thủy',4.8,'2026-01-05 17:16:50'),(17,'Thiết kế kiến trúc nội thất','Sử dụng 3ds Max và SketchUp để dựng phối cảnh nhà ở hiện đại.','3.600.000đ','Kiến trúc.jpg','KTS. Hoàng Minh',4.5,'2026-01-05 17:16:50'),(18,'Kỹ thuật điều khiển tự động hóa','Lập trình PLC và thiết kế hệ thống robot trong sản xuất công nghiệp.','4.900.000đ','Kỹ thuật Điều khiển & Tự động hóa.jpg','TS. Vũ Tự Động',4.7,'2026-01-05 17:16:50'),(19,'Tiếng Nhật giao tiếp N4','Học bảng chữ cái và các cấu trúc giao tiếp thông dụng hàng ngày.','1.900.000đ','Ngôn ngữ Nhật.jpg','Sensei Sakura',4.6,'2026-01-05 17:16:50'),(20,'Nghệ thuật trình diễn đa phương tiện','Phối hợp âm thanh, ánh sáng và video cho các sự kiện sân khấu.','2.700.000đ','Truyền thông đa phương tiện.jpg','Đạo diễn Nguyễn Art',4.5,'2026-01-05 17:16:50'),(21,'Công nghệ Chip và Bán dẫn cơ bản','Tìm hiểu về quy trình sản xuất tấm Wafer và thiết kế mạch tích hợp.','7.500.000đ','Công nghệ Kỹ thuật Chip bán dẫn.jpg','TS. Trần Vi Mạch',4.9,'2026-01-05 17:16:50'),(22,'Kinh tế đối ngoại và XNK','Nghiệp vụ thư tín thương mại và quy trình thanh toán quốc tế.','3.000.000đ','qtktdj.jpg','Bà Lê Xuất Nhập',4.8,'2026-01-05 17:16:50'),(23,'Chăm sóc sức khỏe Răng Hàm Mặt','Kiến thức về vệ sinh răng miệng và các bệnh lý nha khoa thường gặp.','2.500.000đ','Răng - Hàm - Mặt.jpg','BS. Cao Nha Khoa',4.7,'2026-01-05 17:16:50'),(24,'Thiết kế thời trang ứng dụng','Cắt may cơ bản và cách phối màu cho trang phục dạo phố.','1.600.000đ','Thiết kế thời trang.jpg','NTK. Minh Hạnh',4.6,'2026-01-05 17:16:50'),(25,'Công nghệ sinh học trong nông nghiệp','Ứng dụng cấy mô và tạo giống cây trồng năng suất cao.','2.200.000đ','Công nghệ Sinh học.jpg','ThS. Nguyễn Cây Giống',4.4,'2026-01-05 17:16:50'),(26,'Luật kinh doanh cho doanh nghiệp','Hiểu về hợp đồng kinh tế và các quy định pháp luật hiện hành.','2.000.000đ','Luật kinh tế.jpg','LS. Nguyễn Văn Luật',4.8,'2026-01-05 17:16:50'),(27,'Học máy ứng dụng trong Fintech','Sử dụng Big Data để đánh giá rủi ro tín dụng và đầu tư chứng khoán.','5.200.000đ','Công nghệ Tài chính (Fintech).jpg','Ông Tài Chính Số',4.9,'2026-01-05 17:16:50'),(28,'Quản trị khách sạn 5 sao','Quy trình đón tiếp khách quốc tế và quản lý buồng phòng chuyên nghiệp.','3.400.000đ','Quản trị Khách sạn.jpg','Bà Mai Hotel',4.7,'2026-01-05 17:16:50'),(29,'An toàn lao động trong xây dựng','Các quy tắc bảo hộ và phòng chống tai nạn tại công trường.','1.000.000đ','Kỹ thuật Xây dựng.jpg','KS. Bảo Hộ',3.8,'2026-01-05 17:16:50'),(32,'1','','13','1767723076_ga1.jpg','1',5.0,'2026-01-06 18:11:16');
+/*!40000 ALTER TABLE `courses` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `enrollments`
 --
 
+DROP TABLE IF EXISTS `enrollments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `enrollments` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `course_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `course_id` int NOT NULL,
   `status` varchar(20) DEFAULT 'active',
-  `created_at` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `enrollments`
 --
 
-INSERT INTO `enrollments` (`id`, `user_id`, `course_id`, `status`, `created_at`) VALUES
-(1, 29, 0, 'active', '2026-01-03 16:45:04'),
-(2, 29, 41, 'active', '2026-01-03 16:52:39'),
-(3, 29, 41, 'active', '2026-01-03 16:53:04'),
-(4, 29, 41, 'active', '2026-01-03 16:55:41'),
-(5, 29, 42, 'active', '2026-01-03 17:08:04'),
-(6, 29, 41, 'active', '2026-01-03 17:12:21'),
-(7, 29, 40, 'active', '2026-01-03 17:13:48'),
-(8, 29, 17, 'active', '2026-01-03 17:26:59');
-
--- --------------------------------------------------------
+LOCK TABLES `enrollments` WRITE;
+/*!40000 ALTER TABLE `enrollments` DISABLE KEYS */;
+INSERT INTO `enrollments` VALUES (1,29,0,'active','2026-01-03 16:45:04'),(2,29,41,'active','2026-01-03 16:52:39'),(3,29,41,'active','2026-01-03 16:53:04'),(4,29,41,'active','2026-01-03 16:55:41'),(5,29,42,'active','2026-01-03 17:08:04'),(6,29,41,'active','2026-01-03 17:12:21'),(7,29,40,'active','2026-01-03 17:13:48'),(8,29,17,'active','2026-01-03 17:26:59');
+/*!40000 ALTER TABLE `enrollments` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `entry_scores`
 --
 
+DROP TABLE IF EXISTS `entry_scores`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `entry_scores` (
-  `id` int(11) NOT NULL,
-  `uni_id` int(11) DEFAULT NULL,
-  `major_id` int(11) DEFAULT NULL,
-  `year` int(11) DEFAULT 2024,
-  `score` float DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `id` int NOT NULL AUTO_INCREMENT,
+  `uni_id` int DEFAULT NULL,
+  `major_id` int DEFAULT NULL,
+  `year` int DEFAULT '2024',
+  `score` float DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `uni_id` (`uni_id`),
+  KEY `major_id` (`major_id`),
+  CONSTRAINT `entry_scores_ibfk_1` FOREIGN KEY (`uni_id`) REFERENCES `universities` (`id`),
+  CONSTRAINT `entry_scores_ibfk_2` FOREIGN KEY (`major_id`) REFERENCES `majors` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9536 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `entry_scores`
 --
 
-INSERT INTO `entry_scores` (`id`, `uni_id`, `major_id`, `year`, `score`) VALUES
-(7199, 44, 43, 2023, 26.1666),
-(7200, 45, 43, 2023, 26.2905),
-(7201, 44, 43, 2024, 27.4529),
-(7202, 45, 43, 2024, 26.8931),
-(7203, 44, 43, 2025, 27.6069),
-(7204, 45, 43, 2025, 27.855),
-(7206, 4, 8, 2023, 27.9545),
-(7207, 4, 8, 2024, 27.7073),
-(7208, 4, 8, 2025, 29.1729),
-(7209, 7, 8, 2023, 27.2428),
-(7210, 7, 8, 2024, 27.1953),
-(7211, 7, 8, 2025, 28.7483),
-(7212, 27, 8, 2023, 26.6552),
-(7213, 27, 8, 2024, 27.5314),
-(7214, 27, 8, 2025, 28.1912),
-(7215, 41, 8, 2023, 26.8618),
-(7216, 41, 8, 2024, 28.2353),
-(7217, 41, 8, 2025, 29.091),
-(7218, 59, 8, 2023, 27.2493),
-(7219, 59, 8, 2024, 27.4733),
-(7220, 59, 8, 2025, 28.1187),
-(7221, 4, 9, 2023, 26.6736),
-(7222, 4, 9, 2024, 27.5121),
-(7223, 4, 9, 2025, 28.0396),
-(7224, 7, 9, 2023, 28.1615),
-(7225, 7, 9, 2024, 27.189),
-(7226, 7, 9, 2025, 27.9603),
-(7227, 27, 9, 2023, 26.7345),
-(7228, 27, 9, 2024, 28.2914),
-(7229, 27, 9, 2025, 27.7539),
-(7230, 41, 9, 2023, 28.3949),
-(7231, 41, 9, 2024, 27.2131),
-(7232, 41, 9, 2025, 29.3807),
-(7233, 59, 9, 2023, 27.7643),
-(7234, 59, 9, 2024, 27.1793),
-(7235, 59, 9, 2025, 29.1035),
-(7236, 4, 10, 2023, 28.4796),
-(7237, 4, 10, 2024, 27.5874),
-(7238, 4, 10, 2025, 28.9985),
-(7239, 7, 10, 2023, 26.7301),
-(7240, 7, 10, 2024, 27.1548),
-(7241, 7, 10, 2025, 28.0841),
-(7242, 27, 10, 2023, 27.4558),
-(7243, 27, 10, 2024, 27.5266),
-(7244, 27, 10, 2025, 27.7657),
-(7245, 41, 10, 2023, 26.7487),
-(7246, 41, 10, 2024, 26.9465),
-(7247, 41, 10, 2025, 28.9862),
-(7248, 59, 10, 2023, 26.5914),
-(7249, 59, 10, 2024, 28.4987),
-(7250, 59, 10, 2025, 29.219),
-(7251, 4, 41, 2023, 27.0992),
-(7252, 4, 41, 2024, 28.3387),
-(7253, 4, 41, 2025, 28.896),
-(7254, 7, 41, 2023, 27.9638),
-(7255, 7, 41, 2024, 27.6311),
-(7256, 7, 41, 2025, 28.764),
-(7257, 27, 41, 2023, 27.4268),
-(7258, 27, 41, 2024, 27.342),
-(7259, 27, 41, 2025, 28.9297),
-(7260, 41, 41, 2023, 27.1222),
-(7261, 41, 41, 2024, 27.3222),
-(7262, 41, 41, 2025, 27.7445),
-(7263, 59, 41, 2023, 27.2556),
-(7264, 59, 41, 2024, 27.5447),
-(7265, 59, 41, 2025, 28.4568),
-(7269, 29, 34, 2023, 26.4746),
-(7270, 29, 34, 2024, 26.0674),
-(7271, 29, 34, 2025, 27.9131),
-(7272, 34, 34, 2023, 26.3636),
-(7273, 34, 34, 2024, 24.0784),
-(7274, 34, 34, 2025, 27.3013),
-(7275, 35, 34, 2023, 26.2713),
-(7276, 35, 34, 2024, 25.4524),
-(7277, 35, 34, 2025, 25.4483),
-(7278, 49, 34, 2023, 24.8842),
-(7279, 49, 34, 2024, 24.0761),
-(7280, 49, 34, 2025, 25.7277),
-(7281, 54, 34, 2023, 24.4105),
-(7282, 54, 34, 2024, 26.8695),
-(7283, 54, 34, 2025, 26.1157),
-(7284, 29, 44, 2023, 26.9703),
-(7285, 29, 44, 2024, 26.5044),
-(7286, 29, 44, 2025, 25.6108),
-(7287, 34, 44, 2023, 25.541),
-(7288, 34, 44, 2024, 26.8725),
-(7289, 34, 44, 2025, 25.7394),
-(7290, 35, 44, 2023, 25.0798),
-(7291, 35, 44, 2024, 24.1805),
-(7292, 35, 44, 2025, 25.6632),
-(7293, 49, 44, 2023, 26.7744),
-(7294, 49, 44, 2024, 26.8825),
-(7295, 49, 44, 2025, 25.0891),
-(7296, 54, 44, 2023, 24.7981),
-(7297, 54, 44, 2024, 24.7231),
-(7298, 54, 44, 2025, 26.2213),
-(7299, 29, 45, 2023, 24.9372),
-(7300, 29, 45, 2024, 25.0219),
-(7301, 29, 45, 2025, 27.2981),
-(7302, 34, 45, 2023, 26.4248),
-(7303, 34, 45, 2024, 26.2299),
-(7304, 34, 45, 2025, 25.8748),
-(7305, 35, 45, 2023, 24.6844),
-(7306, 35, 45, 2024, 24.7974),
-(7307, 35, 45, 2025, 26.9341),
-(7308, 49, 45, 2023, 25.2782),
-(7309, 49, 45, 2024, 24.5887),
-(7310, 49, 45, 2025, 27.1089),
-(7311, 54, 45, 2023, 26.7785),
-(7312, 54, 45, 2024, 25.5657),
-(7313, 54, 45, 2025, 27.4932),
-(7332, 12, 19, 2023, 27.2688),
-(7333, 12, 19, 2024, 26.8646),
-(7334, 12, 19, 2025, 28.0163),
-(7335, 48, 19, 2023, 25.9876),
-(7336, 48, 19, 2024, 26.3894),
-(7337, 48, 19, 2025, 29.4841),
-(7338, 50, 19, 2023, 25.7522),
-(7339, 50, 19, 2024, 26.8086),
-(7340, 50, 19, 2025, 29.2864),
-(7341, 55, 19, 2023, 26.5063),
-(7342, 55, 19, 2024, 28.1724),
-(7343, 55, 19, 2025, 27.8431),
-(7344, 12, 46, 2023, 27.1983),
-(7345, 12, 46, 2024, 26.9622),
-(7346, 12, 46, 2025, 28.7159),
-(7347, 48, 46, 2023, 26.193),
-(7348, 48, 46, 2024, 28.3175),
-(7349, 48, 46, 2025, 26.5084),
-(7350, 50, 46, 2023, 26.0894),
-(7351, 50, 46, 2024, 28.422),
-(7352, 50, 46, 2025, 27.3416),
-(7353, 55, 46, 2023, 26.9421),
-(7354, 55, 46, 2024, 27.1857),
-(7355, 55, 46, 2025, 27.6024),
-(7356, 12, 47, 2023, 25.9547),
-(7357, 12, 47, 2024, 27.4661),
-(7358, 12, 47, 2025, 28.9667),
-(7359, 48, 47, 2023, 25.9351),
-(7360, 48, 47, 2024, 26.2753),
-(7361, 48, 47, 2025, 29.0714),
-(7362, 50, 47, 2023, 27.031),
-(7363, 50, 47, 2024, 28.4406),
-(7364, 50, 47, 2025, 27.6103),
-(7365, 55, 47, 2023, 28.2295),
-(7366, 55, 47, 2024, 26.8166),
-(7367, 55, 47, 2025, 27.8947),
-(7395, 28, 23, 2023, 17.0315),
-(7396, 28, 23, 2024, 19.5788),
-(7397, 28, 23, 2025, 17.7994),
-(7398, 31, 23, 2023, 17.2605),
-(7399, 31, 23, 2024, 19.9043),
-(7400, 31, 23, 2025, 18.74),
-(7401, 39, 23, 2023, 20.9872),
-(7402, 39, 23, 2024, 19.716),
-(7403, 39, 23, 2025, 18.6185),
-(7404, 51, 23, 2023, 20.9445),
-(7405, 51, 23, 2024, 19.8669),
-(7406, 51, 23, 2025, 19.5012),
-(7407, 52, 23, 2023, 20.9051),
-(7408, 52, 23, 2024, 17.0221),
-(7409, 52, 23, 2025, 17.3952),
-(7410, 69, 23, 2023, 18.9098),
-(7411, 69, 23, 2024, 17.3634),
-(7412, 69, 23, 2025, 17.0873),
-(7413, 75, 23, 2023, 20.3465),
-(7414, 75, 23, 2024, 17.4707),
-(7415, 75, 23, 2025, 17.3138),
-(7416, 28, 24, 2023, 17.1569),
-(7417, 28, 24, 2024, 20.8431),
-(7418, 28, 24, 2025, 19.7448),
-(7419, 31, 24, 2023, 19.1946),
-(7420, 31, 24, 2024, 19.7387),
-(7421, 31, 24, 2025, 20.1096),
-(7422, 39, 24, 2023, 20.3321),
-(7423, 39, 24, 2024, 20.3318),
-(7424, 39, 24, 2025, 19.6624),
-(7425, 51, 24, 2023, 20.3169),
-(7426, 51, 24, 2024, 17.5971),
-(7427, 51, 24, 2025, 18.0349),
-(7428, 52, 24, 2023, 20.3832),
-(7429, 52, 24, 2024, 18.8111),
-(7430, 52, 24, 2025, 19.9061),
-(7431, 69, 24, 2023, 18.0971),
-(7432, 69, 24, 2024, 17.7674),
-(7433, 69, 24, 2025, 17.5456),
-(7434, 75, 24, 2023, 17.4256),
-(7435, 75, 24, 2024, 17.4913),
-(7436, 75, 24, 2025, 18.1797),
-(7437, 28, 33, 2023, 17.4246),
-(7438, 28, 33, 2024, 19.584),
-(7439, 28, 33, 2025, 20.6463),
-(7440, 31, 33, 2023, 19.4792),
-(7441, 31, 33, 2024, 18.4572),
-(7442, 31, 33, 2025, 20.8485),
-(7443, 39, 33, 2023, 19.8707),
-(7444, 39, 33, 2024, 19.8082),
-(7445, 39, 33, 2025, 18.4287),
-(7446, 51, 33, 2023, 19.719),
-(7447, 51, 33, 2024, 18.3089),
-(7448, 51, 33, 2025, 19.3877),
-(7449, 52, 33, 2023, 17.0115),
-(7450, 52, 33, 2024, 17.8946),
-(7451, 52, 33, 2025, 17.4386),
-(7452, 69, 33, 2023, 20.5093),
-(7453, 69, 33, 2024, 17.2305),
-(7454, 69, 33, 2025, 19.6244),
-(7455, 75, 33, 2023, 17.4309),
-(7456, 75, 33, 2024, 19.281),
-(7457, 75, 33, 2025, 19.1125),
-(7458, 28, 48, 2023, 20.7196),
-(7459, 28, 48, 2024, 17.2602),
-(7460, 28, 48, 2025, 19.1422),
-(7461, 31, 48, 2023, 18.9305),
-(7462, 31, 48, 2024, 20.2259),
-(7463, 31, 48, 2025, 19.338),
-(7464, 39, 48, 2023, 19.0122),
-(7465, 39, 48, 2024, 20.0472),
-(7466, 39, 48, 2025, 18.1992),
-(7467, 51, 48, 2023, 17.8546),
-(7468, 51, 48, 2024, 17.6754),
-(7469, 51, 48, 2025, 17.8133),
-(7470, 52, 48, 2023, 19.04),
-(7471, 52, 48, 2024, 20.7603),
-(7472, 52, 48, 2025, 17.6815),
-(7473, 69, 48, 2023, 17.1265),
-(7474, 69, 48, 2024, 19.5881),
-(7475, 69, 48, 2025, 17.5608),
-(7476, 75, 48, 2023, 20.0397),
-(7477, 75, 48, 2024, 18.5164),
-(7478, 75, 48, 2025, 19.4626),
-(7479, 28, 49, 2023, 20.7641),
-(7480, 28, 49, 2024, 20.4325),
-(7481, 28, 49, 2025, 18.8703),
-(7482, 31, 49, 2023, 20.054),
-(7483, 31, 49, 2024, 18.6589),
-(7484, 31, 49, 2025, 20.1327),
-(7485, 39, 49, 2023, 19.687),
-(7486, 39, 49, 2024, 17.0365),
-(7487, 39, 49, 2025, 17.1219),
-(7488, 51, 49, 2023, 17.4996),
-(7489, 51, 49, 2024, 19.1326),
-(7490, 51, 49, 2025, 18.1641),
-(7491, 52, 49, 2023, 20.4225),
-(7492, 52, 49, 2024, 18.6203),
-(7493, 52, 49, 2025, 18.8342),
-(7494, 69, 49, 2023, 17.3101),
-(7495, 69, 49, 2024, 17.048),
-(7496, 69, 49, 2025, 20.3096),
-(7497, 75, 49, 2023, 17.4038),
-(7498, 75, 49, 2024, 17.0904),
-(7499, 75, 49, 2025, 20.2406),
-(7522, 14, 16, 2023, 25.9319),
-(7523, 14, 16, 2024, 23.9378),
-(7524, 14, 16, 2025, 23.893),
-(7525, 23, 16, 2023, 25.6518),
-(7526, 23, 16, 2024, 22.5801),
-(7527, 23, 16, 2025, 25.9449),
-(7528, 32, 16, 2023, 23.9842),
-(7529, 32, 16, 2024, 24.0864),
-(7530, 32, 16, 2025, 22.4795),
-(7531, 41, 16, 2023, 22.1381),
-(7532, 41, 16, 2024, 25.2521),
-(7533, 41, 16, 2025, 25.8462),
-(7534, 46, 16, 2023, 23.4746),
-(7535, 46, 16, 2024, 25.8345),
-(7536, 46, 16, 2025, 24.7486),
-(7537, 47, 16, 2023, 24.2397),
-(7538, 47, 16, 2024, 24.9525),
-(7539, 47, 16, 2025, 22.0435),
-(7540, 53, 16, 2023, 25.3599),
-(7541, 53, 16, 2024, 22.669),
-(7542, 53, 16, 2025, 23.2654),
-(7543, 57, 16, 2023, 22.3198),
-(7544, 57, 16, 2024, 23.803),
-(7545, 57, 16, 2025, 22.0556),
-(7546, 14, 22, 2023, 24.8688),
-(7547, 14, 22, 2024, 24.1771),
-(7548, 14, 22, 2025, 24.2793),
-(7549, 23, 22, 2023, 22.8652),
-(7550, 23, 22, 2024, 23.488),
-(7551, 23, 22, 2025, 22.8443),
-(7552, 32, 22, 2023, 25.7576),
-(7553, 32, 22, 2024, 22.2551),
-(7554, 32, 22, 2025, 24.0027),
-(7555, 41, 22, 2023, 23.2481),
-(7556, 41, 22, 2024, 22.2326),
-(7557, 41, 22, 2025, 23.4186),
-(7558, 46, 22, 2023, 24.3954),
-(7559, 46, 22, 2024, 25.721),
-(7560, 46, 22, 2025, 25.4188),
-(7561, 47, 22, 2023, 23.9311),
-(7562, 47, 22, 2024, 25.3991),
-(7563, 47, 22, 2025, 25.2022),
-(7564, 53, 22, 2023, 23.8138),
-(7565, 53, 22, 2024, 25.4623),
-(7566, 53, 22, 2025, 25.87),
-(7567, 57, 22, 2023, 22.9634),
-(7568, 57, 22, 2024, 23.2067),
-(7569, 57, 22, 2025, 25.1435),
-(7570, 14, 35, 2023, 22.0972),
-(7571, 14, 35, 2024, 25.0557),
-(7572, 14, 35, 2025, 24.9867),
-(7573, 23, 35, 2023, 23.7665),
-(7574, 23, 35, 2024, 25.8722),
-(7575, 23, 35, 2025, 24.0617),
-(7576, 32, 35, 2023, 24.692),
-(7577, 32, 35, 2024, 25.275),
-(7578, 32, 35, 2025, 22.2988),
-(7579, 41, 35, 2023, 25.6691),
-(7580, 41, 35, 2024, 23.4492),
-(7581, 41, 35, 2025, 22.2385),
-(7582, 46, 35, 2023, 22.8448),
-(7583, 46, 35, 2024, 25.5086),
-(7584, 46, 35, 2025, 25.0084),
-(7585, 47, 35, 2023, 22.5164),
-(7586, 47, 35, 2024, 23.5566),
-(7587, 47, 35, 2025, 24.2341),
-(7588, 53, 35, 2023, 24.5005),
-(7589, 53, 35, 2024, 23.8003),
-(7590, 53, 35, 2025, 23.5001),
-(7591, 57, 35, 2023, 24.0994),
-(7592, 57, 35, 2024, 23.9969),
-(7593, 57, 35, 2025, 25.6864),
-(7594, 14, 50, 2023, 22.441),
-(7595, 14, 50, 2024, 25.1459),
-(7596, 14, 50, 2025, 24.4066),
-(7597, 23, 50, 2023, 24.5954),
-(7598, 23, 50, 2024, 23.7569),
-(7599, 23, 50, 2025, 22.9984),
-(7600, 32, 50, 2023, 25.7212),
-(7601, 32, 50, 2024, 25.611),
-(7602, 32, 50, 2025, 24.8913),
-(7603, 41, 50, 2023, 25.6237),
-(7604, 41, 50, 2024, 23.4443),
-(7605, 41, 50, 2025, 22.3507),
-(7606, 46, 50, 2023, 23.4203),
-(7607, 46, 50, 2024, 24.0497),
-(7608, 46, 50, 2025, 23.9873),
-(7609, 47, 50, 2023, 25.7875),
-(7610, 47, 50, 2024, 22.9756),
-(7611, 47, 50, 2025, 23.5155),
-(7612, 53, 50, 2023, 22.6505),
-(7613, 53, 50, 2024, 24.7063),
-(7614, 53, 50, 2025, 25.5798),
-(7615, 57, 50, 2023, 23.7802),
-(7616, 57, 50, 2024, 24.1616),
-(7617, 57, 50, 2025, 23.4674),
-(7649, 1, 1, 2023, 25.0653),
-(7650, 1, 1, 2024, 28.8238),
-(7651, 1, 1, 2025, 25.9232),
-(7652, 5, 1, 2023, 24.1445),
-(7653, 5, 1, 2024, 26.9527),
-(7654, 5, 1, 2025, 29.33),
-(7655, 6, 1, 2023, 26.7921),
-(7656, 6, 1, 2024, 24.9706),
-(7657, 6, 1, 2025, 26.4764),
-(7658, 9, 1, 2023, 28.4702),
-(7659, 9, 1, 2024, 26.922),
-(7660, 9, 1, 2025, 26.1992),
-(7661, 10, 1, 2023, 26.2302),
-(7662, 10, 1, 2024, 26.5535),
-(7663, 10, 1, 2025, 26.0768),
-(7664, 11, 1, 2023, 26.7234),
-(7665, 11, 1, 2024, 24.3866),
-(7666, 11, 1, 2025, 28.7627),
-(7667, 13, 1, 2023, 26.654),
-(7668, 13, 1, 2024, 25.9818),
-(7669, 13, 1, 2025, 26.9468),
-(7670, 14, 1, 2023, 27.7888),
-(7671, 14, 1, 2024, 27.1035),
-(7672, 14, 1, 2025, 29.151),
-(7673, 16, 1, 2023, 25.4446),
-(7674, 16, 1, 2024, 28.7701),
-(7675, 16, 1, 2025, 29.5168),
-(7676, 19, 1, 2023, 27.2734),
-(7677, 19, 1, 2024, 26.8169),
-(7678, 19, 1, 2025, 29.264),
-(7679, 20, 1, 2023, 26.8693),
-(7680, 20, 1, 2024, 25.5545),
-(7681, 20, 1, 2025, 29.1647),
-(7682, 23, 1, 2023, 25.1601),
-(7683, 23, 1, 2024, 27.3064),
-(7684, 23, 1, 2025, 28.0518),
-(7685, 24, 1, 2023, 24.3395),
-(7686, 24, 1, 2024, 26.5424),
-(7687, 24, 1, 2025, 26.6932),
-(7688, 67, 1, 2023, 24.8391),
-(7689, 67, 1, 2024, 28.1157),
-(7690, 67, 1, 2025, 28.0613),
-(7691, 72, 1, 2023, 26.9592),
-(7692, 72, 1, 2024, 24.6123),
-(7693, 72, 1, 2025, 29.1838),
-(7694, 1, 2, 2023, 28.0822),
-(7695, 1, 2, 2024, 26.8597),
-(7696, 1, 2, 2025, 27.0519),
-(7697, 5, 2, 2023, 25.6805),
-(7698, 5, 2, 2024, 26.2465),
-(7699, 5, 2, 2025, 26.1911),
-(7700, 6, 2, 2023, 28.2161),
-(7701, 6, 2, 2024, 26.5073),
-(7702, 6, 2, 2025, 29.8881),
-(7703, 9, 2, 2023, 25.9187),
-(7704, 9, 2, 2024, 28.9292),
-(7705, 9, 2, 2025, 28.89),
-(7706, 10, 2, 2023, 28.6623),
-(7707, 10, 2, 2024, 25.6414),
-(7708, 10, 2, 2025, 29.2201),
-(7709, 11, 2, 2023, 25.1765),
-(7710, 11, 2, 2024, 27.2221),
-(7711, 11, 2, 2025, 27.581),
-(7712, 13, 2, 2023, 27.2389),
-(7713, 13, 2, 2024, 27.4512),
-(7714, 13, 2, 2025, 27.5393),
-(7715, 14, 2, 2023, 26.343),
-(7716, 14, 2, 2024, 28.0972),
-(7717, 14, 2, 2025, 28.457),
-(7718, 16, 2, 2023, 28.9934),
-(7719, 16, 2, 2024, 28.5961),
-(7720, 16, 2, 2025, 28.0003),
-(7721, 19, 2, 2023, 25.213),
-(7722, 19, 2, 2024, 26.0643),
-(7723, 19, 2, 2025, 26.6825),
-(7724, 20, 2, 2023, 26.2197),
-(7725, 20, 2, 2024, 25.0508),
-(7726, 20, 2, 2025, 28.5949),
-(7727, 23, 2, 2023, 28.8223),
-(7728, 23, 2, 2024, 27.3267),
-(7729, 23, 2, 2025, 27.1664),
-(7730, 24, 2, 2023, 24.852),
-(7731, 24, 2, 2024, 26.7609),
-(7732, 24, 2, 2025, 26.2484),
-(7733, 67, 2, 2023, 26.9591),
-(7734, 67, 2, 2024, 25.0506),
-(7735, 67, 2, 2025, 26.3758),
-(7736, 72, 2, 2023, 27.727),
-(7737, 72, 2, 2024, 28.5075),
-(7738, 72, 2, 2025, 26.3567),
-(7739, 1, 3, 2023, 27.2611),
-(7740, 1, 3, 2024, 26.2352),
-(7741, 1, 3, 2025, 26.3927),
-(7742, 5, 3, 2023, 24.2578),
-(7743, 5, 3, 2024, 26.1109),
-(7744, 5, 3, 2025, 29.7811),
-(7745, 6, 3, 2023, 26.5727),
-(7746, 6, 3, 2024, 27.5204),
-(7747, 6, 3, 2025, 29.8839),
-(7748, 9, 3, 2023, 27.8584),
-(7749, 9, 3, 2024, 28.64),
-(7750, 9, 3, 2025, 26.6251),
-(7751, 10, 3, 2023, 28.2054),
-(7752, 10, 3, 2024, 25.1515),
-(7753, 10, 3, 2025, 28.1416),
-(7754, 11, 3, 2023, 26.2534),
-(7755, 11, 3, 2024, 25.8421),
-(7756, 11, 3, 2025, 27.4503),
-(7757, 13, 3, 2023, 25.7252),
-(7758, 13, 3, 2024, 25.2753),
-(7759, 13, 3, 2025, 26.2006),
-(7760, 14, 3, 2023, 26.1774),
-(7761, 14, 3, 2024, 26.2851),
-(7762, 14, 3, 2025, 29.8935),
-(7763, 16, 3, 2023, 26.6119),
-(7764, 16, 3, 2024, 27.3792),
-(7765, 16, 3, 2025, 29.0601),
-(7766, 19, 3, 2023, 24.1629),
-(7767, 19, 3, 2024, 27.6342),
-(7768, 19, 3, 2025, 27.6824),
-(7769, 20, 3, 2023, 26.5094),
-(7770, 20, 3, 2024, 28.4998),
-(7771, 20, 3, 2025, 29.9708),
-(7772, 23, 3, 2023, 25.3547),
-(7773, 23, 3, 2024, 25.8609),
-(7774, 23, 3, 2025, 25.2403),
-(7775, 24, 3, 2023, 24.6188),
-(7776, 24, 3, 2024, 26.3733),
-(7777, 24, 3, 2025, 25.0098),
-(7778, 67, 3, 2023, 26.9293),
-(7779, 67, 3, 2024, 28.6171),
-(7780, 67, 3, 2025, 29.2975),
-(7781, 72, 3, 2023, 26.6363),
-(7782, 72, 3, 2024, 24.289),
-(7783, 72, 3, 2025, 28.536),
-(7784, 1, 13, 2023, 25.8132),
-(7785, 1, 13, 2024, 27.458),
-(7786, 1, 13, 2025, 26.8503),
-(7787, 5, 13, 2023, 27.8773),
-(7788, 5, 13, 2024, 27.8359),
-(7789, 5, 13, 2025, 27.5476),
-(7790, 6, 13, 2023, 25.2302),
-(7791, 6, 13, 2024, 27.5083),
-(7792, 6, 13, 2025, 28.8507),
-(7793, 9, 13, 2023, 27.7285),
-(7794, 9, 13, 2024, 26.0905),
-(7795, 9, 13, 2025, 29.2672),
-(7796, 10, 13, 2023, 24.0644),
-(7797, 10, 13, 2024, 26.5205),
-(7798, 10, 13, 2025, 27.4091),
-(7799, 11, 13, 2023, 28.4842),
-(7800, 11, 13, 2024, 24.1936),
-(7801, 11, 13, 2025, 27.5156),
-(7802, 13, 13, 2023, 25.9972),
-(7803, 13, 13, 2024, 26.439),
-(7804, 13, 13, 2025, 26.2034),
-(7805, 14, 13, 2023, 27.7002),
-(7806, 14, 13, 2024, 28.8905),
-(7807, 14, 13, 2025, 28.3522),
-(7808, 16, 13, 2023, 26.0893),
-(7809, 16, 13, 2024, 24.3897),
-(7810, 16, 13, 2025, 25.681),
-(7811, 19, 13, 2023, 26.2357),
-(7812, 19, 13, 2024, 28.1356),
-(7813, 19, 13, 2025, 28.9707),
-(7814, 20, 13, 2023, 26.4469),
-(7815, 20, 13, 2024, 24.3225),
-(7816, 20, 13, 2025, 29.2715),
-(7817, 23, 13, 2023, 24.3902),
-(7818, 23, 13, 2024, 28.1366),
-(7819, 23, 13, 2025, 29.5124),
-(7820, 24, 13, 2023, 24.152),
-(7821, 24, 13, 2024, 26.2228),
-(7822, 24, 13, 2025, 25.6582),
-(7823, 67, 13, 2023, 25.6224),
-(7824, 67, 13, 2024, 25.1377),
-(7825, 67, 13, 2025, 25.821),
-(7826, 72, 13, 2023, 24.692),
-(7827, 72, 13, 2024, 24.997),
-(7828, 72, 13, 2025, 27.9092),
-(7829, 1, 14, 2023, 25.5547),
-(7830, 1, 14, 2024, 28.0459),
-(7831, 1, 14, 2025, 25.5656),
-(7832, 5, 14, 2023, 24.6903),
-(7833, 5, 14, 2024, 25.7548),
-(7834, 5, 14, 2025, 26.7029),
-(7835, 6, 14, 2023, 27.2504),
-(7836, 6, 14, 2024, 25.1429),
-(7837, 6, 14, 2025, 25.9637),
-(7838, 9, 14, 2023, 25.3895),
-(7839, 9, 14, 2024, 28.0566),
-(7840, 9, 14, 2025, 26.1144),
-(7841, 10, 14, 2023, 27.4024),
-(7842, 10, 14, 2024, 27.6686),
-(7843, 10, 14, 2025, 28.136),
-(7844, 11, 14, 2023, 28.6742),
-(7845, 11, 14, 2024, 27.9629),
-(7846, 11, 14, 2025, 25.7918),
-(7847, 13, 14, 2023, 26.0705),
-(7848, 13, 14, 2024, 26.977),
-(7849, 13, 14, 2025, 28.6734),
-(7850, 14, 14, 2023, 28.4361),
-(7851, 14, 14, 2024, 25.1603),
-(7852, 14, 14, 2025, 27.4933),
-(7853, 16, 14, 2023, 27.9856),
-(7854, 16, 14, 2024, 26.448),
-(7855, 16, 14, 2025, 25.2834),
-(7856, 19, 14, 2023, 28.073),
-(7857, 19, 14, 2024, 28.5148),
-(7858, 19, 14, 2025, 25.3551),
-(7859, 20, 14, 2023, 27.231),
-(7860, 20, 14, 2024, 24.0898),
-(7861, 20, 14, 2025, 25.7558),
-(7862, 23, 14, 2023, 27.5096),
-(7863, 23, 14, 2024, 24.2807),
-(7864, 23, 14, 2025, 25.8745),
-(7865, 24, 14, 2023, 27.5306),
-(7866, 24, 14, 2024, 24.0295),
-(7867, 24, 14, 2025, 29.5558),
-(7868, 67, 14, 2023, 26.6904),
-(7869, 67, 14, 2024, 28.7846),
-(7870, 67, 14, 2025, 25.8516),
-(7871, 72, 14, 2023, 28.9045),
-(7872, 72, 14, 2024, 25.9678),
-(7873, 72, 14, 2025, 25.1253),
-(7874, 1, 21, 2023, 28.7232),
-(7875, 1, 21, 2024, 27.24),
-(7876, 1, 21, 2025, 27.0305),
-(7877, 5, 21, 2023, 24.4323),
-(7878, 5, 21, 2024, 25.0701),
-(7879, 5, 21, 2025, 29.0535),
-(7880, 6, 21, 2023, 26.0572),
-(7881, 6, 21, 2024, 27.1257),
-(7882, 6, 21, 2025, 29.4568),
-(7883, 9, 21, 2023, 26.9068),
-(7884, 9, 21, 2024, 25.1637),
-(7885, 9, 21, 2025, 27.0983),
-(7886, 10, 21, 2023, 26.0002),
-(7887, 10, 21, 2024, 27.7059),
-(7888, 10, 21, 2025, 27.5292),
-(7889, 11, 21, 2023, 25.5283),
-(7890, 11, 21, 2024, 24.0538),
-(7891, 11, 21, 2025, 25.6841),
-(7892, 13, 21, 2023, 27.2591),
-(7893, 13, 21, 2024, 28.2431),
-(7894, 13, 21, 2025, 26.4381),
-(7895, 14, 21, 2023, 28.4615),
-(7896, 14, 21, 2024, 26.993),
-(7897, 14, 21, 2025, 26.5805),
-(7898, 16, 21, 2023, 27.9236),
-(7899, 16, 21, 2024, 28.8766),
-(7900, 16, 21, 2025, 27.6121),
-(7901, 19, 21, 2023, 27.4307),
-(7902, 19, 21, 2024, 28.3172),
-(7903, 19, 21, 2025, 26.2941),
-(7904, 20, 21, 2023, 27.5188),
-(7905, 20, 21, 2024, 27.7116),
-(7906, 20, 21, 2025, 28.0018),
-(7907, 23, 21, 2023, 27.8743),
-(7908, 23, 21, 2024, 24.3659),
-(7909, 23, 21, 2025, 25.2067),
-(7910, 24, 21, 2023, 28.9358),
-(7911, 24, 21, 2024, 28.059),
-(7912, 24, 21, 2025, 25.4874),
-(7913, 67, 21, 2023, 24.2599),
-(7914, 67, 21, 2024, 28.8376),
-(7915, 67, 21, 2025, 28.4082),
-(7916, 72, 21, 2023, 26.5283),
-(7917, 72, 21, 2024, 26.4167),
-(7918, 72, 21, 2025, 29.4985),
-(7919, 1, 31, 2023, 24.2425),
-(7920, 1, 31, 2024, 26.7171),
-(7921, 1, 31, 2025, 27.858),
-(7922, 5, 31, 2023, 25.1386),
-(7923, 5, 31, 2024, 26.1191),
-(7924, 5, 31, 2025, 27.1798),
-(7925, 6, 31, 2023, 28.5417),
-(7926, 6, 31, 2024, 25.1692),
-(7927, 6, 31, 2025, 27.2206),
-(7928, 9, 31, 2023, 26.5955),
-(7929, 9, 31, 2024, 25.3156),
-(7930, 9, 31, 2025, 28.7914),
-(7931, 10, 31, 2023, 24.0103),
-(7932, 10, 31, 2024, 27.6774),
-(7933, 10, 31, 2025, 28.3563),
-(7934, 11, 31, 2023, 24.7489),
-(7935, 11, 31, 2024, 27.6758),
-(7936, 11, 31, 2025, 26.1322),
-(7937, 13, 31, 2023, 28.6337),
-(7938, 13, 31, 2024, 28.7718),
-(7939, 13, 31, 2025, 29.958),
-(7940, 14, 31, 2023, 24.4747),
-(7941, 14, 31, 2024, 26.4995),
-(7942, 14, 31, 2025, 26.0733),
-(7943, 16, 31, 2023, 26.868),
-(7944, 16, 31, 2024, 25.12),
-(7945, 16, 31, 2025, 26.9963),
-(7946, 19, 31, 2023, 25.6212),
-(7947, 19, 31, 2024, 26.1171),
-(7948, 19, 31, 2025, 25.722),
-(7949, 20, 31, 2023, 26.2585),
-(7950, 20, 31, 2024, 28.1266),
-(7951, 20, 31, 2025, 28.8574),
-(7952, 23, 31, 2023, 25.9074),
-(7953, 23, 31, 2024, 26.9647),
-(7954, 23, 31, 2025, 29.1015),
-(7955, 24, 31, 2023, 25.6133),
-(7956, 24, 31, 2024, 24.7621),
-(7957, 24, 31, 2025, 28.9707),
-(7958, 67, 31, 2023, 26.5671),
-(7959, 67, 31, 2024, 24.9236),
-(7960, 67, 31, 2025, 26.9164),
-(7961, 72, 31, 2023, 25.8113),
-(7962, 72, 31, 2024, 27.3074),
-(7963, 72, 31, 2025, 26.1029),
-(7964, 1, 32, 2023, 24.5924),
-(7965, 1, 32, 2024, 28.6534),
-(7966, 1, 32, 2025, 26.4896),
-(7967, 5, 32, 2023, 27.488),
-(7968, 5, 32, 2024, 26.9712),
-(7969, 5, 32, 2025, 29.392),
-(7970, 6, 32, 2023, 27.0462),
-(7971, 6, 32, 2024, 26.0552),
-(7972, 6, 32, 2025, 26.1375),
-(7973, 9, 32, 2023, 28.5219),
-(7974, 9, 32, 2024, 28.1969),
-(7975, 9, 32, 2025, 27.4187),
-(7976, 10, 32, 2023, 28.5027),
-(7977, 10, 32, 2024, 24.2577),
-(7978, 10, 32, 2025, 27.7801),
-(7979, 11, 32, 2023, 27.1277),
-(7980, 11, 32, 2024, 26.298),
-(7981, 11, 32, 2025, 27.1072),
-(7982, 13, 32, 2023, 27.6416),
-(7983, 13, 32, 2024, 25.8867),
-(7984, 13, 32, 2025, 28.5087),
-(7985, 14, 32, 2023, 25.8831),
-(7986, 14, 32, 2024, 27.8897),
-(7987, 14, 32, 2025, 28.7991),
-(7988, 16, 32, 2023, 26.3263),
-(7989, 16, 32, 2024, 24.2341),
-(7990, 16, 32, 2025, 29.1916),
-(7991, 19, 32, 2023, 24.2556),
-(7992, 19, 32, 2024, 27.7033),
-(7993, 19, 32, 2025, 27.7498),
-(7994, 20, 32, 2023, 26.6391),
-(7995, 20, 32, 2024, 28.9463),
-(7996, 20, 32, 2025, 26.8138),
-(7997, 23, 32, 2023, 28.2304),
-(7998, 23, 32, 2024, 24.7106),
-(7999, 23, 32, 2025, 25.8619),
-(8000, 24, 32, 2023, 26.1777),
-(8001, 24, 32, 2024, 27.3026),
-(8002, 24, 32, 2025, 29.9801),
-(8003, 67, 32, 2023, 28.9924),
-(8004, 67, 32, 2024, 24.0219),
-(8005, 67, 32, 2025, 25.1323),
-(8006, 72, 32, 2023, 24.5959),
-(8007, 72, 32, 2024, 26.5827),
-(8008, 72, 32, 2025, 26.1256),
-(8009, 1, 36, 2023, 26.88),
-(8010, 1, 36, 2024, 25.0232),
-(8011, 1, 36, 2025, 26.4759),
-(8012, 5, 36, 2023, 28.3099),
-(8013, 5, 36, 2024, 26.1219),
-(8014, 5, 36, 2025, 27.6798),
-(8015, 6, 36, 2023, 26.0334),
-(8016, 6, 36, 2024, 26.1276),
-(8017, 6, 36, 2025, 29.5375),
-(8018, 9, 36, 2023, 25.305),
-(8019, 9, 36, 2024, 26.9123),
-(8020, 9, 36, 2025, 25.6465),
-(8021, 10, 36, 2023, 28.4958),
-(8022, 10, 36, 2024, 24.5394),
-(8023, 10, 36, 2025, 29.2098),
-(8024, 11, 36, 2023, 28.4307),
-(8025, 11, 36, 2024, 28.5239),
-(8026, 11, 36, 2025, 29.3276),
-(8027, 13, 36, 2023, 27.0661),
-(8028, 13, 36, 2024, 26.3478),
-(8029, 13, 36, 2025, 27.5407),
-(8030, 14, 36, 2023, 24.6603),
-(8031, 14, 36, 2024, 24.6791),
-(8032, 14, 36, 2025, 26.4147),
-(8033, 16, 36, 2023, 24.0363),
-(8034, 16, 36, 2024, 24.9372),
-(8035, 16, 36, 2025, 29.577),
-(8036, 19, 36, 2023, 24.0736),
-(8037, 19, 36, 2024, 25.637),
-(8038, 19, 36, 2025, 27.9642),
-(8039, 20, 36, 2023, 28.91),
-(8040, 20, 36, 2024, 24.6573),
-(8041, 20, 36, 2025, 28.5566),
-(8042, 23, 36, 2023, 24.811),
-(8043, 23, 36, 2024, 27.3853),
-(8044, 23, 36, 2025, 29.4933),
-(8045, 24, 36, 2023, 26.3106),
-(8046, 24, 36, 2024, 27.0733),
-(8047, 24, 36, 2025, 28.4348),
-(8048, 67, 36, 2023, 26.9539),
-(8049, 67, 36, 2024, 28.465),
-(8050, 67, 36, 2025, 28.4633),
-(8051, 72, 36, 2023, 27.9216),
-(8052, 72, 36, 2024, 28.2181),
-(8053, 72, 36, 2025, 29.3259),
-(8054, 1, 38, 2023, 27.9749),
-(8055, 1, 38, 2024, 25.8969),
-(8056, 1, 38, 2025, 27.5597),
-(8057, 5, 38, 2023, 26.108),
-(8058, 5, 38, 2024, 26.8606),
-(8059, 5, 38, 2025, 27.9793),
-(8060, 6, 38, 2023, 25.3146),
-(8061, 6, 38, 2024, 26.635),
-(8062, 6, 38, 2025, 29.2314),
-(8063, 9, 38, 2023, 27.2517),
-(8064, 9, 38, 2024, 27.5645),
-(8065, 9, 38, 2025, 28.0675),
-(8066, 10, 38, 2023, 28.6441),
-(8067, 10, 38, 2024, 28.0178),
-(8068, 10, 38, 2025, 26.1566),
-(8069, 11, 38, 2023, 27.7295),
-(8070, 11, 38, 2024, 24.1778),
-(8071, 11, 38, 2025, 29.7007),
-(8072, 13, 38, 2023, 26.9701),
-(8073, 13, 38, 2024, 24.7485),
-(8074, 13, 38, 2025, 29.8321),
-(8075, 14, 38, 2023, 25.9149),
-(8076, 14, 38, 2024, 24.0782),
-(8077, 14, 38, 2025, 29.6462),
-(8078, 16, 38, 2023, 26.9964),
-(8079, 16, 38, 2024, 25.0436),
-(8080, 16, 38, 2025, 26.2286),
-(8081, 19, 38, 2023, 27.0124),
-(8082, 19, 38, 2024, 25.3761),
-(8083, 19, 38, 2025, 27.8431),
-(8084, 20, 38, 2023, 24.0874),
-(8085, 20, 38, 2024, 25.9075),
-(8086, 20, 38, 2025, 29.2754),
-(8087, 23, 38, 2023, 24.6545),
-(8088, 23, 38, 2024, 24.4464),
-(8089, 23, 38, 2025, 25.2682),
-(8090, 24, 38, 2023, 24.002),
-(8091, 24, 38, 2024, 28.2055),
-(8092, 24, 38, 2025, 26.0215),
-(8093, 67, 38, 2023, 26.491),
-(8094, 67, 38, 2024, 28.3906),
-(8095, 67, 38, 2025, 29.48),
-(8096, 72, 38, 2023, 28.2281),
-(8097, 72, 38, 2024, 26.7007),
-(8098, 72, 38, 2025, 25.8191),
-(8099, 1, 39, 2023, 24.9933),
-(8100, 1, 39, 2024, 26.5092),
-(8101, 1, 39, 2025, 29.566),
-(8102, 5, 39, 2023, 24.3025),
-(8103, 5, 39, 2024, 26.8146),
-(8104, 5, 39, 2025, 28.1656),
-(8105, 6, 39, 2023, 26.3842),
-(8106, 6, 39, 2024, 26.424),
-(8107, 6, 39, 2025, 29.9673),
-(8108, 9, 39, 2023, 26.5648),
-(8109, 9, 39, 2024, 26.922),
-(8110, 9, 39, 2025, 26.9155),
-(8111, 10, 39, 2023, 24.8117),
-(8112, 10, 39, 2024, 27.3117),
-(8113, 10, 39, 2025, 29.1237),
-(8114, 11, 39, 2023, 24.6831),
-(8115, 11, 39, 2024, 25.0446),
-(8116, 11, 39, 2025, 28.1734),
-(8117, 13, 39, 2023, 26.7336),
-(8118, 13, 39, 2024, 28.1475),
-(8119, 13, 39, 2025, 27.5368),
-(8120, 14, 39, 2023, 24.2414),
-(8121, 14, 39, 2024, 27.5969),
-(8122, 14, 39, 2025, 27.2601),
-(8123, 16, 39, 2023, 24.5097),
-(8124, 16, 39, 2024, 24.7684),
-(8125, 16, 39, 2025, 27.3128),
-(8126, 19, 39, 2023, 28.2587),
-(8127, 19, 39, 2024, 28.3553),
-(8128, 19, 39, 2025, 29.0003),
-(8129, 20, 39, 2023, 25.9358),
-(8130, 20, 39, 2024, 26.678),
-(8131, 20, 39, 2025, 27.5824),
-(8132, 23, 39, 2023, 28.8783),
-(8133, 23, 39, 2024, 25.6443),
-(8134, 23, 39, 2025, 28.5866),
-(8135, 24, 39, 2023, 27.0001),
-(8136, 24, 39, 2024, 28.2405),
-(8137, 24, 39, 2025, 27.2025),
-(8138, 67, 39, 2023, 27.2909),
-(8139, 67, 39, 2024, 28.8469),
-(8140, 67, 39, 2025, 29.3616),
-(8141, 72, 39, 2023, 26.2677),
-(8142, 72, 39, 2024, 27.2534),
-(8143, 72, 39, 2025, 29.4638),
-(8144, 1, 42, 2023, 26.559),
-(8145, 1, 42, 2024, 28.4036),
-(8146, 1, 42, 2025, 29.3409),
-(8147, 5, 42, 2023, 27.4938),
-(8148, 5, 42, 2024, 28.4462),
-(8149, 5, 42, 2025, 26.7497),
-(8150, 6, 42, 2023, 24.4099),
-(8151, 6, 42, 2024, 25.8002),
-(8152, 6, 42, 2025, 27.7716),
-(8153, 9, 42, 2023, 27.4571),
-(8154, 9, 42, 2024, 27.9708),
-(8155, 9, 42, 2025, 29.4826),
-(8156, 10, 42, 2023, 24.5006),
-(8157, 10, 42, 2024, 28.0551),
-(8158, 10, 42, 2025, 28.774),
-(8159, 11, 42, 2023, 25.7044),
-(8160, 11, 42, 2024, 26.2003),
-(8161, 11, 42, 2025, 25.8882),
-(8162, 13, 42, 2023, 26.8401),
-(8163, 13, 42, 2024, 25.5359),
-(8164, 13, 42, 2025, 29.1593),
-(8165, 14, 42, 2023, 25.1889),
-(8166, 14, 42, 2024, 27.4664),
-(8167, 14, 42, 2025, 28.7653),
-(8168, 16, 42, 2023, 27.4274),
-(8169, 16, 42, 2024, 24.8411),
-(8170, 16, 42, 2025, 28.9233),
-(8171, 19, 42, 2023, 26.0931),
-(8172, 19, 42, 2024, 27.6957),
-(8173, 19, 42, 2025, 27.1991),
-(8174, 20, 42, 2023, 28.9083),
-(8175, 20, 42, 2024, 26.9444),
-(8176, 20, 42, 2025, 29.9971),
-(8177, 23, 42, 2023, 25.1523),
-(8178, 23, 42, 2024, 24.7702),
-(8179, 23, 42, 2025, 25.3939),
-(8180, 24, 42, 2023, 28.6591),
-(8181, 24, 42, 2024, 26.1139),
-(8182, 24, 42, 2025, 26.5923),
-(8183, 67, 42, 2023, 25.6196),
-(8184, 67, 42, 2024, 27.321),
-(8185, 67, 42, 2025, 26.7465),
-(8186, 72, 42, 2023, 27.7692),
-(8187, 72, 42, 2024, 27.6064),
-(8188, 72, 42, 2025, 26.7246),
-(8672, 2, 4, 2023, 27.2429),
-(8673, 2, 4, 2024, 28.0757),
-(8674, 2, 4, 2025, 26.6497),
-(8675, 3, 4, 2023, 27.0212),
-(8676, 3, 4, 2024, 25.1571),
-(8677, 3, 4, 2025, 28.7219),
-(8678, 8, 4, 2023, 26.1382),
-(8679, 8, 4, 2024, 26.5252),
-(8680, 8, 4, 2025, 26.2113),
-(8681, 10, 4, 2023, 25.4809),
-(8682, 10, 4, 2024, 26.7706),
-(8683, 10, 4, 2025, 29.4102),
-(8684, 15, 4, 2023, 28.7391),
-(8685, 15, 4, 2024, 25.4651),
-(8686, 15, 4, 2025, 29.108),
-(8687, 17, 4, 2023, 27.1449),
-(8688, 17, 4, 2024, 26.4003),
-(8689, 17, 4, 2025, 26.5668),
-(8690, 18, 4, 2023, 27.6333),
-(8691, 18, 4, 2024, 28.4662),
-(8692, 18, 4, 2025, 27.4309),
-(8693, 21, 4, 2023, 25.7558),
-(8694, 21, 4, 2024, 28.4863),
-(8695, 21, 4, 2025, 29.1642),
-(8696, 22, 4, 2023, 26.3623),
-(8697, 22, 4, 2024, 26.3185),
-(8698, 22, 4, 2025, 28.506),
-(8699, 25, 4, 2023, 25.5741),
-(8700, 25, 4, 2024, 28.3528),
-(8701, 25, 4, 2025, 29.0417),
-(8702, 26, 4, 2023, 26.15),
-(8703, 26, 4, 2024, 25.6249),
-(8704, 26, 4, 2025, 29.6744),
-(8705, 30, 4, 2023, 25.4975),
-(8706, 30, 4, 2024, 28.464),
-(8707, 30, 4, 2025, 29.8278),
-(8708, 32, 4, 2023, 25.747),
-(8709, 32, 4, 2024, 25.2515),
-(8710, 32, 4, 2025, 29.0166),
-(8711, 33, 4, 2023, 27.3286),
-(8712, 33, 4, 2024, 27.5931),
-(8713, 33, 4, 2025, 27.9799),
-(8714, 60, 4, 2023, 27.1201),
-(8715, 60, 4, 2024, 25.6607),
-(8716, 60, 4, 2025, 26.9434),
-(8717, 68, 4, 2023, 27.7348),
-(8718, 68, 4, 2024, 27.8439),
-(8719, 68, 4, 2025, 28.015),
-(8720, 2, 5, 2023, 26.5435),
-(8721, 2, 5, 2024, 26.6725),
-(8722, 2, 5, 2025, 29.7319),
-(8723, 3, 5, 2023, 26.6419),
-(8724, 3, 5, 2024, 26.014),
-(8725, 3, 5, 2025, 26.1443),
-(8726, 8, 5, 2023, 26.6796),
-(8727, 8, 5, 2024, 28.9648),
-(8728, 8, 5, 2025, 28.7854),
-(8729, 10, 5, 2023, 27.0324),
-(8730, 10, 5, 2024, 26.806),
-(8731, 10, 5, 2025, 28.9326),
-(8732, 15, 5, 2023, 26.2453),
-(8733, 15, 5, 2024, 26.4284),
-(8734, 15, 5, 2025, 29.4063),
-(8735, 17, 5, 2023, 25.7462),
-(8736, 17, 5, 2024, 26.512),
-(8737, 17, 5, 2025, 27.3215),
-(8738, 18, 5, 2023, 27.0714),
-(8739, 18, 5, 2024, 27.3926),
-(8740, 18, 5, 2025, 27.7486),
-(8741, 21, 5, 2023, 26.5654),
-(8742, 21, 5, 2024, 27.5812),
-(8743, 21, 5, 2025, 26.2096),
-(8744, 22, 5, 2023, 26.3044),
-(8745, 22, 5, 2024, 26.8933),
-(8746, 22, 5, 2025, 27.5535),
-(8747, 25, 5, 2023, 27.0874),
-(8748, 25, 5, 2024, 26.7765),
-(8749, 25, 5, 2025, 28.6203),
-(8750, 26, 5, 2023, 28.7722),
-(8751, 26, 5, 2024, 28.0001),
-(8752, 26, 5, 2025, 29.6839),
-(8753, 30, 5, 2023, 26.4191),
-(8754, 30, 5, 2024, 25.044),
-(8755, 30, 5, 2025, 29.9627),
-(8756, 32, 5, 2023, 28.6813),
-(8757, 32, 5, 2024, 27.5183),
-(8758, 32, 5, 2025, 27.5476),
-(8759, 33, 5, 2023, 25.1832),
-(8760, 33, 5, 2024, 25.2733),
-(8761, 33, 5, 2025, 26.8168),
-(8762, 60, 5, 2023, 28.2641),
-(8763, 60, 5, 2024, 26.87),
-(8764, 60, 5, 2025, 29.5578),
-(8765, 68, 5, 2023, 25.1791),
-(8766, 68, 5, 2024, 27.2219),
-(8767, 68, 5, 2025, 28.5722),
-(8768, 2, 6, 2023, 27.1953),
-(8769, 2, 6, 2024, 28.2599),
-(8770, 2, 6, 2025, 27.7135),
-(8771, 3, 6, 2023, 27.7879),
-(8772, 3, 6, 2024, 25.7989),
-(8773, 3, 6, 2025, 29.6307),
-(8774, 8, 6, 2023, 28.7571),
-(8775, 8, 6, 2024, 28.8931),
-(8776, 8, 6, 2025, 26.1942),
-(8777, 10, 6, 2023, 26.2916),
-(8778, 10, 6, 2024, 26.8756),
-(8779, 10, 6, 2025, 27.5032),
-(8780, 15, 6, 2023, 26.8891),
-(8781, 15, 6, 2024, 25.9358),
-(8782, 15, 6, 2025, 29.012),
-(8783, 17, 6, 2023, 25.2524),
-(8784, 17, 6, 2024, 25.2262),
-(8785, 17, 6, 2025, 26.3735),
-(8786, 18, 6, 2023, 26.189),
-(8787, 18, 6, 2024, 25.8245),
-(8788, 18, 6, 2025, 26.5554),
-(8789, 21, 6, 2023, 25.3036),
-(8790, 21, 6, 2024, 28.8517),
-(8791, 21, 6, 2025, 28.3478),
-(8792, 22, 6, 2023, 25.1841),
-(8793, 22, 6, 2024, 26.8768),
-(8794, 22, 6, 2025, 26.8316),
-(8795, 25, 6, 2023, 27.5279),
-(8796, 25, 6, 2024, 27.1444),
-(8797, 25, 6, 2025, 29.1384),
-(8798, 26, 6, 2023, 26.2588),
-(8799, 26, 6, 2024, 25.8788),
-(8800, 26, 6, 2025, 26.6178),
-(8801, 30, 6, 2023, 25.4524),
-(8802, 30, 6, 2024, 25.4085),
-(8803, 30, 6, 2025, 26.6855),
-(8804, 32, 6, 2023, 27.2017),
-(8805, 32, 6, 2024, 25.9523),
-(8806, 32, 6, 2025, 28.1563),
-(8807, 33, 6, 2023, 28.9246),
-(8808, 33, 6, 2024, 26.154),
-(8809, 33, 6, 2025, 27.9962),
-(8810, 60, 6, 2023, 27.5192),
-(8811, 60, 6, 2024, 27.6074),
-(8812, 60, 6, 2025, 27.4794),
-(8813, 68, 6, 2023, 28.5745),
-(8814, 68, 6, 2024, 26.4346),
-(8815, 68, 6, 2025, 26.4495),
-(8816, 2, 7, 2023, 26.9438),
-(8817, 2, 7, 2024, 25.3706),
-(8818, 2, 7, 2025, 26.0214),
-(8819, 3, 7, 2023, 27.9953),
-(8820, 3, 7, 2024, 27.9122),
-(8821, 3, 7, 2025, 27.575),
-(8822, 8, 7, 2023, 28.1383),
-(8823, 8, 7, 2024, 27.9666),
-(8824, 8, 7, 2025, 27.4181),
-(8825, 10, 7, 2023, 27.1908),
-(8826, 10, 7, 2024, 27.6996),
-(8827, 10, 7, 2025, 28.9257),
-(8828, 15, 7, 2023, 27.5296),
-(8829, 15, 7, 2024, 28.871),
-(8830, 15, 7, 2025, 29.7663),
-(8831, 17, 7, 2023, 28.2182),
-(8832, 17, 7, 2024, 25.7922),
-(8833, 17, 7, 2025, 28.3065),
-(8834, 18, 7, 2023, 26.156),
-(8835, 18, 7, 2024, 27.8603),
-(8836, 18, 7, 2025, 28.8337),
-(8837, 21, 7, 2023, 26.5877),
-(8838, 21, 7, 2024, 28.4371),
-(8839, 21, 7, 2025, 26.4224),
-(8840, 22, 7, 2023, 28.8008),
-(8841, 22, 7, 2024, 26.7369),
-(8842, 22, 7, 2025, 27.2822),
-(8843, 25, 7, 2023, 26.2002),
-(8844, 25, 7, 2024, 27.1544),
-(8845, 25, 7, 2025, 29.1712),
-(8846, 26, 7, 2023, 26.3931),
-(8847, 26, 7, 2024, 26.4516),
-(8848, 26, 7, 2025, 29.079),
-(8849, 30, 7, 2023, 28.0401),
-(8850, 30, 7, 2024, 26.9633),
-(8851, 30, 7, 2025, 26.6964),
-(8852, 32, 7, 2023, 26.5919),
-(8853, 32, 7, 2024, 26.8706),
-(8854, 32, 7, 2025, 26.5772),
-(8855, 33, 7, 2023, 26.2744),
-(8856, 33, 7, 2024, 25.6401),
-(8857, 33, 7, 2025, 29.3773),
-(8858, 60, 7, 2023, 27.9663),
-(8859, 60, 7, 2024, 25.6998),
-(8860, 60, 7, 2025, 28.5998),
-(8861, 68, 7, 2023, 27.8995),
-(8862, 68, 7, 2024, 27.6982),
-(8863, 68, 7, 2025, 26.7927),
-(8864, 2, 11, 2023, 28.869),
-(8865, 2, 11, 2024, 25.9666),
-(8866, 2, 11, 2025, 27.2263),
-(8867, 3, 11, 2023, 28.2315),
-(8868, 3, 11, 2024, 25.4786),
-(8869, 3, 11, 2025, 26.6985),
-(8870, 8, 11, 2023, 27.0566),
-(8871, 8, 11, 2024, 25.1878),
-(8872, 8, 11, 2025, 28.769),
-(8873, 10, 11, 2023, 26.2818),
-(8874, 10, 11, 2024, 27.1018),
-(8875, 10, 11, 2025, 28.6635),
-(8876, 15, 11, 2023, 28.0124),
-(8877, 15, 11, 2024, 28.0712),
-(8878, 15, 11, 2025, 28.3188),
-(8879, 17, 11, 2023, 27.3805),
-(8880, 17, 11, 2024, 25.946),
-(8881, 17, 11, 2025, 27.5885),
-(8882, 18, 11, 2023, 26.1046),
-(8883, 18, 11, 2024, 25.7576),
-(8884, 18, 11, 2025, 26.474),
-(8885, 21, 11, 2023, 25.0974),
-(8886, 21, 11, 2024, 28.065),
-(8887, 21, 11, 2025, 29.0327),
-(8888, 22, 11, 2023, 26.9686),
-(8889, 22, 11, 2024, 25.7449),
-(8890, 22, 11, 2025, 27.8186),
-(8891, 25, 11, 2023, 27.8585),
-(8892, 25, 11, 2024, 25.8367),
-(8893, 25, 11, 2025, 29.6079),
-(8894, 26, 11, 2023, 28.5293),
-(8895, 26, 11, 2024, 27.823),
-(8896, 26, 11, 2025, 29.5269),
-(8897, 30, 11, 2023, 26.1657),
-(8898, 30, 11, 2024, 28.2479),
-(8899, 30, 11, 2025, 26.7423),
-(8900, 32, 11, 2023, 26.968),
-(8901, 32, 11, 2024, 28.6129),
-(8902, 32, 11, 2025, 26.1605),
-(8903, 33, 11, 2023, 26.964),
-(8904, 33, 11, 2024, 26.3384),
-(8905, 33, 11, 2025, 26.8),
-(8906, 60, 11, 2023, 28.9846),
-(8907, 60, 11, 2024, 26.5232),
-(8908, 60, 11, 2025, 29.662),
-(8909, 68, 11, 2023, 26.7403),
-(8910, 68, 11, 2024, 26.7157),
-(8911, 68, 11, 2025, 29.3576),
-(8912, 2, 12, 2023, 28.6408),
-(8913, 2, 12, 2024, 25.1311),
-(8914, 2, 12, 2025, 27.7333),
-(8915, 3, 12, 2023, 25.273),
-(8916, 3, 12, 2024, 25.1651),
-(8917, 3, 12, 2025, 26.0068),
-(8918, 8, 12, 2023, 28.5385),
-(8919, 8, 12, 2024, 26.6719),
-(8920, 8, 12, 2025, 27.7443),
-(8921, 10, 12, 2023, 28.7058),
-(8922, 10, 12, 2024, 26.2962),
-(8923, 10, 12, 2025, 29.3634),
-(8924, 15, 12, 2023, 25.9284),
-(8925, 15, 12, 2024, 27.5518),
-(8926, 15, 12, 2025, 27.9738),
-(8927, 17, 12, 2023, 27.2137),
-(8928, 17, 12, 2024, 26.1471),
-(8929, 17, 12, 2025, 29.0945),
-(8930, 18, 12, 2023, 25.0312),
-(8931, 18, 12, 2024, 27.8724),
-(8932, 18, 12, 2025, 28.2686),
-(8933, 21, 12, 2023, 27.7257),
-(8934, 21, 12, 2024, 27.8225),
-(8935, 21, 12, 2025, 27.9356),
-(8936, 22, 12, 2023, 26.2105),
-(8937, 22, 12, 2024, 25.2456),
-(8938, 22, 12, 2025, 27.5963),
-(8939, 25, 12, 2023, 28.245),
-(8940, 25, 12, 2024, 28.4361),
-(8941, 25, 12, 2025, 29.4454),
-(8942, 26, 12, 2023, 27.9187),
-(8943, 26, 12, 2024, 25.2573),
-(8944, 26, 12, 2025, 26.5302),
-(8945, 30, 12, 2023, 26.8794),
-(8946, 30, 12, 2024, 28.8065),
-(8947, 30, 12, 2025, 27.394),
-(8948, 32, 12, 2023, 28.5508),
-(8949, 32, 12, 2024, 26.5719),
-(8950, 32, 12, 2025, 27.2072),
-(8951, 33, 12, 2023, 26.3202),
-(8952, 33, 12, 2024, 27.9793),
-(8953, 33, 12, 2025, 28.936),
-(8954, 60, 12, 2023, 26.7419),
-(8955, 60, 12, 2024, 28.9017),
-(8956, 60, 12, 2025, 28.2828),
-(8957, 68, 12, 2023, 28.7089),
-(8958, 68, 12, 2024, 28.6962),
-(8959, 68, 12, 2025, 29.3544),
-(8960, 2, 15, 2023, 26.6831),
-(8961, 2, 15, 2024, 27.3526),
-(8962, 2, 15, 2025, 28.7136),
-(8963, 3, 15, 2023, 27.5101),
-(8964, 3, 15, 2024, 25.4096),
-(8965, 3, 15, 2025, 28.5177),
-(8966, 8, 15, 2023, 28.3596),
-(8967, 8, 15, 2024, 26.2452),
-(8968, 8, 15, 2025, 26.147),
-(8969, 10, 15, 2023, 25.9996),
-(8970, 10, 15, 2024, 25.557),
-(8971, 10, 15, 2025, 29.7863),
-(8972, 15, 15, 2023, 26.2605),
-(8973, 15, 15, 2024, 27.9436),
-(8974, 15, 15, 2025, 28.9363),
-(8975, 17, 15, 2023, 26.8506),
-(8976, 17, 15, 2024, 25.4444),
-(8977, 17, 15, 2025, 26.6702),
-(8978, 18, 15, 2023, 27.0176),
-(8979, 18, 15, 2024, 25.0774),
-(8980, 18, 15, 2025, 28.3341),
-(8981, 21, 15, 2023, 28.4385),
-(8982, 21, 15, 2024, 27.1902),
-(8983, 21, 15, 2025, 26.6356),
-(8984, 22, 15, 2023, 25.6075),
-(8985, 22, 15, 2024, 26.1306),
-(8986, 22, 15, 2025, 29.8305),
-(8987, 25, 15, 2023, 28.7607),
-(8988, 25, 15, 2024, 28.312),
-(8989, 25, 15, 2025, 27.278),
-(8990, 26, 15, 2023, 25.454),
-(8991, 26, 15, 2024, 27.4361),
-(8992, 26, 15, 2025, 28.8184),
-(8993, 30, 15, 2023, 27.7838),
-(8994, 30, 15, 2024, 26.4636),
-(8995, 30, 15, 2025, 28.9666),
-(8996, 32, 15, 2023, 27.4423),
-(8997, 32, 15, 2024, 28.3118),
-(8998, 32, 15, 2025, 27.2321),
-(8999, 33, 15, 2023, 25.2248),
-(9000, 33, 15, 2024, 26.4281),
-(9001, 33, 15, 2025, 28.4658),
-(9002, 60, 15, 2023, 25.045),
-(9003, 60, 15, 2024, 25.8275),
-(9004, 60, 15, 2025, 26.0023),
-(9005, 68, 15, 2023, 26.5293),
-(9006, 68, 15, 2024, 28.6394),
-(9007, 68, 15, 2025, 27.609),
-(9008, 2, 17, 2023, 26.127),
-(9009, 2, 17, 2024, 25.8077),
-(9010, 2, 17, 2025, 26.6578),
-(9011, 3, 17, 2023, 25.866),
-(9012, 3, 17, 2024, 27.3563),
-(9013, 3, 17, 2025, 27.1835),
-(9014, 8, 17, 2023, 27.8487),
-(9015, 8, 17, 2024, 27.6931),
-(9016, 8, 17, 2025, 26.9195),
-(9017, 10, 17, 2023, 25.518),
-(9018, 10, 17, 2024, 28.8315),
-(9019, 10, 17, 2025, 27.6033),
-(9020, 15, 17, 2023, 25.5223),
-(9021, 15, 17, 2024, 26.8017),
-(9022, 15, 17, 2025, 29.4414),
-(9023, 17, 17, 2023, 28.802),
-(9024, 17, 17, 2024, 25.686),
-(9025, 17, 17, 2025, 26.0237),
-(9026, 18, 17, 2023, 27.0608),
-(9027, 18, 17, 2024, 27.2327),
-(9028, 18, 17, 2025, 26.9813),
-(9029, 21, 17, 2023, 27.2081),
-(9030, 21, 17, 2024, 25.0967),
-(9031, 21, 17, 2025, 27.8593),
-(9032, 22, 17, 2023, 26.0063),
-(9033, 22, 17, 2024, 28.4536),
-(9034, 22, 17, 2025, 28.2492),
-(9035, 25, 17, 2023, 25.885),
-(9036, 25, 17, 2024, 26.6777),
-(9037, 25, 17, 2025, 27.7332),
-(9038, 26, 17, 2023, 28.633),
-(9039, 26, 17, 2024, 25.9653),
-(9040, 26, 17, 2025, 27.9274),
-(9041, 30, 17, 2023, 27.7412),
-(9042, 30, 17, 2024, 28.9237),
-(9043, 30, 17, 2025, 29.3948),
-(9044, 32, 17, 2023, 26.2032),
-(9045, 32, 17, 2024, 28.8316),
-(9046, 32, 17, 2025, 29.5485),
-(9047, 33, 17, 2023, 27.2476),
-(9048, 33, 17, 2024, 25.5925),
-(9049, 33, 17, 2025, 26.2197),
-(9050, 60, 17, 2023, 28.3209),
-(9051, 60, 17, 2024, 28.9456),
-(9052, 60, 17, 2025, 27.7651),
-(9053, 68, 17, 2023, 25.9886),
-(9054, 68, 17, 2024, 28.6478),
-(9055, 68, 17, 2025, 29.2731),
-(9056, 2, 18, 2023, 26.422),
-(9057, 2, 18, 2024, 26.2907),
-(9058, 2, 18, 2025, 28.1875),
-(9059, 3, 18, 2023, 28.0653),
-(9060, 3, 18, 2024, 25.7639),
-(9061, 3, 18, 2025, 28.6239),
-(9062, 8, 18, 2023, 27.8278),
-(9063, 8, 18, 2024, 27.2671),
-(9064, 8, 18, 2025, 28.852),
-(9065, 10, 18, 2023, 28.459),
-(9066, 10, 18, 2024, 25.7389),
-(9067, 10, 18, 2025, 27.3173),
-(9068, 15, 18, 2023, 25.3699),
-(9069, 15, 18, 2024, 26.8978),
-(9070, 15, 18, 2025, 26.3791),
-(9071, 17, 18, 2023, 25.202),
-(9072, 17, 18, 2024, 28.8727),
-(9073, 17, 18, 2025, 28.7574),
-(9074, 18, 18, 2023, 27.1689),
-(9075, 18, 18, 2024, 27.5723),
-(9076, 18, 18, 2025, 28.3548),
-(9077, 21, 18, 2023, 25.0572),
-(9078, 21, 18, 2024, 26.2215),
-(9079, 21, 18, 2025, 27.9361),
-(9080, 22, 18, 2023, 27.0158),
-(9081, 22, 18, 2024, 25.2706),
-(9082, 22, 18, 2025, 29.3056),
-(9083, 25, 18, 2023, 28.7164),
-(9084, 25, 18, 2024, 25.6652),
-(9085, 25, 18, 2025, 26.1769),
-(9086, 26, 18, 2023, 27.8887),
-(9087, 26, 18, 2024, 26.9127),
-(9088, 26, 18, 2025, 26.8975),
-(9089, 30, 18, 2023, 27.7495),
-(9090, 30, 18, 2024, 28.0547),
-(9091, 30, 18, 2025, 29.0254),
-(9092, 32, 18, 2023, 26.9626),
-(9093, 32, 18, 2024, 25.7369),
-(9094, 32, 18, 2025, 27.7968),
-(9095, 33, 18, 2023, 27.7732),
-(9096, 33, 18, 2024, 25.4757),
-(9097, 33, 18, 2025, 28.0587),
-(9098, 60, 18, 2023, 25.8665),
-(9099, 60, 18, 2024, 27.1562),
-(9100, 60, 18, 2025, 26.1818),
-(9101, 68, 18, 2023, 27.4405),
-(9102, 68, 18, 2024, 28.6568),
-(9103, 68, 18, 2025, 28.9626),
-(9104, 2, 20, 2023, 28.8427),
-(9105, 2, 20, 2024, 27.3258),
-(9106, 2, 20, 2025, 26.1007),
-(9107, 3, 20, 2023, 26.5263),
-(9108, 3, 20, 2024, 28.3293),
-(9109, 3, 20, 2025, 26.0676),
-(9110, 8, 20, 2023, 27.3499),
-(9111, 8, 20, 2024, 28.547),
-(9112, 8, 20, 2025, 28.685),
-(9113, 10, 20, 2023, 27.7841),
-(9114, 10, 20, 2024, 26.8657),
-(9115, 10, 20, 2025, 26.9759),
-(9116, 15, 20, 2023, 28.2826),
-(9117, 15, 20, 2024, 26.4852),
-(9118, 15, 20, 2025, 27.5783),
-(9119, 17, 20, 2023, 28.4359),
-(9120, 17, 20, 2024, 25.4447),
-(9121, 17, 20, 2025, 29.9158),
-(9122, 18, 20, 2023, 27.2447),
-(9123, 18, 20, 2024, 28.4761),
-(9124, 18, 20, 2025, 28.6466),
-(9125, 21, 20, 2023, 27.8048),
-(9126, 21, 20, 2024, 27.0841),
-(9127, 21, 20, 2025, 28.0062),
-(9128, 22, 20, 2023, 28.7786),
-(9129, 22, 20, 2024, 25.8746),
-(9130, 22, 20, 2025, 27.0369),
-(9131, 25, 20, 2023, 27.561),
-(9132, 25, 20, 2024, 26.6943),
-(9133, 25, 20, 2025, 26.7883),
-(9134, 26, 20, 2023, 27.8587),
-(9135, 26, 20, 2024, 28.9285),
-(9136, 26, 20, 2025, 29.0665),
-(9137, 30, 20, 2023, 28.5469),
-(9138, 30, 20, 2024, 25.5349),
-(9139, 30, 20, 2025, 26.0338),
-(9140, 32, 20, 2023, 27.5644),
-(9141, 32, 20, 2024, 25.7207),
-(9142, 32, 20, 2025, 29.9103),
-(9143, 33, 20, 2023, 26.3892),
-(9144, 33, 20, 2024, 28.2152),
-(9145, 33, 20, 2025, 29.9083),
-(9146, 60, 20, 2023, 26.8962),
-(9147, 60, 20, 2024, 26.7558),
-(9148, 60, 20, 2025, 29.0903),
-(9149, 68, 20, 2023, 27.1843),
-(9150, 68, 20, 2024, 26.6504),
-(9151, 68, 20, 2025, 27.6994),
-(9152, 2, 25, 2023, 28.5456),
-(9153, 2, 25, 2024, 25.63),
-(9154, 2, 25, 2025, 26.513),
-(9155, 3, 25, 2023, 25.6752),
-(9156, 3, 25, 2024, 26.8371),
-(9157, 3, 25, 2025, 29.1596),
-(9158, 8, 25, 2023, 27.287),
-(9159, 8, 25, 2024, 26.956),
-(9160, 8, 25, 2025, 28.919),
-(9161, 10, 25, 2023, 25.7272),
-(9162, 10, 25, 2024, 27.8788),
-(9163, 10, 25, 2025, 26.2126),
-(9164, 15, 25, 2023, 25.4265),
-(9165, 15, 25, 2024, 26.4945),
-(9166, 15, 25, 2025, 28.1932),
-(9167, 17, 25, 2023, 27.4826),
-(9168, 17, 25, 2024, 26.8332),
-(9169, 17, 25, 2025, 27.7181),
-(9170, 18, 25, 2023, 28.0912),
-(9171, 18, 25, 2024, 27.3017),
-(9172, 18, 25, 2025, 28.2347),
-(9173, 21, 25, 2023, 25.2683),
-(9174, 21, 25, 2024, 27.6377),
-(9175, 21, 25, 2025, 26.3833),
-(9176, 22, 25, 2023, 27.0037),
-(9177, 22, 25, 2024, 25.8683),
-(9178, 22, 25, 2025, 28.3305),
-(9179, 25, 25, 2023, 26.0474),
-(9180, 25, 25, 2024, 27.2457),
-(9181, 25, 25, 2025, 26.0861),
-(9182, 26, 25, 2023, 26.6936),
-(9183, 26, 25, 2024, 25.2098),
-(9184, 26, 25, 2025, 29.968),
-(9185, 30, 25, 2023, 28.2107),
-(9186, 30, 25, 2024, 25.1496),
-(9187, 30, 25, 2025, 29.1156),
-(9188, 32, 25, 2023, 28.1295),
-(9189, 32, 25, 2024, 27.3005),
-(9190, 32, 25, 2025, 28.1139),
-(9191, 33, 25, 2023, 28.6681),
-(9192, 33, 25, 2024, 28.9989),
-(9193, 33, 25, 2025, 26.99),
-(9194, 60, 25, 2023, 25.9532),
-(9195, 60, 25, 2024, 26.7962),
-(9196, 60, 25, 2025, 28.1214),
-(9197, 68, 25, 2023, 26.2182),
-(9198, 68, 25, 2024, 28.7271),
-(9199, 68, 25, 2025, 28.9807),
-(9200, 2, 26, 2023, 28.7223),
-(9201, 2, 26, 2024, 26.6693),
-(9202, 2, 26, 2025, 27.1795),
-(9203, 3, 26, 2023, 25.8896),
-(9204, 3, 26, 2024, 25.9096),
-(9205, 3, 26, 2025, 27.8792),
-(9206, 8, 26, 2023, 27.6672),
-(9207, 8, 26, 2024, 28.6983),
-(9208, 8, 26, 2025, 28.4902),
-(9209, 10, 26, 2023, 26.3558),
-(9210, 10, 26, 2024, 28.3086),
-(9211, 10, 26, 2025, 26.4754),
-(9212, 15, 26, 2023, 25.4512),
-(9213, 15, 26, 2024, 25.8298),
-(9214, 15, 26, 2025, 28.7952),
-(9215, 17, 26, 2023, 28.487),
-(9216, 17, 26, 2024, 26.0491),
-(9217, 17, 26, 2025, 28.7845),
-(9218, 18, 26, 2023, 27.7752),
-(9219, 18, 26, 2024, 26.5225),
-(9220, 18, 26, 2025, 29.2871),
-(9221, 21, 26, 2023, 28.8679),
-(9222, 21, 26, 2024, 26.478),
-(9223, 21, 26, 2025, 29.7865),
-(9224, 22, 26, 2023, 27.4986),
-(9225, 22, 26, 2024, 26.1335),
-(9226, 22, 26, 2025, 28.1718),
-(9227, 25, 26, 2023, 28.4583),
-(9228, 25, 26, 2024, 27.7761),
-(9229, 25, 26, 2025, 29.5059),
-(9230, 26, 26, 2023, 26.2008),
-(9231, 26, 26, 2024, 28.4866),
-(9232, 26, 26, 2025, 27.8304),
-(9233, 30, 26, 2023, 27.6923),
-(9234, 30, 26, 2024, 28.9701),
-(9235, 30, 26, 2025, 29.7737),
-(9236, 32, 26, 2023, 27.9581),
-(9237, 32, 26, 2024, 28.4694),
-(9238, 32, 26, 2025, 26.4726),
-(9239, 33, 26, 2023, 28.9548),
-(9240, 33, 26, 2024, 27.3562),
-(9241, 33, 26, 2025, 29.9166),
-(9242, 60, 26, 2023, 25.5145),
-(9243, 60, 26, 2024, 27.8227),
-(9244, 60, 26, 2025, 26.5701),
-(9245, 68, 26, 2023, 27.3824),
-(9246, 68, 26, 2024, 27.2014),
-(9247, 68, 26, 2025, 29.8602),
-(9248, 2, 27, 2023, 25.6965),
-(9249, 2, 27, 2024, 28.9019),
-(9250, 2, 27, 2025, 27.4199),
-(9251, 3, 27, 2023, 28.3939),
-(9252, 3, 27, 2024, 25.7098),
-(9253, 3, 27, 2025, 27.3673),
-(9254, 8, 27, 2023, 25.707),
-(9255, 8, 27, 2024, 28.433),
-(9256, 8, 27, 2025, 29.0441),
-(9257, 10, 27, 2023, 25.9213),
-(9258, 10, 27, 2024, 28.4744),
-(9259, 10, 27, 2025, 28.608),
-(9260, 15, 27, 2023, 27.617),
-(9261, 15, 27, 2024, 26.2608),
-(9262, 15, 27, 2025, 28.4532),
-(9263, 17, 27, 2023, 25.4836),
-(9264, 17, 27, 2024, 28.0582),
-(9265, 17, 27, 2025, 27.8402),
-(9266, 18, 27, 2023, 25.0267),
-(9267, 18, 27, 2024, 27.6126),
-(9268, 18, 27, 2025, 26.9831),
-(9269, 21, 27, 2023, 26.0776),
-(9270, 21, 27, 2024, 27.4386),
-(9271, 21, 27, 2025, 26.9602),
-(9272, 22, 27, 2023, 26.4851),
-(9273, 22, 27, 2024, 25.5451),
-(9274, 22, 27, 2025, 28.2701),
-(9275, 25, 27, 2023, 26.7151),
-(9276, 25, 27, 2024, 26.7653),
-(9277, 25, 27, 2025, 29.6813),
-(9278, 26, 27, 2023, 26.1106),
-(9279, 26, 27, 2024, 27.509),
-(9280, 26, 27, 2025, 27.2134),
-(9281, 30, 27, 2023, 27.54),
-(9282, 30, 27, 2024, 26.0597),
-(9283, 30, 27, 2025, 27.6787),
-(9284, 32, 27, 2023, 26.2141),
-(9285, 32, 27, 2024, 26.0343),
-(9286, 32, 27, 2025, 27.5296),
-(9287, 33, 27, 2023, 25.5448),
-(9288, 33, 27, 2024, 27.1352),
-(9289, 33, 27, 2025, 27.0416),
-(9290, 60, 27, 2023, 27.8025),
-(9291, 60, 27, 2024, 27.8877),
-(9292, 60, 27, 2025, 28.0309),
-(9293, 68, 27, 2023, 26.4916),
-(9294, 68, 27, 2024, 26.3653),
-(9295, 68, 27, 2025, 28.3517),
-(9296, 2, 28, 2023, 28.6624),
-(9297, 2, 28, 2024, 28.2571),
-(9298, 2, 28, 2025, 27.2982),
-(9299, 3, 28, 2023, 25.7197),
-(9300, 3, 28, 2024, 28.7039),
-(9301, 3, 28, 2025, 26.3604),
-(9302, 8, 28, 2023, 27.6905),
-(9303, 8, 28, 2024, 25.371),
-(9304, 8, 28, 2025, 27.7835),
-(9305, 10, 28, 2023, 28.8045),
-(9306, 10, 28, 2024, 26.6719),
-(9307, 10, 28, 2025, 26.946),
-(9308, 15, 28, 2023, 28.7145),
-(9309, 15, 28, 2024, 28.7345),
-(9310, 15, 28, 2025, 29.5288),
-(9311, 17, 28, 2023, 27.4407),
-(9312, 17, 28, 2024, 26.6172),
-(9313, 17, 28, 2025, 26.7638),
-(9314, 18, 28, 2023, 27.9675),
-(9315, 18, 28, 2024, 25.5461),
-(9316, 18, 28, 2025, 27.8279),
-(9317, 21, 28, 2023, 28.5011),
-(9318, 21, 28, 2024, 25.0218),
-(9319, 21, 28, 2025, 27.6059),
-(9320, 22, 28, 2023, 28.9639),
-(9321, 22, 28, 2024, 28.002),
-(9322, 22, 28, 2025, 29.1182),
-(9323, 25, 28, 2023, 27.5849),
-(9324, 25, 28, 2024, 28.5702),
-(9325, 25, 28, 2025, 28.096),
-(9326, 26, 28, 2023, 28.7694),
-(9327, 26, 28, 2024, 25.5593),
-(9328, 26, 28, 2025, 29.488),
-(9329, 30, 28, 2023, 28.762),
-(9330, 30, 28, 2024, 25.3461),
-(9331, 30, 28, 2025, 28.4444),
-(9332, 32, 28, 2023, 28.1839),
-(9333, 32, 28, 2024, 25.586),
-(9334, 32, 28, 2025, 27.3786),
-(9335, 33, 28, 2023, 26.135),
-(9336, 33, 28, 2024, 26.5392),
-(9337, 33, 28, 2025, 26.2909),
-(9338, 60, 28, 2023, 25.8369),
-(9339, 60, 28, 2024, 28.312),
-(9340, 60, 28, 2025, 28.0493),
-(9341, 68, 28, 2023, 25.3103),
-(9342, 68, 28, 2024, 28.4037),
-(9343, 68, 28, 2025, 26.0877),
-(9344, 2, 29, 2023, 27.2274),
-(9345, 2, 29, 2024, 27.8739),
-(9346, 2, 29, 2025, 29.6873),
-(9347, 3, 29, 2023, 26.8146),
-(9348, 3, 29, 2024, 27.0111),
-(9349, 3, 29, 2025, 26.6118),
-(9350, 8, 29, 2023, 26.0258),
-(9351, 8, 29, 2024, 28.2937),
-(9352, 8, 29, 2025, 27.391),
-(9353, 10, 29, 2023, 26.074),
-(9354, 10, 29, 2024, 26.1971),
-(9355, 10, 29, 2025, 28.7634),
-(9356, 15, 29, 2023, 27.2258),
-(9357, 15, 29, 2024, 27.8389),
-(9358, 15, 29, 2025, 29.517),
-(9359, 17, 29, 2023, 26.0681),
-(9360, 17, 29, 2024, 27.7896),
-(9361, 17, 29, 2025, 28.7436),
-(9362, 18, 29, 2023, 26.3493),
-(9363, 18, 29, 2024, 27.5155),
-(9364, 18, 29, 2025, 26.5297),
-(9365, 21, 29, 2023, 28.1021),
-(9366, 21, 29, 2024, 26.9215),
-(9367, 21, 29, 2025, 26.301),
-(9368, 22, 29, 2023, 28.7405),
-(9369, 22, 29, 2024, 26.7997),
-(9370, 22, 29, 2025, 27.777),
-(9371, 25, 29, 2023, 28.4859),
-(9372, 25, 29, 2024, 25.0986),
-(9373, 25, 29, 2025, 28.0354),
-(9374, 26, 29, 2023, 26.881),
-(9375, 26, 29, 2024, 28.2987),
-(9376, 26, 29, 2025, 28.8507),
-(9377, 30, 29, 2023, 25.3575),
-(9378, 30, 29, 2024, 26.2353),
-(9379, 30, 29, 2025, 27.1042),
-(9380, 32, 29, 2023, 26.8148),
-(9381, 32, 29, 2024, 26.7615),
-(9382, 32, 29, 2025, 29.363),
-(9383, 33, 29, 2023, 28.5306),
-(9384, 33, 29, 2024, 28.5639),
-(9385, 33, 29, 2025, 29.2276),
-(9386, 60, 29, 2023, 26.4465),
-(9387, 60, 29, 2024, 26.5495),
-(9388, 60, 29, 2025, 29.408),
-(9389, 68, 29, 2023, 25.3916),
-(9390, 68, 29, 2024, 28.7341),
-(9391, 68, 29, 2025, 27.4958),
-(9392, 2, 30, 2023, 25.2764),
-(9393, 2, 30, 2024, 25.8946),
-(9394, 2, 30, 2025, 29.6438),
-(9395, 3, 30, 2023, 28.5354),
-(9396, 3, 30, 2024, 27.7455),
-(9397, 3, 30, 2025, 29.1215),
-(9398, 8, 30, 2023, 28.3707),
-(9399, 8, 30, 2024, 28.4893),
-(9400, 8, 30, 2025, 29.3342),
-(9401, 10, 30, 2023, 27.2033),
-(9402, 10, 30, 2024, 26.0138),
-(9403, 10, 30, 2025, 28.4589),
-(9404, 15, 30, 2023, 26.2533),
-(9405, 15, 30, 2024, 27.8897),
-(9406, 15, 30, 2025, 28.6889),
-(9407, 17, 30, 2023, 25.775),
-(9408, 17, 30, 2024, 28.8085),
-(9409, 17, 30, 2025, 26.7174),
-(9410, 18, 30, 2023, 25.1617),
-(9411, 18, 30, 2024, 27.6564),
-(9412, 18, 30, 2025, 26.7965),
-(9413, 21, 30, 2023, 25.0137),
-(9414, 21, 30, 2024, 26.6787),
-(9415, 21, 30, 2025, 26.3524),
-(9416, 22, 30, 2023, 25.7262),
-(9417, 22, 30, 2024, 27.5735),
-(9418, 22, 30, 2025, 28.6891),
-(9419, 25, 30, 2023, 26.7248),
-(9420, 25, 30, 2024, 25.5566),
-(9421, 25, 30, 2025, 27.6087),
-(9422, 26, 30, 2023, 27.3736),
-(9423, 26, 30, 2024, 28.0421),
-(9424, 26, 30, 2025, 26.0896),
-(9425, 30, 30, 2023, 28.3217),
-(9426, 30, 30, 2024, 25.3397),
-(9427, 30, 30, 2025, 29.7335),
-(9428, 32, 30, 2023, 26.6484),
-(9429, 32, 30, 2024, 26.0414),
-(9430, 32, 30, 2025, 26.262),
-(9431, 33, 30, 2023, 27.1858),
-(9432, 33, 30, 2024, 27.1431),
-(9433, 33, 30, 2025, 26.158),
-(9434, 60, 30, 2023, 27.3608),
-(9435, 60, 30, 2024, 28.33),
-(9436, 60, 30, 2025, 27.5675),
-(9437, 68, 30, 2023, 26.8477),
-(9438, 68, 30, 2024, 25.5359),
-(9439, 68, 30, 2025, 27.1362),
-(9440, 2, 37, 2023, 25.0736),
-(9441, 2, 37, 2024, 25.9591),
-(9442, 2, 37, 2025, 26.575),
-(9443, 3, 37, 2023, 28.9976),
-(9444, 3, 37, 2024, 27.2631),
-(9445, 3, 37, 2025, 29.3228),
-(9446, 8, 37, 2023, 26.8247),
-(9447, 8, 37, 2024, 28.155),
-(9448, 8, 37, 2025, 28.3011),
-(9449, 10, 37, 2023, 27.0404),
-(9450, 10, 37, 2024, 28.2986),
-(9451, 10, 37, 2025, 28.3719),
-(9452, 15, 37, 2023, 26.9638),
-(9453, 15, 37, 2024, 27.7032),
-(9454, 15, 37, 2025, 29.6245),
-(9455, 17, 37, 2023, 27.0131),
-(9456, 17, 37, 2024, 28.1918),
-(9457, 17, 37, 2025, 27.9197),
-(9458, 18, 37, 2023, 25.0232),
-(9459, 18, 37, 2024, 27.3567),
-(9460, 18, 37, 2025, 29.714),
-(9461, 21, 37, 2023, 28.4998),
-(9462, 21, 37, 2024, 27.357),
-(9463, 21, 37, 2025, 27.2858),
-(9464, 22, 37, 2023, 28.3581),
-(9465, 22, 37, 2024, 25.9329),
-(9466, 22, 37, 2025, 28.5901),
-(9467, 25, 37, 2023, 27.1519),
-(9468, 25, 37, 2024, 27.9893),
-(9469, 25, 37, 2025, 26.4907),
-(9470, 26, 37, 2023, 26.4856),
-(9471, 26, 37, 2024, 26.9557),
-(9472, 26, 37, 2025, 27.3219),
-(9473, 30, 37, 2023, 25.7425),
-(9474, 30, 37, 2024, 28.7465),
-(9475, 30, 37, 2025, 26.5051),
-(9476, 32, 37, 2023, 28.2862),
-(9477, 32, 37, 2024, 27.9154),
-(9478, 32, 37, 2025, 26.7187),
-(9479, 33, 37, 2023, 27.847),
-(9480, 33, 37, 2024, 25.079),
-(9481, 33, 37, 2025, 29.8539),
-(9482, 60, 37, 2023, 28.0327),
-(9483, 60, 37, 2024, 28.6017),
-(9484, 60, 37, 2025, 26.9102),
-(9485, 68, 37, 2023, 26.7461),
-(9486, 68, 37, 2024, 26.9999),
-(9487, 68, 37, 2025, 26.761),
-(9488, 2, 40, 2023, 26.8054),
-(9489, 2, 40, 2024, 27.7439),
-(9490, 2, 40, 2025, 26.3034),
-(9491, 3, 40, 2023, 26.2852),
-(9492, 3, 40, 2024, 26.5157),
-(9493, 3, 40, 2025, 29.7229),
-(9494, 8, 40, 2023, 27.0676),
-(9495, 8, 40, 2024, 28.1692),
-(9496, 8, 40, 2025, 27.6434),
-(9497, 10, 40, 2023, 27.7091),
-(9498, 10, 40, 2024, 25.6154),
-(9499, 10, 40, 2025, 28.9497),
-(9500, 15, 40, 2023, 25.9024),
-(9501, 15, 40, 2024, 28.6628),
-(9502, 15, 40, 2025, 29.6068),
-(9503, 17, 40, 2023, 28.0455),
-(9504, 17, 40, 2024, 25.4074),
-(9505, 17, 40, 2025, 26.9002),
-(9506, 18, 40, 2023, 28.279),
-(9507, 18, 40, 2024, 26.6943),
-(9508, 18, 40, 2025, 28.6346),
-(9509, 21, 40, 2023, 25.09),
-(9510, 21, 40, 2024, 25.5461),
-(9511, 21, 40, 2025, 28.4605),
-(9512, 22, 40, 2023, 27.6641),
-(9513, 22, 40, 2024, 26.9392),
-(9514, 22, 40, 2025, 27.7036),
-(9515, 25, 40, 2023, 27.7006),
-(9516, 25, 40, 2024, 25.3922),
-(9517, 25, 40, 2025, 27.8593),
-(9518, 26, 40, 2023, 25.1198),
-(9519, 26, 40, 2024, 28.0209),
-(9520, 26, 40, 2025, 28.7454),
-(9521, 30, 40, 2023, 25.6641),
-(9522, 30, 40, 2024, 28.0843),
-(9523, 30, 40, 2025, 27.4291),
-(9524, 32, 40, 2023, 26.8929),
-(9525, 32, 40, 2024, 26.1771),
-(9526, 32, 40, 2025, 26.2068),
-(9527, 33, 40, 2023, 26.5028),
-(9528, 33, 40, 2024, 27.8933),
-(9529, 33, 40, 2025, 27.9583),
-(9530, 60, 40, 2023, 26.1117),
-(9531, 60, 40, 2024, 28.6834),
-(9532, 60, 40, 2025, 29.0819),
-(9533, 68, 40, 2023, 25.3594),
-(9534, 68, 40, 2024, 25.5511),
-(9535, 68, 40, 2025, 27.6775);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `events`
---
-
-CREATE TABLE `events` (
-  `id` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` text DEFAULT NULL,
-  `event_date` datetime DEFAULT NULL,
-  `location` varchar(255) DEFAULT NULL,
-  `type` enum('offline','online') DEFAULT 'online',
-  `image` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `events`
---
-
-INSERT INTO `events` (`id`, `title`, `description`, `event_date`, `location`, `type`, `image`, `created_at`) VALUES
-(1, 'Ngày hội Tư vấn Tuyển sinh 2025', 'Sự kiện lớn nhất năm quy tụ 100 trường ĐH, giải đáp thắc mắc về quy chế thi mới của Bộ GD&ĐT.', '2025-03-15 08:00:00', 'Đại học Bách Khoa TP.HCM', 'offline', 'event_tuyensinh.jpg', '2025-12-26 18:45:58'),
-(2, 'Webinar: AI & Tương lai ngành Code', 'ChatGPT có thay thế lập trình viên? Định hướng cho sinh viên IT năm nhất.', '2025-04-10 19:30:00', 'Google Meet', 'online', 'event_ai.jpg', '2025-12-26 18:45:58'),
-(3, 'Workshop: Chinh phục kỳ thi ĐGNL', 'Chiến thuật làm bài thi Đánh giá năng lực ĐHQG đạt 900+.', '2025-02-20 14:00:00', 'Hội trường A - ĐH KHXH&NV', 'offline', 'event_dgnl.jpg', '2025-12-26 18:45:58'),
-(4, 'Gala Chào Tân Sinh Viên K2025 - IT Breakthrough', 'Đêm nhạc hội chào đón tân sinh viên khóa 2025. Giao lưu với các Mentor thành đạt.', '2025-10-15 19:00:00', 'Hội trường lớn ĐH Bách Khoa', 'offline', 'gala_k2025.jpg', '2025-12-26 18:46:49'),
-(5, 'Khởi động lộ trình ôn thi THPT 2026 cho 2k8', 'Phân tích cấu trúc đề thi 2025 để rút kinh nghiệm. Lộ trình ôn tập sớm cho học sinh lớp 12.', '2025-12-20 09:00:00', 'Livestream Facebook/Youtube', 'online', 'on_thi_2k8.jpg', '2025-12-26 18:46:49'),
-(6, 'Workshop: Kỹ năng sinh tồn năm nhất Đại học', 'Cách đăng ký tín chỉ, quản lý tài chính cá nhân và tránh bẫy đa cấp cho sinh viên mới.', '2025-11-05 08:30:00', 'Zoom Meeting', 'online', 'skills_freshman.jpg', '2025-12-26 18:46:49'),
-(7, 'Tech Expo 2025: Kỷ nguyên AI & Semiconductor', 'Triển lãm công nghệ và tuyển dụng thực tập sinh ngành bán dẫn. Cơ hội nhận học bổng từ Samsung/Intel.', '2025-11-20 09:00:00', 'SECC Quận 7', 'offline', 'tech_expo.jpg', '2025-12-26 18:48:17'),
-(8, 'Webinar: Mental Health - Vượt qua áp lực đồng trang lứa', 'Chia sẻ cách cân bằng sức khỏe tinh thần trong môi trường đại học cạnh tranh.', '2025-10-10 20:00:00', 'Zoom / Livestream', 'online', 'mental_health.jpg', '2025-12-26 18:48:17');
-
--- --------------------------------------------------------
+LOCK TABLES `entry_scores` WRITE;
+/*!40000 ALTER TABLE `entry_scores` DISABLE KEYS */;
+INSERT INTO `entry_scores` VALUES (7199,44,43,2023,26.1666),(7200,45,43,2023,26.2905),(7201,44,43,2024,27.4529),(7202,45,43,2024,26.8931),(7203,44,43,2025,27.6069),(7204,45,43,2025,27.855),(7206,4,8,2023,27.9545),(7207,4,8,2024,27.7073),(7208,4,8,2025,29.1729),(7209,7,8,2023,27.2428),(7210,7,8,2024,27.1953),(7211,7,8,2025,28.7483),(7212,27,8,2023,26.6552),(7213,27,8,2024,27.5314),(7214,27,8,2025,28.1912),(7215,41,8,2023,26.8618),(7216,41,8,2024,28.2353),(7217,41,8,2025,29.091),(7218,59,8,2023,27.2493),(7219,59,8,2024,27.4733),(7220,59,8,2025,28.1187),(7221,4,9,2023,26.6736),(7222,4,9,2024,27.5121),(7223,4,9,2025,28.0396),(7224,7,9,2023,28.1615),(7225,7,9,2024,27.189),(7226,7,9,2025,27.9603),(7227,27,9,2023,26.7345),(7228,27,9,2024,28.2914),(7229,27,9,2025,27.7539),(7230,41,9,2023,28.3949),(7231,41,9,2024,27.2131),(7232,41,9,2025,29.3807),(7233,59,9,2023,27.7643),(7234,59,9,2024,27.1793),(7235,59,9,2025,29.1035),(7236,4,10,2023,28.4796),(7237,4,10,2024,27.5874),(7238,4,10,2025,28.9985),(7239,7,10,2023,26.7301),(7240,7,10,2024,27.1548),(7241,7,10,2025,28.0841),(7242,27,10,2023,27.4558),(7243,27,10,2024,27.5266),(7244,27,10,2025,27.7657),(7245,41,10,2023,26.7487),(7246,41,10,2024,26.9465),(7247,41,10,2025,28.9862),(7248,59,10,2023,26.5914),(7249,59,10,2024,28.4987),(7250,59,10,2025,29.219),(7251,4,41,2023,27.0992),(7252,4,41,2024,28.3387),(7253,4,41,2025,28.896),(7254,7,41,2023,27.9638),(7255,7,41,2024,27.6311),(7256,7,41,2025,28.764),(7257,27,41,2023,27.4268),(7258,27,41,2024,27.342),(7259,27,41,2025,28.9297),(7260,41,41,2023,27.1222),(7261,41,41,2024,27.3222),(7262,41,41,2025,27.7445),(7263,59,41,2023,27.2556),(7264,59,41,2024,27.5447),(7265,59,41,2025,28.4568),(7269,29,34,2023,26.4746),(7270,29,34,2024,26.0674),(7271,29,34,2025,27.9131),(7272,34,34,2023,26.3636),(7273,34,34,2024,24.0784),(7274,34,34,2025,27.3013),(7275,35,34,2023,26.2713),(7276,35,34,2024,25.4524),(7277,35,34,2025,25.4483),(7278,49,34,2023,24.8842),(7279,49,34,2024,24.0761),(7280,49,34,2025,25.7277),(7281,54,34,2023,24.4105),(7282,54,34,2024,26.8695),(7283,54,34,2025,26.1157),(7284,29,44,2023,26.9703),(7285,29,44,2024,26.5044),(7286,29,44,2025,25.6108),(7287,34,44,2023,25.541),(7288,34,44,2024,26.8725),(7289,34,44,2025,25.7394),(7290,35,44,2023,25.0798),(7291,35,44,2024,24.1805),(7292,35,44,2025,25.6632),(7293,49,44,2023,26.7744),(7294,49,44,2024,26.8825),(7295,49,44,2025,25.0891),(7296,54,44,2023,24.7981),(7297,54,44,2024,24.7231),(7298,54,44,2025,26.2213),(7299,29,45,2023,24.9372),(7300,29,45,2024,25.0219),(7301,29,45,2025,27.2981),(7302,34,45,2023,26.4248),(7303,34,45,2024,26.2299),(7304,34,45,2025,25.8748),(7305,35,45,2023,24.6844),(7306,35,45,2024,24.7974),(7307,35,45,2025,26.9341),(7308,49,45,2023,25.2782),(7309,49,45,2024,24.5887),(7310,49,45,2025,27.1089),(7311,54,45,2023,26.7785),(7312,54,45,2024,25.5657),(7313,54,45,2025,27.4932),(7332,12,19,2023,27.2688),(7333,12,19,2024,26.8646),(7334,12,19,2025,28.0163),(7335,48,19,2023,25.9876),(7336,48,19,2024,26.3894),(7337,48,19,2025,29.4841),(7338,50,19,2023,25.7522),(7339,50,19,2024,26.8086),(7340,50,19,2025,29.2864),(7341,55,19,2023,26.5063),(7342,55,19,2024,28.1724),(7343,55,19,2025,27.8431),(7344,12,46,2023,27.1983),(7345,12,46,2024,26.9622),(7346,12,46,2025,28.7159),(7347,48,46,2023,26.193),(7348,48,46,2024,28.3175),(7349,48,46,2025,26.5084),(7350,50,46,2023,26.0894),(7351,50,46,2024,28.422),(7352,50,46,2025,27.3416),(7353,55,46,2023,26.9421),(7354,55,46,2024,27.1857),(7355,55,46,2025,27.6024),(7356,12,47,2023,25.9547),(7357,12,47,2024,27.4661),(7358,12,47,2025,28.9667),(7359,48,47,2023,25.9351),(7360,48,47,2024,26.2753),(7361,48,47,2025,29.0714),(7362,50,47,2023,27.031),(7363,50,47,2024,28.4406),(7364,50,47,2025,27.6103),(7365,55,47,2023,28.2295),(7366,55,47,2024,26.8166),(7367,55,47,2025,27.8947),(7395,28,23,2023,17.0315),(7396,28,23,2024,19.5788),(7397,28,23,2025,17.7994),(7398,31,23,2023,17.2605),(7399,31,23,2024,19.9043),(7400,31,23,2025,18.74),(7401,39,23,2023,20.9872),(7402,39,23,2024,19.716),(7403,39,23,2025,18.6185),(7404,51,23,2023,20.9445),(7405,51,23,2024,19.8669),(7406,51,23,2025,19.5012),(7407,52,23,2023,20.9051),(7408,52,23,2024,17.0221),(7409,52,23,2025,17.3952),(7410,69,23,2023,18.9098),(7411,69,23,2024,17.3634),(7412,69,23,2025,17.0873),(7413,75,23,2023,20.3465),(7414,75,23,2024,17.4707),(7415,75,23,2025,17.3138),(7416,28,24,2023,17.1569),(7417,28,24,2024,20.8431),(7418,28,24,2025,19.7448),(7419,31,24,2023,19.1946),(7420,31,24,2024,19.7387),(7421,31,24,2025,20.1096),(7422,39,24,2023,20.3321),(7423,39,24,2024,20.3318),(7424,39,24,2025,19.6624),(7425,51,24,2023,20.3169),(7426,51,24,2024,17.5971),(7427,51,24,2025,18.0349),(7428,52,24,2023,20.3832),(7429,52,24,2024,18.8111),(7430,52,24,2025,19.9061),(7431,69,24,2023,18.0971),(7432,69,24,2024,17.7674),(7433,69,24,2025,17.5456),(7434,75,24,2023,17.4256),(7435,75,24,2024,17.4913),(7436,75,24,2025,18.1797),(7437,28,33,2023,17.4246),(7438,28,33,2024,19.584),(7439,28,33,2025,20.6463),(7440,31,33,2023,19.4792),(7441,31,33,2024,18.4572),(7442,31,33,2025,20.8485),(7443,39,33,2023,19.8707),(7444,39,33,2024,19.8082),(7445,39,33,2025,18.4287),(7446,51,33,2023,19.719),(7447,51,33,2024,18.3089),(7448,51,33,2025,19.3877),(7449,52,33,2023,17.0115),(7450,52,33,2024,17.8946),(7451,52,33,2025,17.4386),(7452,69,33,2023,20.5093),(7453,69,33,2024,17.2305),(7454,69,33,2025,19.6244),(7455,75,33,2023,17.4309),(7456,75,33,2024,19.281),(7457,75,33,2025,19.1125),(7458,28,48,2023,20.7196),(7459,28,48,2024,17.2602),(7460,28,48,2025,19.1422),(7461,31,48,2023,18.9305),(7462,31,48,2024,20.2259),(7463,31,48,2025,19.338),(7464,39,48,2023,19.0122),(7465,39,48,2024,20.0472),(7466,39,48,2025,18.1992),(7467,51,48,2023,17.8546),(7468,51,48,2024,17.6754),(7469,51,48,2025,17.8133),(7470,52,48,2023,19.04),(7471,52,48,2024,20.7603),(7472,52,48,2025,17.6815),(7473,69,48,2023,17.1265),(7474,69,48,2024,19.5881),(7475,69,48,2025,17.5608),(7476,75,48,2023,20.0397),(7477,75,48,2024,18.5164),(7478,75,48,2025,19.4626),(7479,28,49,2023,20.7641),(7480,28,49,2024,20.4325),(7481,28,49,2025,18.8703),(7482,31,49,2023,20.054),(7483,31,49,2024,18.6589),(7484,31,49,2025,20.1327),(7485,39,49,2023,19.687),(7486,39,49,2024,17.0365),(7487,39,49,2025,17.1219),(7488,51,49,2023,17.4996),(7489,51,49,2024,19.1326),(7490,51,49,2025,18.1641),(7491,52,49,2023,20.4225),(7492,52,49,2024,18.6203),(7493,52,49,2025,18.8342),(7494,69,49,2023,17.3101),(7495,69,49,2024,17.048),(7496,69,49,2025,20.3096),(7497,75,49,2023,17.4038),(7498,75,49,2024,17.0904),(7499,75,49,2025,20.2406),(7522,14,16,2023,25.9319),(7523,14,16,2024,23.9378),(7524,14,16,2025,23.893),(7525,23,16,2023,25.6518),(7526,23,16,2024,22.5801),(7527,23,16,2025,25.9449),(7528,32,16,2023,23.9842),(7529,32,16,2024,24.0864),(7530,32,16,2025,22.4795),(7531,41,16,2023,22.1381),(7532,41,16,2024,25.2521),(7533,41,16,2025,25.8462),(7534,46,16,2023,23.4746),(7535,46,16,2024,25.8345),(7536,46,16,2025,24.7486),(7537,47,16,2023,24.2397),(7538,47,16,2024,24.9525),(7539,47,16,2025,22.0435),(7540,53,16,2023,25.3599),(7541,53,16,2024,22.669),(7542,53,16,2025,23.2654),(7543,57,16,2023,22.3198),(7544,57,16,2024,23.803),(7545,57,16,2025,22.0556),(7546,14,22,2023,24.8688),(7547,14,22,2024,24.1771),(7548,14,22,2025,24.2793),(7549,23,22,2023,22.8652),(7550,23,22,2024,23.488),(7551,23,22,2025,22.8443),(7552,32,22,2023,25.7576),(7553,32,22,2024,22.2551),(7554,32,22,2025,24.0027),(7555,41,22,2023,23.2481),(7556,41,22,2024,22.2326),(7557,41,22,2025,23.4186),(7558,46,22,2023,24.3954),(7559,46,22,2024,25.721),(7560,46,22,2025,25.4188),(7561,47,22,2023,23.9311),(7562,47,22,2024,25.3991),(7563,47,22,2025,25.2022),(7564,53,22,2023,23.8138),(7565,53,22,2024,25.4623),(7566,53,22,2025,25.87),(7567,57,22,2023,22.9634),(7568,57,22,2024,23.2067),(7569,57,22,2025,25.1435),(7570,14,35,2023,22.0972),(7571,14,35,2024,25.0557),(7572,14,35,2025,24.9867),(7573,23,35,2023,23.7665),(7574,23,35,2024,25.8722),(7575,23,35,2025,24.0617),(7576,32,35,2023,24.692),(7577,32,35,2024,25.275),(7578,32,35,2025,22.2988),(7579,41,35,2023,25.6691),(7580,41,35,2024,23.4492),(7581,41,35,2025,22.2385),(7582,46,35,2023,22.8448),(7583,46,35,2024,25.5086),(7584,46,35,2025,25.0084),(7585,47,35,2023,22.5164),(7586,47,35,2024,23.5566),(7587,47,35,2025,24.2341),(7588,53,35,2023,24.5005),(7589,53,35,2024,23.8003),(7590,53,35,2025,23.5001),(7591,57,35,2023,24.0994),(7592,57,35,2024,23.9969),(7593,57,35,2025,25.6864),(7594,14,50,2023,22.441),(7595,14,50,2024,25.1459),(7596,14,50,2025,24.4066),(7597,23,50,2023,24.5954),(7598,23,50,2024,23.7569),(7599,23,50,2025,22.9984),(7600,32,50,2023,25.7212),(7601,32,50,2024,25.611),(7602,32,50,2025,24.8913),(7603,41,50,2023,25.6237),(7604,41,50,2024,23.4443),(7605,41,50,2025,22.3507),(7606,46,50,2023,23.4203),(7607,46,50,2024,24.0497),(7608,46,50,2025,23.9873),(7609,47,50,2023,25.7875),(7610,47,50,2024,22.9756),(7611,47,50,2025,23.5155),(7612,53,50,2023,22.6505),(7613,53,50,2024,24.7063),(7614,53,50,2025,25.5798),(7615,57,50,2023,23.7802),(7616,57,50,2024,24.1616),(7617,57,50,2025,23.4674),(7649,1,1,2023,25.0653),(7650,1,1,2024,28.8238),(7651,1,1,2025,25.9232),(7652,5,1,2023,24.1445),(7653,5,1,2024,26.9527),(7654,5,1,2025,29.33),(7655,6,1,2023,26.7921),(7656,6,1,2024,24.9706),(7657,6,1,2025,26.4764),(7658,9,1,2023,28.4702),(7659,9,1,2024,26.922),(7660,9,1,2025,26.1992),(7661,10,1,2023,26.2302),(7662,10,1,2024,26.5535),(7663,10,1,2025,26.0768),(7664,11,1,2023,26.7234),(7665,11,1,2024,24.3866),(7666,11,1,2025,28.7627),(7667,13,1,2023,26.654),(7668,13,1,2024,25.9818),(7669,13,1,2025,26.9468),(7670,14,1,2023,27.7888),(7671,14,1,2024,27.1035),(7672,14,1,2025,29.151),(7673,16,1,2023,25.4446),(7674,16,1,2024,28.7701),(7675,16,1,2025,29.5168),(7676,19,1,2023,27.2734),(7677,19,1,2024,26.8169),(7678,19,1,2025,29.264),(7679,20,1,2023,26.8693),(7680,20,1,2024,25.5545),(7681,20,1,2025,29.1647),(7682,23,1,2023,25.1601),(7683,23,1,2024,27.3064),(7684,23,1,2025,28.0518),(7685,24,1,2023,24.3395),(7686,24,1,2024,26.5424),(7687,24,1,2025,26.6932),(7688,67,1,2023,24.8391),(7689,67,1,2024,28.1157),(7690,67,1,2025,28.0613),(7691,72,1,2023,26.9592),(7692,72,1,2024,24.6123),(7693,72,1,2025,29.1838),(7694,1,2,2023,28.0822),(7695,1,2,2024,26.8597),(7696,1,2,2025,27.0519),(7697,5,2,2023,25.6805),(7698,5,2,2024,26.2465),(7699,5,2,2025,26.1911),(7700,6,2,2023,28.2161),(7701,6,2,2024,26.5073),(7702,6,2,2025,29.8881),(7703,9,2,2023,25.9187),(7704,9,2,2024,28.9292),(7705,9,2,2025,28.89),(7706,10,2,2023,28.6623),(7707,10,2,2024,25.6414),(7708,10,2,2025,29.2201),(7709,11,2,2023,25.1765),(7710,11,2,2024,27.2221),(7711,11,2,2025,27.581),(7712,13,2,2023,27.2389),(7713,13,2,2024,27.4512),(7714,13,2,2025,27.5393),(7715,14,2,2023,26.343),(7716,14,2,2024,28.0972),(7717,14,2,2025,28.457),(7718,16,2,2023,28.9934),(7719,16,2,2024,28.5961),(7720,16,2,2025,28.0003),(7721,19,2,2023,25.213),(7722,19,2,2024,26.0643),(7723,19,2,2025,26.6825),(7724,20,2,2023,26.2197),(7725,20,2,2024,25.0508),(7726,20,2,2025,28.5949),(7727,23,2,2023,28.8223),(7728,23,2,2024,27.3267),(7729,23,2,2025,27.1664),(7730,24,2,2023,24.852),(7731,24,2,2024,26.7609),(7732,24,2,2025,26.2484),(7733,67,2,2023,26.9591),(7734,67,2,2024,25.0506),(7735,67,2,2025,26.3758),(7736,72,2,2023,27.727),(7737,72,2,2024,28.5075),(7738,72,2,2025,26.3567),(7739,1,3,2023,27.2611),(7740,1,3,2024,26.2352),(7741,1,3,2025,26.3927),(7742,5,3,2023,24.2578),(7743,5,3,2024,26.1109),(7744,5,3,2025,29.7811),(7745,6,3,2023,26.5727),(7746,6,3,2024,27.5204),(7747,6,3,2025,29.8839),(7748,9,3,2023,27.8584),(7749,9,3,2024,28.64),(7750,9,3,2025,26.6251),(7751,10,3,2023,28.2054),(7752,10,3,2024,25.1515),(7753,10,3,2025,28.1416),(7754,11,3,2023,26.2534),(7755,11,3,2024,25.8421),(7756,11,3,2025,27.4503),(7757,13,3,2023,25.7252),(7758,13,3,2024,25.2753),(7759,13,3,2025,26.2006),(7760,14,3,2023,26.1774),(7761,14,3,2024,26.2851),(7762,14,3,2025,29.8935),(7763,16,3,2023,26.6119),(7764,16,3,2024,27.3792),(7765,16,3,2025,29.0601),(7766,19,3,2023,24.1629),(7767,19,3,2024,27.6342),(7768,19,3,2025,27.6824),(7769,20,3,2023,26.5094),(7770,20,3,2024,28.4998),(7771,20,3,2025,29.9708),(7772,23,3,2023,25.3547),(7773,23,3,2024,25.8609),(7774,23,3,2025,25.2403),(7775,24,3,2023,24.6188),(7776,24,3,2024,26.3733),(7777,24,3,2025,25.0098),(7778,67,3,2023,26.9293),(7779,67,3,2024,28.6171),(7780,67,3,2025,29.2975),(7781,72,3,2023,26.6363),(7782,72,3,2024,24.289),(7783,72,3,2025,28.536),(7784,1,13,2023,25.8132),(7785,1,13,2024,27.458),(7786,1,13,2025,26.8503),(7787,5,13,2023,27.8773),(7788,5,13,2024,27.8359),(7789,5,13,2025,27.5476),(7790,6,13,2023,25.2302),(7791,6,13,2024,27.5083),(7792,6,13,2025,28.8507),(7793,9,13,2023,27.7285),(7794,9,13,2024,26.0905),(7795,9,13,2025,29.2672),(7796,10,13,2023,24.0644),(7797,10,13,2024,26.5205),(7798,10,13,2025,27.4091),(7799,11,13,2023,28.4842),(7800,11,13,2024,24.1936),(7801,11,13,2025,27.5156),(7802,13,13,2023,25.9972),(7803,13,13,2024,26.439),(7804,13,13,2025,26.2034),(7805,14,13,2023,27.7002),(7806,14,13,2024,28.8905),(7807,14,13,2025,28.3522),(7808,16,13,2023,26.0893),(7809,16,13,2024,24.3897),(7810,16,13,2025,25.681),(7811,19,13,2023,26.2357),(7812,19,13,2024,28.1356),(7813,19,13,2025,28.9707),(7814,20,13,2023,26.4469),(7815,20,13,2024,24.3225),(7816,20,13,2025,29.2715),(7817,23,13,2023,24.3902),(7818,23,13,2024,28.1366),(7819,23,13,2025,29.5124),(7820,24,13,2023,24.152),(7821,24,13,2024,26.2228),(7822,24,13,2025,25.6582),(7823,67,13,2023,25.6224),(7824,67,13,2024,25.1377),(7825,67,13,2025,25.821),(7826,72,13,2023,24.692),(7827,72,13,2024,24.997),(7828,72,13,2025,27.9092),(7829,1,14,2023,25.5547),(7830,1,14,2024,28.0459),(7831,1,14,2025,25.5656),(7832,5,14,2023,24.6903),(7833,5,14,2024,25.7548),(7834,5,14,2025,26.7029),(7835,6,14,2023,27.2504),(7836,6,14,2024,25.1429),(7837,6,14,2025,25.9637),(7838,9,14,2023,25.3895),(7839,9,14,2024,28.0566),(7840,9,14,2025,26.1144),(7841,10,14,2023,27.4024),(7842,10,14,2024,27.6686),(7843,10,14,2025,28.136),(7844,11,14,2023,28.6742),(7845,11,14,2024,27.9629),(7846,11,14,2025,25.7918),(7847,13,14,2023,26.0705),(7848,13,14,2024,26.977),(7849,13,14,2025,28.6734),(7850,14,14,2023,28.4361),(7851,14,14,2024,25.1603),(7852,14,14,2025,27.4933),(7853,16,14,2023,27.9856),(7854,16,14,2024,26.448),(7855,16,14,2025,25.2834),(7856,19,14,2023,28.073),(7857,19,14,2024,28.5148),(7858,19,14,2025,25.3551),(7859,20,14,2023,27.231),(7860,20,14,2024,24.0898),(7861,20,14,2025,25.7558),(7862,23,14,2023,27.5096),(7863,23,14,2024,24.2807),(7864,23,14,2025,25.8745),(7865,24,14,2023,27.5306),(7866,24,14,2024,24.0295),(7867,24,14,2025,29.5558),(7868,67,14,2023,26.6904),(7869,67,14,2024,28.7846),(7870,67,14,2025,25.8516),(7871,72,14,2023,28.9045),(7872,72,14,2024,25.9678),(7873,72,14,2025,25.1253),(7874,1,21,2023,28.7232),(7875,1,21,2024,27.24),(7876,1,21,2025,27.0305),(7877,5,21,2023,24.4323),(7878,5,21,2024,25.0701),(7879,5,21,2025,29.0535),(7880,6,21,2023,26.0572),(7881,6,21,2024,27.1257),(7882,6,21,2025,29.4568),(7883,9,21,2023,26.9068),(7884,9,21,2024,25.1637),(7885,9,21,2025,27.0983),(7886,10,21,2023,26.0002),(7887,10,21,2024,27.7059),(7888,10,21,2025,27.5292),(7889,11,21,2023,25.5283),(7890,11,21,2024,24.0538),(7891,11,21,2025,25.6841),(7892,13,21,2023,27.2591),(7893,13,21,2024,28.2431),(7894,13,21,2025,26.4381),(7895,14,21,2023,28.4615),(7896,14,21,2024,26.993),(7897,14,21,2025,26.5805),(7898,16,21,2023,27.9236),(7899,16,21,2024,28.8766),(7900,16,21,2025,27.6121),(7901,19,21,2023,27.4307),(7902,19,21,2024,28.3172),(7903,19,21,2025,26.2941),(7904,20,21,2023,27.5188),(7905,20,21,2024,27.7116),(7906,20,21,2025,28.0018),(7907,23,21,2023,27.8743),(7908,23,21,2024,24.3659),(7909,23,21,2025,25.2067),(7910,24,21,2023,28.9358),(7911,24,21,2024,28.059),(7912,24,21,2025,25.4874),(7913,67,21,2023,24.2599),(7914,67,21,2024,28.8376),(7915,67,21,2025,28.4082),(7916,72,21,2023,26.5283),(7917,72,21,2024,26.4167),(7918,72,21,2025,29.4985),(7919,1,31,2023,24.2425),(7920,1,31,2024,26.7171),(7921,1,31,2025,27.858),(7922,5,31,2023,25.1386),(7923,5,31,2024,26.1191),(7924,5,31,2025,27.1798),(7925,6,31,2023,28.5417),(7926,6,31,2024,25.1692),(7927,6,31,2025,27.2206),(7928,9,31,2023,26.5955),(7929,9,31,2024,25.3156),(7930,9,31,2025,28.7914),(7931,10,31,2023,24.0103),(7932,10,31,2024,27.6774),(7933,10,31,2025,28.3563),(7934,11,31,2023,24.7489),(7935,11,31,2024,27.6758),(7936,11,31,2025,26.1322),(7937,13,31,2023,28.6337),(7938,13,31,2024,28.7718),(7939,13,31,2025,29.958),(7940,14,31,2023,24.4747),(7941,14,31,2024,26.4995),(7942,14,31,2025,26.0733),(7943,16,31,2023,26.868),(7944,16,31,2024,25.12),(7945,16,31,2025,26.9963),(7946,19,31,2023,25.6212),(7947,19,31,2024,26.1171),(7948,19,31,2025,25.722),(7949,20,31,2023,26.2585),(7950,20,31,2024,28.1266),(7951,20,31,2025,28.8574),(7952,23,31,2023,25.9074),(7953,23,31,2024,26.9647),(7954,23,31,2025,29.1015),(7955,24,31,2023,25.6133),(7956,24,31,2024,24.7621),(7957,24,31,2025,28.9707),(7958,67,31,2023,26.5671),(7959,67,31,2024,24.9236),(7960,67,31,2025,26.9164),(7961,72,31,2023,25.8113),(7962,72,31,2024,27.3074),(7963,72,31,2025,26.1029),(7964,1,32,2023,24.5924),(7965,1,32,2024,28.6534),(7966,1,32,2025,26.4896),(7967,5,32,2023,27.488),(7968,5,32,2024,26.9712),(7969,5,32,2025,29.392),(7970,6,32,2023,27.0462),(7971,6,32,2024,26.0552),(7972,6,32,2025,26.1375),(7973,9,32,2023,28.5219),(7974,9,32,2024,28.1969),(7975,9,32,2025,27.4187),(7976,10,32,2023,28.5027),(7977,10,32,2024,24.2577),(7978,10,32,2025,27.7801),(7979,11,32,2023,27.1277),(7980,11,32,2024,26.298),(7981,11,32,2025,27.1072),(7982,13,32,2023,27.6416),(7983,13,32,2024,25.8867),(7984,13,32,2025,28.5087),(7985,14,32,2023,25.8831),(7986,14,32,2024,27.8897),(7987,14,32,2025,28.7991),(7988,16,32,2023,26.3263),(7989,16,32,2024,24.2341),(7990,16,32,2025,29.1916),(7991,19,32,2023,24.2556),(7992,19,32,2024,27.7033),(7993,19,32,2025,27.7498),(7994,20,32,2023,26.6391),(7995,20,32,2024,28.9463),(7996,20,32,2025,26.8138),(7997,23,32,2023,28.2304),(7998,23,32,2024,24.7106),(7999,23,32,2025,25.8619),(8000,24,32,2023,26.1777),(8001,24,32,2024,27.3026),(8002,24,32,2025,29.9801),(8003,67,32,2023,28.9924),(8004,67,32,2024,24.0219),(8005,67,32,2025,25.1323),(8006,72,32,2023,24.5959),(8007,72,32,2024,26.5827),(8008,72,32,2025,26.1256),(8009,1,36,2023,26.88),(8010,1,36,2024,25.0232),(8011,1,36,2025,26.4759),(8012,5,36,2023,28.3099),(8013,5,36,2024,26.1219),(8014,5,36,2025,27.6798),(8015,6,36,2023,26.0334),(8016,6,36,2024,26.1276),(8017,6,36,2025,29.5375),(8018,9,36,2023,25.305),(8019,9,36,2024,26.9123),(8020,9,36,2025,25.6465),(8021,10,36,2023,28.4958),(8022,10,36,2024,24.5394),(8023,10,36,2025,29.2098),(8024,11,36,2023,28.4307),(8025,11,36,2024,28.5239),(8026,11,36,2025,29.3276),(8027,13,36,2023,27.0661),(8028,13,36,2024,26.3478),(8029,13,36,2025,27.5407),(8030,14,36,2023,24.6603),(8031,14,36,2024,24.6791),(8032,14,36,2025,26.4147),(8033,16,36,2023,24.0363),(8034,16,36,2024,24.9372),(8035,16,36,2025,29.577),(8036,19,36,2023,24.0736),(8037,19,36,2024,25.637),(8038,19,36,2025,27.9642),(8039,20,36,2023,28.91),(8040,20,36,2024,24.6573),(8041,20,36,2025,28.5566),(8042,23,36,2023,24.811),(8043,23,36,2024,27.3853),(8044,23,36,2025,29.4933),(8045,24,36,2023,26.3106),(8046,24,36,2024,27.0733),(8047,24,36,2025,28.4348),(8048,67,36,2023,26.9539),(8049,67,36,2024,28.465),(8050,67,36,2025,28.4633),(8051,72,36,2023,27.9216),(8052,72,36,2024,28.2181),(8053,72,36,2025,29.3259),(8054,1,38,2023,27.9749),(8055,1,38,2024,25.8969),(8056,1,38,2025,27.5597),(8057,5,38,2023,26.108),(8058,5,38,2024,26.8606),(8059,5,38,2025,27.9793),(8060,6,38,2023,25.3146),(8061,6,38,2024,26.635),(8062,6,38,2025,29.2314),(8063,9,38,2023,27.2517),(8064,9,38,2024,27.5645),(8065,9,38,2025,28.0675),(8066,10,38,2023,28.6441),(8067,10,38,2024,28.0178),(8068,10,38,2025,26.1566),(8069,11,38,2023,27.7295),(8070,11,38,2024,24.1778),(8071,11,38,2025,29.7007),(8072,13,38,2023,26.9701),(8073,13,38,2024,24.7485),(8074,13,38,2025,29.8321),(8075,14,38,2023,25.9149),(8076,14,38,2024,24.0782),(8077,14,38,2025,29.6462),(8078,16,38,2023,26.9964),(8079,16,38,2024,25.0436),(8080,16,38,2025,26.2286),(8081,19,38,2023,27.0124),(8082,19,38,2024,25.3761),(8083,19,38,2025,27.8431),(8084,20,38,2023,24.0874),(8085,20,38,2024,25.9075),(8086,20,38,2025,29.2754),(8087,23,38,2023,24.6545),(8088,23,38,2024,24.4464),(8089,23,38,2025,25.2682),(8090,24,38,2023,24.002),(8091,24,38,2024,28.2055),(8092,24,38,2025,26.0215),(8093,67,38,2023,26.491),(8094,67,38,2024,28.3906),(8095,67,38,2025,29.48),(8096,72,38,2023,28.2281),(8097,72,38,2024,26.7007),(8098,72,38,2025,25.8191),(8099,1,39,2023,24.9933),(8100,1,39,2024,26.5092),(8101,1,39,2025,29.566),(8102,5,39,2023,24.3025),(8103,5,39,2024,26.8146),(8104,5,39,2025,28.1656),(8105,6,39,2023,26.3842),(8106,6,39,2024,26.424),(8107,6,39,2025,29.9673),(8108,9,39,2023,26.5648),(8109,9,39,2024,26.922),(8110,9,39,2025,26.9155),(8111,10,39,2023,24.8117),(8112,10,39,2024,27.3117),(8113,10,39,2025,29.1237),(8114,11,39,2023,24.6831),(8115,11,39,2024,25.0446),(8116,11,39,2025,28.1734),(8117,13,39,2023,26.7336),(8118,13,39,2024,28.1475),(8119,13,39,2025,27.5368),(8120,14,39,2023,24.2414),(8121,14,39,2024,27.5969),(8122,14,39,2025,27.2601),(8123,16,39,2023,24.5097),(8124,16,39,2024,24.7684),(8125,16,39,2025,27.3128),(8126,19,39,2023,28.2587),(8127,19,39,2024,28.3553),(8128,19,39,2025,29.0003),(8129,20,39,2023,25.9358),(8130,20,39,2024,26.678),(8131,20,39,2025,27.5824),(8132,23,39,2023,28.8783),(8133,23,39,2024,25.6443),(8134,23,39,2025,28.5866),(8135,24,39,2023,27.0001),(8136,24,39,2024,28.2405),(8137,24,39,2025,27.2025),(8138,67,39,2023,27.2909),(8139,67,39,2024,28.8469),(8140,67,39,2025,29.3616),(8141,72,39,2023,26.2677),(8142,72,39,2024,27.2534),(8143,72,39,2025,29.4638),(8144,1,42,2023,26.559),(8145,1,42,2024,28.4036),(8146,1,42,2025,29.3409),(8147,5,42,2023,27.4938),(8148,5,42,2024,28.4462),(8149,5,42,2025,26.7497),(8150,6,42,2023,24.4099),(8151,6,42,2024,25.8002),(8152,6,42,2025,27.7716),(8153,9,42,2023,27.4571),(8154,9,42,2024,27.9708),(8155,9,42,2025,29.4826),(8156,10,42,2023,24.5006),(8157,10,42,2024,28.0551),(8158,10,42,2025,28.774),(8159,11,42,2023,25.7044),(8160,11,42,2024,26.2003),(8161,11,42,2025,25.8882),(8162,13,42,2023,26.8401),(8163,13,42,2024,25.5359),(8164,13,42,2025,29.1593),(8165,14,42,2023,25.1889),(8166,14,42,2024,27.4664),(8167,14,42,2025,28.7653),(8168,16,42,2023,27.4274),(8169,16,42,2024,24.8411),(8170,16,42,2025,28.9233),(8171,19,42,2023,26.0931),(8172,19,42,2024,27.6957),(8173,19,42,2025,27.1991),(8174,20,42,2023,28.9083),(8175,20,42,2024,26.9444),(8176,20,42,2025,29.9971),(8177,23,42,2023,25.1523),(8178,23,42,2024,24.7702),(8179,23,42,2025,25.3939),(8180,24,42,2023,28.6591),(8181,24,42,2024,26.1139),(8182,24,42,2025,26.5923),(8183,67,42,2023,25.6196),(8184,67,42,2024,27.321),(8185,67,42,2025,26.7465),(8186,72,42,2023,27.7692),(8187,72,42,2024,27.6064),(8188,72,42,2025,26.7246),(8672,2,4,2023,27.2429),(8673,2,4,2024,28.0757),(8674,2,4,2025,26.6497),(8675,3,4,2023,27.0212),(8676,3,4,2024,25.1571),(8677,3,4,2025,28.7219),(8678,8,4,2023,26.1382),(8679,8,4,2024,26.5252),(8680,8,4,2025,26.2113),(8681,10,4,2023,25.4809),(8682,10,4,2024,26.7706),(8683,10,4,2025,29.4102),(8684,15,4,2023,28.7391),(8685,15,4,2024,25.4651),(8686,15,4,2025,29.108),(8687,17,4,2023,27.1449),(8688,17,4,2024,26.4003),(8689,17,4,2025,26.5668),(8690,18,4,2023,27.6333),(8691,18,4,2024,28.4662),(8692,18,4,2025,27.4309),(8693,21,4,2023,25.7558),(8694,21,4,2024,28.4863),(8695,21,4,2025,29.1642),(8696,22,4,2023,26.3623),(8697,22,4,2024,26.3185),(8698,22,4,2025,28.506),(8699,25,4,2023,25.5741),(8700,25,4,2024,28.3528),(8701,25,4,2025,29.0417),(8702,26,4,2023,26.15),(8703,26,4,2024,25.6249),(8704,26,4,2025,29.6744),(8705,30,4,2023,25.4975),(8706,30,4,2024,28.464),(8707,30,4,2025,29.8278),(8708,32,4,2023,25.747),(8709,32,4,2024,25.2515),(8710,32,4,2025,29.0166),(8711,33,4,2023,27.3286),(8712,33,4,2024,27.5931),(8713,33,4,2025,27.9799),(8714,60,4,2023,27.1201),(8715,60,4,2024,25.6607),(8716,60,4,2025,26.9434),(8717,68,4,2023,27.7348),(8718,68,4,2024,27.8439),(8719,68,4,2025,28.015),(8720,2,5,2023,26.5435),(8721,2,5,2024,26.6725),(8722,2,5,2025,29.7319),(8723,3,5,2023,26.6419),(8724,3,5,2024,26.014),(8725,3,5,2025,26.1443),(8726,8,5,2023,26.6796),(8727,8,5,2024,28.9648),(8728,8,5,2025,28.7854),(8729,10,5,2023,27.0324),(8730,10,5,2024,26.806),(8731,10,5,2025,28.9326),(8732,15,5,2023,26.2453),(8733,15,5,2024,26.4284),(8734,15,5,2025,29.4063),(8735,17,5,2023,25.7462),(8736,17,5,2024,26.512),(8737,17,5,2025,27.3215),(8738,18,5,2023,27.0714),(8739,18,5,2024,27.3926),(8740,18,5,2025,27.7486),(8741,21,5,2023,26.5654),(8742,21,5,2024,27.5812),(8743,21,5,2025,26.2096),(8744,22,5,2023,26.3044),(8745,22,5,2024,26.8933),(8746,22,5,2025,27.5535),(8747,25,5,2023,27.0874),(8748,25,5,2024,26.7765),(8749,25,5,2025,28.6203),(8750,26,5,2023,28.7722),(8751,26,5,2024,28.0001),(8752,26,5,2025,29.6839),(8753,30,5,2023,26.4191),(8754,30,5,2024,25.044),(8755,30,5,2025,29.9627),(8756,32,5,2023,28.6813),(8757,32,5,2024,27.5183),(8758,32,5,2025,27.5476),(8759,33,5,2023,25.1832),(8760,33,5,2024,25.2733),(8761,33,5,2025,26.8168),(8762,60,5,2023,28.2641),(8763,60,5,2024,26.87),(8764,60,5,2025,29.5578),(8765,68,5,2023,25.1791),(8766,68,5,2024,27.2219),(8767,68,5,2025,28.5722),(8768,2,6,2023,27.1953),(8769,2,6,2024,28.2599),(8770,2,6,2025,27.7135),(8771,3,6,2023,27.7879),(8772,3,6,2024,25.7989),(8773,3,6,2025,29.6307),(8774,8,6,2023,28.7571),(8775,8,6,2024,28.8931),(8776,8,6,2025,26.1942),(8777,10,6,2023,26.2916),(8778,10,6,2024,26.8756),(8779,10,6,2025,27.5032),(8780,15,6,2023,26.8891),(8781,15,6,2024,25.9358),(8782,15,6,2025,29.012),(8783,17,6,2023,25.2524),(8784,17,6,2024,25.2262),(8785,17,6,2025,26.3735),(8786,18,6,2023,26.189),(8787,18,6,2024,25.8245),(8788,18,6,2025,26.5554),(8789,21,6,2023,25.3036),(8790,21,6,2024,28.8517),(8791,21,6,2025,28.3478),(8792,22,6,2023,25.1841),(8793,22,6,2024,26.8768),(8794,22,6,2025,26.8316),(8795,25,6,2023,27.5279),(8796,25,6,2024,27.1444),(8797,25,6,2025,29.1384),(8798,26,6,2023,26.2588),(8799,26,6,2024,25.8788),(8800,26,6,2025,26.6178),(8801,30,6,2023,25.4524),(8802,30,6,2024,25.4085),(8803,30,6,2025,26.6855),(8804,32,6,2023,27.2017),(8805,32,6,2024,25.9523),(8806,32,6,2025,28.1563),(8807,33,6,2023,28.9246),(8808,33,6,2024,26.154),(8809,33,6,2025,27.9962),(8810,60,6,2023,27.5192),(8811,60,6,2024,27.6074),(8812,60,6,2025,27.4794),(8813,68,6,2023,28.5745),(8814,68,6,2024,26.4346),(8815,68,6,2025,26.4495),(8816,2,7,2023,26.9438),(8817,2,7,2024,25.3706),(8818,2,7,2025,26.0214),(8819,3,7,2023,27.9953),(8820,3,7,2024,27.9122),(8821,3,7,2025,27.575),(8822,8,7,2023,28.1383),(8823,8,7,2024,27.9666),(8824,8,7,2025,27.4181),(8825,10,7,2023,27.1908),(8826,10,7,2024,27.6996),(8827,10,7,2025,28.9257),(8828,15,7,2023,27.5296),(8829,15,7,2024,28.871),(8830,15,7,2025,29.7663),(8831,17,7,2023,28.2182),(8832,17,7,2024,25.7922),(8833,17,7,2025,28.3065),(8834,18,7,2023,26.156),(8835,18,7,2024,27.8603),(8836,18,7,2025,28.8337),(8837,21,7,2023,26.5877),(8838,21,7,2024,28.4371),(8839,21,7,2025,26.4224),(8840,22,7,2023,28.8008),(8841,22,7,2024,26.7369),(8842,22,7,2025,27.2822),(8843,25,7,2023,26.2002),(8844,25,7,2024,27.1544),(8845,25,7,2025,29.1712),(8846,26,7,2023,26.3931),(8847,26,7,2024,26.4516),(8848,26,7,2025,29.079),(8849,30,7,2023,28.0401),(8850,30,7,2024,26.9633),(8851,30,7,2025,26.6964),(8852,32,7,2023,26.5919),(8853,32,7,2024,26.8706),(8854,32,7,2025,26.5772),(8855,33,7,2023,26.2744),(8856,33,7,2024,25.6401),(8857,33,7,2025,29.3773),(8858,60,7,2023,27.9663),(8859,60,7,2024,25.6998),(8860,60,7,2025,28.5998),(8861,68,7,2023,27.8995),(8862,68,7,2024,27.6982),(8863,68,7,2025,26.7927),(8864,2,11,2023,28.869),(8865,2,11,2024,25.9666),(8866,2,11,2025,27.2263),(8867,3,11,2023,28.2315),(8868,3,11,2024,25.4786),(8869,3,11,2025,26.6985),(8870,8,11,2023,27.0566),(8871,8,11,2024,25.1878),(8872,8,11,2025,28.769),(8873,10,11,2023,26.2818),(8874,10,11,2024,27.1018),(8875,10,11,2025,28.6635),(8876,15,11,2023,28.0124),(8877,15,11,2024,28.0712),(8878,15,11,2025,28.3188),(8879,17,11,2023,27.3805),(8880,17,11,2024,25.946),(8881,17,11,2025,27.5885),(8882,18,11,2023,26.1046),(8883,18,11,2024,25.7576),(8884,18,11,2025,26.474),(8885,21,11,2023,25.0974),(8886,21,11,2024,28.065),(8887,21,11,2025,29.0327),(8888,22,11,2023,26.9686),(8889,22,11,2024,25.7449),(8890,22,11,2025,27.8186),(8891,25,11,2023,27.8585),(8892,25,11,2024,25.8367),(8893,25,11,2025,29.6079),(8894,26,11,2023,28.5293),(8895,26,11,2024,27.823),(8896,26,11,2025,29.5269),(8897,30,11,2023,26.1657),(8898,30,11,2024,28.2479),(8899,30,11,2025,26.7423),(8900,32,11,2023,26.968),(8901,32,11,2024,28.6129),(8902,32,11,2025,26.1605),(8903,33,11,2023,26.964),(8904,33,11,2024,26.3384),(8905,33,11,2025,26.8),(8906,60,11,2023,28.9846),(8907,60,11,2024,26.5232),(8908,60,11,2025,29.662),(8909,68,11,2023,26.7403),(8910,68,11,2024,26.7157),(8911,68,11,2025,29.3576),(8912,2,12,2023,28.6408),(8913,2,12,2024,25.1311),(8914,2,12,2025,27.7333),(8915,3,12,2023,25.273),(8916,3,12,2024,25.1651),(8917,3,12,2025,26.0068),(8918,8,12,2023,28.5385),(8919,8,12,2024,26.6719),(8920,8,12,2025,27.7443),(8921,10,12,2023,28.7058),(8922,10,12,2024,26.2962),(8923,10,12,2025,29.3634),(8924,15,12,2023,25.9284),(8925,15,12,2024,27.5518),(8926,15,12,2025,27.9738),(8927,17,12,2023,27.2137),(8928,17,12,2024,26.1471),(8929,17,12,2025,29.0945),(8930,18,12,2023,25.0312),(8931,18,12,2024,27.8724),(8932,18,12,2025,28.2686),(8933,21,12,2023,27.7257),(8934,21,12,2024,27.8225),(8935,21,12,2025,27.9356),(8936,22,12,2023,26.2105),(8937,22,12,2024,25.2456),(8938,22,12,2025,27.5963),(8939,25,12,2023,28.245),(8940,25,12,2024,28.4361),(8941,25,12,2025,29.4454),(8942,26,12,2023,27.9187),(8943,26,12,2024,25.2573),(8944,26,12,2025,26.5302),(8945,30,12,2023,26.8794),(8946,30,12,2024,28.8065),(8947,30,12,2025,27.394),(8948,32,12,2023,28.5508),(8949,32,12,2024,26.5719),(8950,32,12,2025,27.2072),(8951,33,12,2023,26.3202),(8952,33,12,2024,27.9793),(8953,33,12,2025,28.936),(8954,60,12,2023,26.7419),(8955,60,12,2024,28.9017),(8956,60,12,2025,28.2828),(8957,68,12,2023,28.7089),(8958,68,12,2024,28.6962),(8959,68,12,2025,29.3544),(8960,2,15,2023,26.6831),(8961,2,15,2024,27.3526),(8962,2,15,2025,28.7136),(8963,3,15,2023,27.5101),(8964,3,15,2024,25.4096),(8965,3,15,2025,28.5177),(8966,8,15,2023,28.3596),(8967,8,15,2024,26.2452),(8968,8,15,2025,26.147),(8969,10,15,2023,25.9996),(8970,10,15,2024,25.557),(8971,10,15,2025,29.7863),(8972,15,15,2023,26.2605),(8973,15,15,2024,27.9436),(8974,15,15,2025,28.9363),(8975,17,15,2023,26.8506),(8976,17,15,2024,25.4444),(8977,17,15,2025,26.6702),(8978,18,15,2023,27.0176),(8979,18,15,2024,25.0774),(8980,18,15,2025,28.3341),(8981,21,15,2023,28.4385),(8982,21,15,2024,27.1902),(8983,21,15,2025,26.6356),(8984,22,15,2023,25.6075),(8985,22,15,2024,26.1306),(8986,22,15,2025,29.8305),(8987,25,15,2023,28.7607),(8988,25,15,2024,28.312),(8989,25,15,2025,27.278),(8990,26,15,2023,25.454),(8991,26,15,2024,27.4361),(8992,26,15,2025,28.8184),(8993,30,15,2023,27.7838),(8994,30,15,2024,26.4636),(8995,30,15,2025,28.9666),(8996,32,15,2023,27.4423),(8997,32,15,2024,28.3118),(8998,32,15,2025,27.2321),(8999,33,15,2023,25.2248),(9000,33,15,2024,26.4281),(9001,33,15,2025,28.4658),(9002,60,15,2023,25.045),(9003,60,15,2024,25.8275),(9004,60,15,2025,26.0023),(9005,68,15,2023,26.5293),(9006,68,15,2024,28.6394),(9007,68,15,2025,27.609),(9008,2,17,2023,26.127),(9009,2,17,2024,25.8077),(9010,2,17,2025,26.6578),(9011,3,17,2023,25.866),(9012,3,17,2024,27.3563),(9013,3,17,2025,27.1835),(9014,8,17,2023,27.8487),(9015,8,17,2024,27.6931),(9016,8,17,2025,26.9195),(9017,10,17,2023,25.518),(9018,10,17,2024,28.8315),(9019,10,17,2025,27.6033),(9020,15,17,2023,25.5223),(9021,15,17,2024,26.8017),(9022,15,17,2025,29.4414),(9023,17,17,2023,28.802),(9024,17,17,2024,25.686),(9025,17,17,2025,26.0237),(9026,18,17,2023,27.0608),(9027,18,17,2024,27.2327),(9028,18,17,2025,26.9813),(9029,21,17,2023,27.2081),(9030,21,17,2024,25.0967),(9031,21,17,2025,27.8593),(9032,22,17,2023,26.0063),(9033,22,17,2024,28.4536),(9034,22,17,2025,28.2492),(9035,25,17,2023,25.885),(9036,25,17,2024,26.6777),(9037,25,17,2025,27.7332),(9038,26,17,2023,28.633),(9039,26,17,2024,25.9653),(9040,26,17,2025,27.9274),(9041,30,17,2023,27.7412),(9042,30,17,2024,28.9237),(9043,30,17,2025,29.3948),(9044,32,17,2023,26.2032),(9045,32,17,2024,28.8316),(9046,32,17,2025,29.5485),(9047,33,17,2023,27.2476),(9048,33,17,2024,25.5925),(9049,33,17,2025,26.2197),(9050,60,17,2023,28.3209),(9051,60,17,2024,28.9456),(9052,60,17,2025,27.7651),(9053,68,17,2023,25.9886),(9054,68,17,2024,28.6478),(9055,68,17,2025,29.2731),(9056,2,18,2023,26.422),(9057,2,18,2024,26.2907),(9058,2,18,2025,28.1875),(9059,3,18,2023,28.0653),(9060,3,18,2024,25.7639),(9061,3,18,2025,28.6239),(9062,8,18,2023,27.8278),(9063,8,18,2024,27.2671),(9064,8,18,2025,28.852),(9065,10,18,2023,28.459),(9066,10,18,2024,25.7389),(9067,10,18,2025,27.3173),(9068,15,18,2023,25.3699),(9069,15,18,2024,26.8978),(9070,15,18,2025,26.3791),(9071,17,18,2023,25.202),(9072,17,18,2024,28.8727),(9073,17,18,2025,28.7574),(9074,18,18,2023,27.1689),(9075,18,18,2024,27.5723),(9076,18,18,2025,28.3548),(9077,21,18,2023,25.0572),(9078,21,18,2024,26.2215),(9079,21,18,2025,27.9361),(9080,22,18,2023,27.0158),(9081,22,18,2024,25.2706),(9082,22,18,2025,29.3056),(9083,25,18,2023,28.7164),(9084,25,18,2024,25.6652),(9085,25,18,2025,26.1769),(9086,26,18,2023,27.8887),(9087,26,18,2024,26.9127),(9088,26,18,2025,26.8975),(9089,30,18,2023,27.7495),(9090,30,18,2024,28.0547),(9091,30,18,2025,29.0254),(9092,32,18,2023,26.9626),(9093,32,18,2024,25.7369),(9094,32,18,2025,27.7968),(9095,33,18,2023,27.7732),(9096,33,18,2024,25.4757),(9097,33,18,2025,28.0587),(9098,60,18,2023,25.8665),(9099,60,18,2024,27.1562),(9100,60,18,2025,26.1818),(9101,68,18,2023,27.4405),(9102,68,18,2024,28.6568),(9103,68,18,2025,28.9626),(9104,2,20,2023,28.8427),(9105,2,20,2024,27.3258),(9106,2,20,2025,26.1007),(9107,3,20,2023,26.5263),(9108,3,20,2024,28.3293),(9109,3,20,2025,26.0676),(9110,8,20,2023,27.3499),(9111,8,20,2024,28.547),(9112,8,20,2025,28.685),(9113,10,20,2023,27.7841),(9114,10,20,2024,26.8657),(9115,10,20,2025,26.9759),(9116,15,20,2023,28.2826),(9117,15,20,2024,26.4852),(9118,15,20,2025,27.5783),(9119,17,20,2023,28.4359),(9120,17,20,2024,25.4447),(9121,17,20,2025,29.9158),(9122,18,20,2023,27.2447),(9123,18,20,2024,28.4761),(9124,18,20,2025,28.6466),(9125,21,20,2023,27.8048),(9126,21,20,2024,27.0841),(9127,21,20,2025,28.0062),(9128,22,20,2023,28.7786),(9129,22,20,2024,25.8746),(9130,22,20,2025,27.0369),(9131,25,20,2023,27.561),(9132,25,20,2024,26.6943),(9133,25,20,2025,26.7883),(9134,26,20,2023,27.8587),(9135,26,20,2024,28.9285),(9136,26,20,2025,29.0665),(9137,30,20,2023,28.5469),(9138,30,20,2024,25.5349),(9139,30,20,2025,26.0338),(9140,32,20,2023,27.5644),(9141,32,20,2024,25.7207),(9142,32,20,2025,29.9103),(9143,33,20,2023,26.3892),(9144,33,20,2024,28.2152),(9145,33,20,2025,29.9083),(9146,60,20,2023,26.8962),(9147,60,20,2024,26.7558),(9148,60,20,2025,29.0903),(9149,68,20,2023,27.1843),(9150,68,20,2024,26.6504),(9151,68,20,2025,27.6994),(9152,2,25,2023,28.5456),(9153,2,25,2024,25.63),(9154,2,25,2025,26.513),(9155,3,25,2023,25.6752),(9156,3,25,2024,26.8371),(9157,3,25,2025,29.1596),(9158,8,25,2023,27.287),(9159,8,25,2024,26.956),(9160,8,25,2025,28.919),(9161,10,25,2023,25.7272),(9162,10,25,2024,27.8788),(9163,10,25,2025,26.2126),(9164,15,25,2023,25.4265),(9165,15,25,2024,26.4945),(9166,15,25,2025,28.1932),(9167,17,25,2023,27.4826),(9168,17,25,2024,26.8332),(9169,17,25,2025,27.7181),(9170,18,25,2023,28.0912),(9171,18,25,2024,27.3017),(9172,18,25,2025,28.2347),(9173,21,25,2023,25.2683),(9174,21,25,2024,27.6377),(9175,21,25,2025,26.3833),(9176,22,25,2023,27.0037),(9177,22,25,2024,25.8683),(9178,22,25,2025,28.3305),(9179,25,25,2023,26.0474),(9180,25,25,2024,27.2457),(9181,25,25,2025,26.0861),(9182,26,25,2023,26.6936),(9183,26,25,2024,25.2098),(9184,26,25,2025,29.968),(9185,30,25,2023,28.2107),(9186,30,25,2024,25.1496),(9187,30,25,2025,29.1156),(9188,32,25,2023,28.1295),(9189,32,25,2024,27.3005),(9190,32,25,2025,28.1139),(9191,33,25,2023,28.6681),(9192,33,25,2024,28.9989),(9193,33,25,2025,26.99),(9194,60,25,2023,25.9532),(9195,60,25,2024,26.7962),(9196,60,25,2025,28.1214),(9197,68,25,2023,26.2182),(9198,68,25,2024,28.7271),(9199,68,25,2025,28.9807),(9200,2,26,2023,28.7223),(9201,2,26,2024,26.6693),(9202,2,26,2025,27.1795),(9203,3,26,2023,25.8896),(9204,3,26,2024,25.9096),(9205,3,26,2025,27.8792),(9206,8,26,2023,27.6672),(9207,8,26,2024,28.6983),(9208,8,26,2025,28.4902),(9209,10,26,2023,26.3558),(9210,10,26,2024,28.3086),(9211,10,26,2025,26.4754),(9212,15,26,2023,25.4512),(9213,15,26,2024,25.8298),(9214,15,26,2025,28.7952),(9215,17,26,2023,28.487),(9216,17,26,2024,26.0491),(9217,17,26,2025,28.7845),(9218,18,26,2023,27.7752),(9219,18,26,2024,26.5225),(9220,18,26,2025,29.2871),(9221,21,26,2023,28.8679),(9222,21,26,2024,26.478),(9223,21,26,2025,29.7865),(9224,22,26,2023,27.4986),(9225,22,26,2024,26.1335),(9226,22,26,2025,28.1718),(9227,25,26,2023,28.4583),(9228,25,26,2024,27.7761),(9229,25,26,2025,29.5059),(9230,26,26,2023,26.2008),(9231,26,26,2024,28.4866),(9232,26,26,2025,27.8304),(9233,30,26,2023,27.6923),(9234,30,26,2024,28.9701),(9235,30,26,2025,29.7737),(9236,32,26,2023,27.9581),(9237,32,26,2024,28.4694),(9238,32,26,2025,26.4726),(9239,33,26,2023,28.9548),(9240,33,26,2024,27.3562),(9241,33,26,2025,29.9166),(9242,60,26,2023,25.5145),(9243,60,26,2024,27.8227),(9244,60,26,2025,26.5701),(9245,68,26,2023,27.3824),(9246,68,26,2024,27.2014),(9247,68,26,2025,29.8602),(9248,2,27,2023,25.6965),(9249,2,27,2024,28.9019),(9250,2,27,2025,27.4199),(9251,3,27,2023,28.3939),(9252,3,27,2024,25.7098),(9253,3,27,2025,27.3673),(9254,8,27,2023,25.707),(9255,8,27,2024,28.433),(9256,8,27,2025,29.0441),(9257,10,27,2023,25.9213),(9258,10,27,2024,28.4744),(9259,10,27,2025,28.608),(9260,15,27,2023,27.617),(9261,15,27,2024,26.2608),(9262,15,27,2025,28.4532),(9263,17,27,2023,25.4836),(9264,17,27,2024,28.0582),(9265,17,27,2025,27.8402),(9266,18,27,2023,25.0267),(9267,18,27,2024,27.6126),(9268,18,27,2025,26.9831),(9269,21,27,2023,26.0776),(9270,21,27,2024,27.4386),(9271,21,27,2025,26.9602),(9272,22,27,2023,26.4851),(9273,22,27,2024,25.5451),(9274,22,27,2025,28.2701),(9275,25,27,2023,26.7151),(9276,25,27,2024,26.7653),(9277,25,27,2025,29.6813),(9278,26,27,2023,26.1106),(9279,26,27,2024,27.509),(9280,26,27,2025,27.2134),(9281,30,27,2023,27.54),(9282,30,27,2024,26.0597),(9283,30,27,2025,27.6787),(9284,32,27,2023,26.2141),(9285,32,27,2024,26.0343),(9286,32,27,2025,27.5296),(9287,33,27,2023,25.5448),(9288,33,27,2024,27.1352),(9289,33,27,2025,27.0416),(9290,60,27,2023,27.8025),(9291,60,27,2024,27.8877),(9292,60,27,2025,28.0309),(9293,68,27,2023,26.4916),(9294,68,27,2024,26.3653),(9295,68,27,2025,28.3517),(9296,2,28,2023,28.6624),(9297,2,28,2024,28.2571),(9298,2,28,2025,27.2982),(9299,3,28,2023,25.7197),(9300,3,28,2024,28.7039),(9301,3,28,2025,26.3604),(9302,8,28,2023,27.6905),(9303,8,28,2024,25.371),(9304,8,28,2025,27.7835),(9305,10,28,2023,28.8045),(9306,10,28,2024,26.6719),(9307,10,28,2025,26.946),(9308,15,28,2023,28.7145),(9309,15,28,2024,28.7345),(9310,15,28,2025,29.5288),(9311,17,28,2023,27.4407),(9312,17,28,2024,26.6172),(9313,17,28,2025,26.7638),(9314,18,28,2023,27.9675),(9315,18,28,2024,25.5461),(9316,18,28,2025,27.8279),(9317,21,28,2023,28.5011),(9318,21,28,2024,25.0218),(9319,21,28,2025,27.6059),(9320,22,28,2023,28.9639),(9321,22,28,2024,28.002),(9322,22,28,2025,29.1182),(9323,25,28,2023,27.5849),(9324,25,28,2024,28.5702),(9325,25,28,2025,28.096),(9326,26,28,2023,28.7694),(9327,26,28,2024,25.5593),(9328,26,28,2025,29.488),(9329,30,28,2023,28.762),(9330,30,28,2024,25.3461),(9331,30,28,2025,28.4444),(9332,32,28,2023,28.1839),(9333,32,28,2024,25.586),(9334,32,28,2025,27.3786),(9335,33,28,2023,26.135),(9336,33,28,2024,26.5392),(9337,33,28,2025,26.2909),(9338,60,28,2023,25.8369),(9339,60,28,2024,28.312),(9340,60,28,2025,28.0493),(9341,68,28,2023,25.3103),(9342,68,28,2024,28.4037),(9343,68,28,2025,26.0877),(9344,2,29,2023,27.2274),(9345,2,29,2024,27.8739),(9346,2,29,2025,29.6873),(9347,3,29,2023,26.8146),(9348,3,29,2024,27.0111),(9349,3,29,2025,26.6118),(9350,8,29,2023,26.0258),(9351,8,29,2024,28.2937),(9352,8,29,2025,27.391),(9353,10,29,2023,26.074),(9354,10,29,2024,26.1971),(9355,10,29,2025,28.7634),(9356,15,29,2023,27.2258),(9357,15,29,2024,27.8389),(9358,15,29,2025,29.517),(9359,17,29,2023,26.0681),(9360,17,29,2024,27.7896),(9361,17,29,2025,28.7436),(9362,18,29,2023,26.3493),(9363,18,29,2024,27.5155),(9364,18,29,2025,26.5297),(9365,21,29,2023,28.1021),(9366,21,29,2024,26.9215),(9367,21,29,2025,26.301),(9368,22,29,2023,28.7405),(9369,22,29,2024,26.7997),(9370,22,29,2025,27.777),(9371,25,29,2023,28.4859),(9372,25,29,2024,25.0986),(9373,25,29,2025,28.0354),(9374,26,29,2023,26.881),(9375,26,29,2024,28.2987),(9376,26,29,2025,28.8507),(9377,30,29,2023,25.3575),(9378,30,29,2024,26.2353),(9379,30,29,2025,27.1042),(9380,32,29,2023,26.8148),(9381,32,29,2024,26.7615),(9382,32,29,2025,29.363),(9383,33,29,2023,28.5306),(9384,33,29,2024,28.5639),(9385,33,29,2025,29.2276),(9386,60,29,2023,26.4465),(9387,60,29,2024,26.5495),(9388,60,29,2025,29.408),(9389,68,29,2023,25.3916),(9390,68,29,2024,28.7341),(9391,68,29,2025,27.4958),(9392,2,30,2023,25.2764),(9393,2,30,2024,25.8946),(9394,2,30,2025,29.6438),(9395,3,30,2023,28.5354),(9396,3,30,2024,27.7455),(9397,3,30,2025,29.1215),(9398,8,30,2023,28.3707),(9399,8,30,2024,28.4893),(9400,8,30,2025,29.3342),(9401,10,30,2023,27.2033),(9402,10,30,2024,26.0138),(9403,10,30,2025,28.4589),(9404,15,30,2023,26.2533),(9405,15,30,2024,27.8897),(9406,15,30,2025,28.6889),(9407,17,30,2023,25.775),(9408,17,30,2024,28.8085),(9409,17,30,2025,26.7174),(9410,18,30,2023,25.1617),(9411,18,30,2024,27.6564),(9412,18,30,2025,26.7965),(9413,21,30,2023,25.0137),(9414,21,30,2024,26.6787),(9415,21,30,2025,26.3524),(9416,22,30,2023,25.7262),(9417,22,30,2024,27.5735),(9418,22,30,2025,28.6891),(9419,25,30,2023,26.7248),(9420,25,30,2024,25.5566),(9421,25,30,2025,27.6087),(9422,26,30,2023,27.3736),(9423,26,30,2024,28.0421),(9424,26,30,2025,26.0896),(9425,30,30,2023,28.3217),(9426,30,30,2024,25.3397),(9427,30,30,2025,29.7335),(9428,32,30,2023,26.6484),(9429,32,30,2024,26.0414),(9430,32,30,2025,26.262),(9431,33,30,2023,27.1858),(9432,33,30,2024,27.1431),(9433,33,30,2025,26.158),(9434,60,30,2023,27.3608),(9435,60,30,2024,28.33),(9436,60,30,2025,27.5675),(9437,68,30,2023,26.8477),(9438,68,30,2024,25.5359),(9439,68,30,2025,27.1362),(9440,2,37,2023,25.0736),(9441,2,37,2024,25.9591),(9442,2,37,2025,26.575),(9443,3,37,2023,28.9976),(9444,3,37,2024,27.2631),(9445,3,37,2025,29.3228),(9446,8,37,2023,26.8247),(9447,8,37,2024,28.155),(9448,8,37,2025,28.3011),(9449,10,37,2023,27.0404),(9450,10,37,2024,28.2986),(9451,10,37,2025,28.3719),(9452,15,37,2023,26.9638),(9453,15,37,2024,27.7032),(9454,15,37,2025,29.6245),(9455,17,37,2023,27.0131),(9456,17,37,2024,28.1918),(9457,17,37,2025,27.9197),(9458,18,37,2023,25.0232),(9459,18,37,2024,27.3567),(9460,18,37,2025,29.714),(9461,21,37,2023,28.4998),(9462,21,37,2024,27.357),(9463,21,37,2025,27.2858),(9464,22,37,2023,28.3581),(9465,22,37,2024,25.9329),(9466,22,37,2025,28.5901),(9467,25,37,2023,27.1519),(9468,25,37,2024,27.9893),(9469,25,37,2025,26.4907),(9470,26,37,2023,26.4856),(9471,26,37,2024,26.9557),(9472,26,37,2025,27.3219),(9473,30,37,2023,25.7425),(9474,30,37,2024,28.7465),(9475,30,37,2025,26.5051),(9476,32,37,2023,28.2862),(9477,32,37,2024,27.9154),(9478,32,37,2025,26.7187),(9479,33,37,2023,27.847),(9480,33,37,2024,25.079),(9481,33,37,2025,29.8539),(9482,60,37,2023,28.0327),(9483,60,37,2024,28.6017),(9484,60,37,2025,26.9102),(9485,68,37,2023,26.7461),(9486,68,37,2024,26.9999),(9487,68,37,2025,26.761),(9488,2,40,2023,26.8054),(9489,2,40,2024,27.7439),(9490,2,40,2025,26.3034),(9491,3,40,2023,26.2852),(9492,3,40,2024,26.5157),(9493,3,40,2025,29.7229),(9494,8,40,2023,27.0676),(9495,8,40,2024,28.1692),(9496,8,40,2025,27.6434),(9497,10,40,2023,27.7091),(9498,10,40,2024,25.6154),(9499,10,40,2025,28.9497),(9500,15,40,2023,25.9024),(9501,15,40,2024,28.6628),(9502,15,40,2025,29.6068),(9503,17,40,2023,28.0455),(9504,17,40,2024,25.4074),(9505,17,40,2025,26.9002),(9506,18,40,2023,28.279),(9507,18,40,2024,26.6943),(9508,18,40,2025,28.6346),(9509,21,40,2023,25.09),(9510,21,40,2024,25.5461),(9511,21,40,2025,28.4605),(9512,22,40,2023,27.6641),(9513,22,40,2024,26.9392),(9514,22,40,2025,27.7036),(9515,25,40,2023,27.7006),(9516,25,40,2024,25.3922),(9517,25,40,2025,27.8593),(9518,26,40,2023,25.1198),(9519,26,40,2024,28.0209),(9520,26,40,2025,28.7454),(9521,30,40,2023,25.6641),(9522,30,40,2024,28.0843),(9523,30,40,2025,27.4291),(9524,32,40,2023,26.8929),(9525,32,40,2024,26.1771),(9526,32,40,2025,26.2068),(9527,33,40,2023,26.5028),(9528,33,40,2024,27.8933),(9529,33,40,2025,27.9583),(9530,60,40,2023,26.1117),(9531,60,40,2024,28.6834),(9532,60,40,2025,29.0819),(9533,68,40,2023,25.3594),(9534,68,40,2024,25.5511),(9535,68,40,2025,27.6775);
+/*!40000 ALTER TABLE `entry_scores` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `event_registrations`
 --
 
+DROP TABLE IF EXISTS `event_registrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `event_registrations` (
-  `id` int(11) NOT NULL,
-  `event_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `event_id` int NOT NULL,
+  `user_id` int NOT NULL,
   `fullname` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `phone` varchar(20) NOT NULL,
-  `registered_at` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `registered_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `event_id` (`event_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `event_registrations_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`),
+  CONSTRAINT `event_registrations_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `event_registrations`
 --
 
-INSERT INTO `event_registrations` (`id`, `event_id`, `user_id`, `fullname`, `email`, `phone`, `registered_at`) VALUES
-(1, 3, 29, 'nhan', '111@gmail.com', '0911', '2026-01-04 05:46:50'),
-(2, 2, 29, 'dangthanhnhan', 'dangnhan503@gmail.com', '', '2026-01-04 05:54:33'),
-(3, 1, 29, 'nhan', 'dangnhan503@gmail.com', '', '2026-01-04 05:54:44');
+LOCK TABLES `event_registrations` WRITE;
+/*!40000 ALTER TABLE `event_registrations` DISABLE KEYS */;
+INSERT INTO `event_registrations` VALUES (1,3,29,'nhan','111@gmail.com','0911','2026-01-04 05:46:50'),(2,2,29,'dangthanhnhan','dangnhan503@gmail.com','','2026-01-04 05:54:33'),(3,1,29,'nhan','dangnhan503@gmail.com','','2026-01-04 05:54:44');
+/*!40000 ALTER TABLE `event_registrations` ENABLE KEYS */;
+UNLOCK TABLES;
 
--- --------------------------------------------------------
+--
+-- Table structure for table `events`
+--
+
+DROP TABLE IF EXISTS `events`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `events` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `description` text COLLATE utf8mb4_general_ci,
+  `event_date` datetime DEFAULT NULL,
+  `location` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `type` enum('offline','online') COLLATE utf8mb4_general_ci DEFAULT 'online',
+  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `events`
+--
+
+LOCK TABLES `events` WRITE;
+/*!40000 ALTER TABLE `events` DISABLE KEYS */;
+INSERT INTO `events` VALUES (1,'Ngày hội Tư vấn Tuyển sinh 2025','Sự kiện lớn nhất năm quy tụ 100 trường ĐH, giải đáp thắc mắc về quy chế thi mới của Bộ GD&ĐT.','2025-03-15 08:00:00','Đại học Bách Khoa TP.HCM','offline','event_tuyensinh.jpg','2025-12-26 18:45:58'),(2,'Webinar: AI & Tương lai ngành Code','ChatGPT có thay thế lập trình viên? Định hướng cho sinh viên IT năm nhất.','2025-04-10 19:30:00','Google Meet','online','event_ai.jpg','2025-12-26 18:45:58'),(3,'Workshop: Chinh phục kỳ thi ĐGNL','Chiến thuật làm bài thi Đánh giá năng lực ĐHQG đạt 900+.','2025-02-20 14:00:00','Hội trường A - ĐH KHXH&NV','offline','event_dgnl.jpg','2025-12-26 18:45:58'),(4,'Gala Chào Tân Sinh Viên K2025 - IT Breakthrough','Đêm nhạc hội chào đón tân sinh viên khóa 2025. Giao lưu với các Mentor thành đạt.','2025-10-15 19:00:00','Hội trường lớn ĐH Bách Khoa','offline','gala_k2025.jpg','2025-12-26 18:46:49'),(5,'Khởi động lộ trình ôn thi THPT 2026 cho 2k8','Phân tích cấu trúc đề thi 2025 để rút kinh nghiệm. Lộ trình ôn tập sớm cho học sinh lớp 12.','2025-12-20 09:00:00','Livestream Facebook/Youtube','online','on_thi_2k8.jpg','2025-12-26 18:46:49'),(6,'Workshop: Kỹ năng sinh tồn năm nhất Đại học','Cách đăng ký tín chỉ, quản lý tài chính cá nhân và tránh bẫy đa cấp cho sinh viên mới.','2025-11-05 08:30:00','Zoom Meeting','online','skills_freshman.jpg','2025-12-26 18:46:49'),(7,'Tech Expo 2025: Kỷ nguyên AI & Semiconductor','Triển lãm công nghệ và tuyển dụng thực tập sinh ngành bán dẫn. Cơ hội nhận học bổng từ Samsung/Intel.','2025-11-20 09:00:00','SECC Quận 7','offline','tech_expo.jpg','2025-12-26 18:48:17'),(8,'Webinar: Mental Health - Vượt qua áp lực đồng trang lứa','Chia sẻ cách cân bằng sức khỏe tinh thần trong môi trường đại học cạnh tranh.','2025-10-10 20:00:00','Zoom / Livestream','online','mental_health.jpg','2025-12-26 18:48:17');
+/*!40000 ALTER TABLE `events` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `faqs`
 --
 
+DROP TABLE IF EXISTS `faqs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `faqs` (
-  `id` int(11) NOT NULL,
-  `question` text NOT NULL,
-  `answer` text NOT NULL,
-  `order` int(11) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `id` int NOT NULL AUTO_INCREMENT,
+  `question` text COLLATE utf8mb4_general_ci NOT NULL,
+  `answer` text COLLATE utf8mb4_general_ci NOT NULL,
+  `order` int DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `faqs`
 --
 
-INSERT INTO `faqs` (`id`, `question`, `answer`, `order`) VALUES
-(1, 'Học phí các trường công lập năm nay thế nào?', 'Năm 2025, học phí các trường tự chủ tài chính tăng nhẹ, dao động từ 25-50 triệu/năm tùy ngành.', 1),
-(2, 'Ngành CNTT có đang bão hòa không?', 'Thị trường bão hòa nhân lực trình độ thấp, nhưng rất thiếu nhân sự chất lượng cao (AI, Data, Cloud).', 2),
-(3, 'Bằng đại học hay chứng chỉ nghề quan trọng hơn?', 'Nhà tuyển dụng hiện nay trọng kỹ năng thực tế. Tuy nhiên, bằng ĐH là nền tảng tư duy dài hạn.', 3),
-(4, 'Em 2k7 trượt nguyện vọng 1 thì còn cơ hội xét bổ sung không?', 'Hầu hết các trường công lập top đầu đã đủ chỉ tiêu. Tuy nhiên, các trường tư thục và hệ quốc tế vẫn còn đợt xét tuyển bổ sung đến hết tháng 12/2025.', 1),
-(5, 'Sinh viên năm nhất có nên đi làm thêm ngay không?', 'Năm nhất nên tập trung làm quen với môi trường đại học và giữ GPA ổn định. Chỉ nên đi làm thêm khi đã cân bằng được lịch học, ưu tiên các việc liên quan chuyên ngành.', 2),
-(6, 'Chương trình GDPT 2018 ảnh hưởng thế nào đến kỳ thi 2026?', 'Cấu trúc đề thi sẽ tiếp tục nhấn mạnh vào tư duy đánh giá năng lực thay vì học thuộc. 2k8 cần tập trung vào bản chất vấn đề và kỹ năng giải quyết tình huống.', 3);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `majors`
---
-
-CREATE TABLE `majors` (
-  `id` int(11) NOT NULL,
-  `name` varchar(150) NOT NULL,
-  `image` varchar(255) DEFAULT NULL,
-  `group_code` varchar(10) NOT NULL,
-  `tuition` varchar(100) DEFAULT '25 - 30 triệu/năm',
-  `job_rating` tinyint(4) DEFAULT 4,
-  `description` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `majors`
---
-
-INSERT INTO `majors` (`id`, `name`, `image`, `group_code`, `tuition`, `job_rating`, `description`) VALUES
-(1, 'Khoa học máy tính / CNTT', NULL, 'IT', '35 - 45 triệu/năm', 5, 'Ngành mũi nhọn 4.0, nhu cầu nhân lực rất lớn, mức lương khởi điểm hấp dẫn.'),
-(2, 'Kỹ thuật phần mềm', NULL, 'IT', '35 - 45 triệu/năm', 5, 'Ngành mũi nhọn 4.0, nhu cầu nhân lực rất lớn, mức lương khởi điểm hấp dẫn.'),
-(3, 'An toàn thông tin', NULL, 'IT', '35 - 45 triệu/năm', 5, 'Ngành mũi nhọn 4.0, nhu cầu nhân lực rất lớn, mức lương khởi điểm hấp dẫn.'),
-(4, 'Kinh tế đối ngoại', NULL, 'KT', '28 - 35 triệu/năm', 4, 'Môi trường năng động, đa dạng vị trí từ Sales, Marketing đến Quản trị nhân sự.'),
-(5, 'Quản trị kinh doanh', NULL, 'KT', '28 - 35 triệu/năm', 4, 'Môi trường năng động, đa dạng vị trí từ Sales, Marketing đến Quản trị nhân sự.'),
-(6, 'Marketing', NULL, 'KT', '28 - 35 triệu/năm', 4, 'Môi trường năng động, đa dạng vị trí từ Sales, Marketing đến Quản trị nhân sự.'),
-(7, 'Tài chính - Ngân hàng', NULL, 'KT', '28 - 35 triệu/năm', 4, 'Môi trường năng động, đa dạng vị trí từ Sales, Marketing đến Quản trị nhân sự.'),
-(8, 'Y khoa (Bác sĩ đa khoa)', NULL, 'YD', '55 - 80 triệu/năm', 5, 'Thời gian đào tạo dài (6 năm), đòi hỏi kiên trì. Cơ hội việc làm bền vững và được xã hội trọng vọng.'),
-(9, 'Răng - Hàm - Mặt', NULL, 'YD', '55 - 80 triệu/năm', 5, 'Thời gian đào tạo dài (6 năm), đòi hỏi kiên trì. Cơ hội việc làm bền vững và được xã hội trọng vọng.'),
-(10, 'Dược học', NULL, 'YD', '55 - 80 triệu/năm', 5, 'Thời gian đào tạo dài (6 năm), đòi hỏi kiên trì. Cơ hội việc làm bền vững và được xã hội trọng vọng.'),
-(11, 'Ngôn ngữ Anh', NULL, 'NN', '20 - 28 triệu/năm', 3, 'Cầu nối giao thương quốc tế. Cần kết hợp thêm kỹ năng chuyên môn khác để tăng cạnh tranh.'),
-(12, 'Logistics và Quản lý chuỗi cung ứng', 'thumb_logistics.jpg', 'KT', '28 - 35 triệu/năm', 4, 'Môi trường năng động, đa dạng vị trí từ Sales, Marketing đến Quản trị nhân sự.'),
-(13, 'Công nghệ kỹ thuật Ô tô', NULL, 'CK', '22 - 30 triệu/năm', 4, 'Phù hợp với người thích máy móc, kỹ thuật. Nhu cầu tuyển dụng ổn định tại các khu công nghiệp.'),
-(14, 'Trí tuệ nhân tạo (AI)', NULL, 'IT', '35 - 45 triệu/năm', 5, 'Ngành mũi nhọn 4.0, nhu cầu nhân lực rất lớn, mức lương khởi điểm hấp dẫn.'),
-(15, 'Truyền thông đa phương tiện', NULL, 'XH', '25 - 30 triệu/năm', 4, NULL),
-(16, 'Thiết kế đồ họa / Digital Art', NULL, 'KTR', '25 - 30 triệu/năm', 4, NULL),
-(17, 'Tâm lý học', NULL, 'XH', '25 - 30 triệu/năm', 4, NULL),
-(18, 'Thương mại điện tử', NULL, 'KT', '28 - 35 triệu/năm', 4, 'Môi trường năng động, đa dạng vị trí từ Sales, Marketing đến Quản trị nhân sự.'),
-(19, 'Luật kinh tế', NULL, 'L', '25 - 30 triệu/năm', 4, NULL),
-(20, 'Ngôn ngữ Trung Quốc', NULL, 'NN', '20 - 28 triệu/năm', 3, 'Cầu nối giao thương quốc tế. Cần kết hợp thêm kỹ năng chuyên môn khác để tăng cạnh tranh.'),
-(21, 'Kỹ thuật Xây dựng', NULL, 'CK', '25 - 30 triệu/năm', 4, NULL),
-(22, 'Kiến trúc', NULL, 'KTR', '25 - 30 triệu/năm', 4, NULL),
-(23, 'Công nghệ Thực phẩm', NULL, 'NNG', '25 - 30 triệu/năm', 4, NULL),
-(24, 'Công nghệ Sinh học', NULL, 'NNG', '25 - 30 triệu/năm', 4, NULL),
-(25, 'Quản trị Dịch vụ Du lịch & Lữ hành', NULL, 'DL', '25 - 30 triệu/năm', 4, NULL),
-(26, 'Quản trị Khách sạn', NULL, 'DL', '25 - 30 triệu/năm', 4, NULL),
-(27, 'Kế toán - Kiểm toán', NULL, 'KT', '28 - 35 triệu/năm', 4, 'Môi trường năng động, đa dạng vị trí từ Sales, Marketing đến Quản trị nhân sự.'),
-(28, 'Quan hệ Quốc tế', NULL, 'XH', '25 - 30 triệu/năm', 4, NULL),
-(29, 'Ngôn ngữ Hàn Quốc', NULL, 'NN', '20 - 28 triệu/năm', 3, 'Cầu nối giao thương quốc tế. Cần kết hợp thêm kỹ năng chuyên môn khác để tăng cạnh tranh.'),
-(30, 'Ngôn ngữ Nhật', NULL, 'NN', '20 - 28 triệu/năm', 3, 'Cầu nối giao thương quốc tế. Cần kết hợp thêm kỹ năng chuyên môn khác để tăng cạnh tranh.'),
-(31, 'Kỹ thuật Điện - Điện tử', NULL, 'CK', '22 - 30 triệu/năm', 4, 'Phù hợp với người thích máy móc, kỹ thuật. Nhu cầu tuyển dụng ổn định tại các khu công nghiệp.'),
-(32, 'Kỹ thuật Điều khiển & Tự động hóa', NULL, 'CK', '22 - 30 triệu/năm', 4, 'Phù hợp với người thích máy móc, kỹ thuật. Nhu cầu tuyển dụng ổn định tại các khu công nghiệp.'),
-(33, 'Thú y', NULL, 'NNG', '25 - 30 triệu/năm', 4, NULL),
-(34, 'Tâm lý học giáo dục', NULL, 'SP', '25 - 30 triệu/năm', 4, NULL),
-(35, 'Thiết kế thời trang', NULL, 'NT', '25 - 30 triệu/năm', 4, NULL),
-(36, 'Công nghệ Kỹ thuật Chip bán dẫn', NULL, 'CK', '25 - 30 triệu/năm', 4, NULL),
-(37, 'Công nghệ Tài chính (Fintech)', NULL, 'KT', '28 - 35 triệu/năm', 4, 'Môi trường năng động, đa dạng vị trí từ Sales, Marketing đến Quản trị nhân sự.'),
-(38, 'Khoa học Dữ liệu (Data Science)', NULL, 'IT', '35 - 45 triệu/năm', 5, 'Ngành mũi nhọn 4.0, nhu cầu nhân lực rất lớn, mức lương khởi điểm hấp dẫn.'),
-(39, 'Năng lượng Tái tạo', NULL, 'CK', '25 - 30 triệu/năm', 4, NULL),
-(40, 'Tâm lý học tham vấn', NULL, 'XH', '25 - 30 triệu/năm', 4, NULL),
-(41, 'Quản trị Dịch vụ Y tế & Bệnh viện', NULL, 'YD', '55 - 80 triệu/năm', 5, 'Thời gian đào tạo dài (6 năm), đòi hỏi kiên trì. Cơ hội việc làm bền vững và được xã hội trọng vọng.'),
-(42, 'Thiết kế Game & Multimedia', NULL, 'IT', '35 - 45 triệu/năm', 5, 'Ngành mũi nhọn 4.0, nhu cầu nhân lực rất lớn, mức lương khởi điểm hấp dẫn.'),
-(43, 'An ninh / Quốc phòng', NULL, 'BV', 'Ngân sách nhà nước', 5, 'Đào tạo sĩ quan, nghiệp vụ an ninh, quốc phòng. Đầu ra được phân công công tác.'),
-(44, 'Sư phạm (Toán/Văn/Anh)', NULL, 'SP', '10 - 15 triệu/năm', 4, 'Đào tạo giáo viên các cấp, được hỗ trợ học phí theo quy định nhà nước.'),
-(45, 'Giáo dục Tiểu học / Mầm non', NULL, 'SP', '10 - 15 triệu/năm', 4, 'Đào tạo giáo viên mầm non và tiểu học, nhu cầu nhân lực ổn định.'),
-(46, 'Chính trị học / Xây dựng Đảng', NULL, 'L', '15 - 20 triệu/năm', 3, 'Nghiên cứu lý luận chính trị, tư tưởng, phục vụ cơ quan nhà nước, đoàn thể.'),
-(47, 'Luật học (Đại cương)', NULL, 'L', '20 - 35 triệu/năm', 4, 'Trang bị kiến thức pháp luật nền tảng, cơ hội làm việc tại tòa án, viện kiểm sát, doanh nghiệp.'),
-(48, 'Nông nghiệp công nghệ cao', NULL, 'NNG', '15 - 25 triệu/năm', 3, 'Nghiên cứu sản xuất nông nghiệp công nghệ cao, lâm sinh và nuôi trồng thủy sản.'),
-(49, 'Thú y / Chăn nuôi', NULL, 'NNG', '15 - 25 triệu/năm', 4, 'Chăm sóc sức khỏe vật nuôi, kiểm dịch động vật, nhu cầu phòng khám thú y tăng cao.'),
-(50, 'Thiết kế Nội thất / Thời trang', NULL, 'KTR', '40 - 60 triệu/năm', 4, 'Sáng tạo không gian sống và sản phẩm thời trang, yêu cầu năng khiếu thẩm mỹ cao.');
-
--- --------------------------------------------------------
+LOCK TABLES `faqs` WRITE;
+/*!40000 ALTER TABLE `faqs` DISABLE KEYS */;
+INSERT INTO `faqs` VALUES (1,'Học phí các trường công lập năm nay thế nào?','Năm 2025, học phí các trường tự chủ tài chính tăng nhẹ, dao động từ 25-50 triệu/năm tùy ngành.',1),(2,'Ngành CNTT có đang bão hòa không?','Thị trường bão hòa nhân lực trình độ thấp, nhưng rất thiếu nhân sự chất lượng cao (AI, Data, Cloud).',2),(3,'Bằng đại học hay chứng chỉ nghề quan trọng hơn?','Nhà tuyển dụng hiện nay trọng kỹ năng thực tế. Tuy nhiên, bằng ĐH là nền tảng tư duy dài hạn.',3),(4,'Em 2k7 trượt nguyện vọng 1 thì còn cơ hội xét bổ sung không?','Hầu hết các trường công lập top đầu đã đủ chỉ tiêu. Tuy nhiên, các trường tư thục và hệ quốc tế vẫn còn đợt xét tuyển bổ sung đến hết tháng 12/2025.',1),(5,'Sinh viên năm nhất có nên đi làm thêm ngay không?','Năm nhất nên tập trung làm quen với môi trường đại học và giữ GPA ổn định. Chỉ nên đi làm thêm khi đã cân bằng được lịch học, ưu tiên các việc liên quan chuyên ngành.',2),(6,'Chương trình GDPT 2018 ảnh hưởng thế nào đến kỳ thi 2026?','Cấu trúc đề thi sẽ tiếp tục nhấn mạnh vào tư duy đánh giá năng lực thay vì học thuộc. 2k8 cần tập trung vào bản chất vấn đề và kỹ năng giải quyết tình huống.',3),(7,'Phương thức xét tuyển học bạ 2025 có thay đổi gì không?','Các trường top đầu đang giảm chỉ tiêu học bạ, yêu cầu kết hợp thêm chứng chỉ quốc tế hoặc giải thưởng.',7),(8,'Kỳ thi Đánh giá năng lực (ĐGNL) khác gì thi THPT?','ĐGNL tập trung vào tư duy logic, giải quyết vấn đề và kiến thức rộng, không chỉ học thuộc lòng.',8),(9,'IELTS 6.5 có được tuyển thẳng đại học không?','Thường dùng để quy đổi điểm tiếng Anh (thường là 10 điểm) hoặc xét kết hợp, ít khi tuyển thẳng 100%.',9),(10,'Trượt hết nguyện vọng 1 thì phải làm sao?','Bạn phải chờ các trường thông báo xét tuyển bổ sung (đợt 2), thường là các ngành còn thiếu chỉ tiêu.',10),(11,'Học phí trường công lập tự chủ tài chính là bao nhiêu?','Dao động từ 25-60 triệu/năm tùy ngành, cao hơn mức học phí nhà nước hỗ trợ trước đây.',11),(12,'Con gái có nên học khối Kỹ thuật không?','Hoàn toàn được. Các vị trí Kiểm định (QC), Thiết kế (Design), R&D rất cần sự tỉ mỉ của nữ giới.',12),(13,'Cách tính điểm ưu tiên khu vực năm 2025?','Vẫn cộng điểm theo KV1, KV2 nhưng điểm cộng giảm dần nếu tổng điểm thi thực tế trên 22.5.',13),(14,'Được đăng ký tối đa bao nhiêu nguyện vọng?','Không giới hạn, nhưng nên sắp xếp thứ tự ưu tiên hợp lý vì hệ thống lọc từ trên xuống dưới.',14),(15,'Ngành Y Đa khoa xét tuyển tổ hợp nào?','Chủ yếu là B00 (Toán, Hóa, Sinh). Một số trường tư xét thêm A00, D07 nhưng điểm rất cao.',15),(16,'Hồ sơ nhập học cần giấy tờ gì quan trọng nhất?','Học bạ gốc, Giấy chứng nhận tốt nghiệp tạm thời, Giấy khai sinh bản sao, CCCD công chứng.',16),(17,'Có được bảo lưu kết quả để đi nghĩa vụ quân sự không?','Được. Bạn làm thủ tục nhập học rồi xin bảo lưu, sau khi hoàn thành nghĩa vụ sẽ được quay lại học.',17),(18,'Đại học có xét hạnh kiểm không?','Có. Đa số yêu cầu hạnh kiểm Khá/Tốt lớp 12 để đủ điều kiện sơ tuyển.',18),(19,'Học Quản trị kinh doanh có dễ thất nghiệp không?','Cạnh tranh cao. Cần học thêm kỹ năng ngách (Digital MKT, Sales, HR) để dễ xin việc.',19),(20,'Ngành AI cần giỏi môn gì nhất?','Cần tư duy Toán học cực tốt (Toán cao cấp, Xác suất thống kê) và Tin học.',20),(21,'Hướng nội có nên học Hướng dẫn viên du lịch?','Khá khó khăn. Bạn có thể cân nhắc làm Điều hành tour hoặc Sale tour (làm văn phòng).',21),(22,'Ngành Ngôn ngữ Anh có bị AI thay thế?','AI dịch thuật giỏi, nhưng các nghề cần tư duy ngôn ngữ, biên tập, cảm xúc con người vẫn tồn tại.',22),(23,'Lương ngành Logistics mới ra trường bao nhiêu?','Khoảng 8-12 triệu/tháng tùy vị trí (Chứng từ, Hiện trường, Purchasing...).',23),(24,'Thiết kế đồ họa có cần vẽ tay đẹp?','Không bắt buộc. Quan trọng là tư duy thẩm mỹ, bố cục và kỹ năng phần mềm (Ps, Ai).',24),(25,'Cơ hội ngành Tâm lý học tại Việt Nam?','Đang phát triển mạnh ở mảng Tâm lý học đường và Trị liệu tâm lý tại các trung tâm.',25),(26,'Nên chọn nghề theo đam mê hay nhu cầu thị trường?','Nên chọn điểm giao thoa. Đam mê giúp đi đường dài, nhu cầu thị trường giúp nuôi sống bản thân.',26),(27,'Nam giới học Sư phạm Mầm non được không?','Được và rất được khuyến khích, các trường quốc tế rất săn đón giáo viên nam.',27),(28,'Làm Marketing có cần ngoại hình đẹp?','Không quan trọng bằng tư duy sáng tạo, phân tích dữ liệu và hiểu tâm lý khách hàng.',28),(29,'Ngành Công nghệ ô tô có phù hợp với nữ?','Có, đặc biệt ở vị trí Cố vấn dịch vụ, Thiết kế, Kiểm định chất lượng.',29),(30,'Luật kinh tế khác gì Luật thường?','Luật kinh tế tập trung vào pháp luật trong kinh doanh, thương mại, phù hợp làm cho doanh nghiệp.',30),(31,'Đông phương học là học gì?','Nghiên cứu văn hóa, lịch sử, kinh tế, ngôn ngữ các nước phương Đông (Nhật, Hàn, Trung...).',31),(32,'Làm sao biết mình hợp nghề nào?','Làm trắc nghiệm MBTI/Holland, tham gia ngày hội tư vấn và trải nghiệm thực tế.',32),(33,'Đại học có cần Laptop xịn ngay năm nhất?','Tùy ngành. CNTT/Đồ họa cần máy mạnh. Kinh tế/Xã hội chỉ cần máy văn phòng là đủ.',33),(34,'Nên ở Ký túc xá hay trọ ngoài?','KTX rẻ, an ninh tốt nhưng giờ giấc nghiêm. Trọ ngoài tự do nhưng tốn kém hơn.',34),(35,'Năm nhất nên tham gia CLB hay đi làm thêm?','Nên ưu tiên CLB để rèn kỹ năng mềm. Đi làm thêm nên đợi sang kỳ 2 hoặc năm 2.',35),(36,'Quản lý chi tiêu sinh viên thế nào?','Ghi chép chi tiêu mỗi ngày, chia tiền thành các khoản cố định và hạn chế mua sắm online.',36),(37,'Tin học văn phòng quan trọng không?','Cực kỳ quan trọng. Word, Excel, PowerPoint là kỹ năng sinh tồn để làm bài tập lớn.',37),(38,'Học đại học khác gì cấp 3?','Đề cao tính tự học. Giảng viên chỉ hướng dẫn, sinh viên phải tự nghiên cứu tài liệu.',38),(39,'Làm sao xin học bổng đại học?','Cần GPA cao (thường >3.2/4.0) và điểm rèn luyện tốt (tham gia hoạt động trường).',39),(40,'Có nên Gap year sau lớp 12?','Chỉ nên khi có kế hoạch rõ ràng. Nếu không sẽ dễ mất đà học tập và tụt hậu.',40),(41,'Sinh viên yêu đương có ảnh hưởng học tập?','Tùy cách quản lý thời gian. Cần cân bằng để không ảnh hưởng kết quả ra trường.',41),(42,'Tránh đa cấp lừa đảo sinh viên thế nào?','Cảnh giác việc nhẹ lương cao, hội thảo làm giàu, không đóng tiền đặt cọc xin việc.',42),(43,'Chuẩn đầu ra tiếng Anh B1, B2 là gì?','Là mức độ thành thạo ngoại ngữ bắt buộc để được xét tốt nghiệp ra trường.',43),(44,'Học tín chỉ là gì?','Là hình thức cho phép sinh viên chủ động đăng ký môn học và thời gian biểu theo năng lực.',44),(45,'Có nên học song bằng?','Rất áp lực. Chỉ nên học khi giỏi quản lý thời gian và dư dả tài chính.',45),(46,'Tự học tiếng Anh thế nào hiệu quả?','Kết hợp App, xem phim song ngữ, luyện nói (Shadowing) hàng ngày.',46),(47,'Sốc văn hóa đại học là gì?','Cảm giác lạc lõng, nhớ nhà, chưa quen nếp sống mới. Thường mất 1-2 tháng để hòa nhập.',47),(48,'Điểm rèn luyện thấp có sao không?','Sẽ bị hạ bậc xếp loại bằng tốt nghiệp và không được xét học bổng.',48),(49,'Môn Triết học có khó không?','Khá trừu tượng. Bí quyết là liên hệ thực tế và hiểu bản chất thay vì học vẹt.',49),(50,'Làm sao để thân thiết với giảng viên?','Chăm chỉ đi học, hay phát biểu và chủ động hỏi han về kiến thức chuyên môn.',50);
+/*!40000 ALTER TABLE `faqs` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `major_groups`
 --
 
+DROP TABLE IF EXISTS `major_groups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `major_groups` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `group_code` varchar(10) NOT NULL,
   `group_name` varchar(255) NOT NULL,
   `icon_class` varchar(50) DEFAULT NULL,
-  `status` tinyint(1) DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `status` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `group_code` (`group_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `major_groups`
 --
 
-INSERT INTO `major_groups` (`id`, `group_code`, `group_name`, `icon_class`, `status`) VALUES
-(1, 'IT', 'Công nghệ thông tin & Phần mềm', 'fa-laptop-code', 1),
-(2, 'KT', 'Kinh tế, Kế toán & Quản trị', 'fa-chart-pie', 1),
-(3, 'YD', 'Y khoa, Dược & Điều dưỡng', 'fa-stethoscope', 1),
-(4, 'NN', 'Ngôn ngữ & Quan hệ quốc tế', 'fa-earth-asia', 1),
-(5, 'CK', 'Kỹ thuật, Ô tô & Chế tạo máy', 'fa-gears', 1),
-(6, 'SP', 'Sư phạm & Giáo dục', 'fa-graduation-cap', 1),
-(7, 'L', 'Luật & Khoa học Chính trị', 'fa-scale-balanced', 1),
-(8, 'DL', 'Du lịch & Quản trị Khách sạn', 'fa-plane-departure', 1),
-(9, 'KTR', 'Kiến trúc & Thiết kế đồ họa', 'fa-palette', 1),
-(10, 'XH', 'Truyền thông & Tâm lý học', 'fa-bullhorn', 1),
-(11, 'NNG', 'Nông - Lâm - Ngư nghiệp', 'fa-seedling', 1),
-(12, 'BV', 'An ninh - Quốc phòng', 'fa-shield-halved', 1),
-(13, 'NT', 'Nghệ thuật & Sân khấu', 'fa-masks-theater', 1);
+LOCK TABLES `major_groups` WRITE;
+/*!40000 ALTER TABLE `major_groups` DISABLE KEYS */;
+INSERT INTO `major_groups` VALUES (1,'IT','Công nghệ thông tin & Phần mềm','fa-laptop-code',1),(2,'KT','Kinh tế, Kế toán & Quản trị','fa-chart-pie',1),(3,'YD','Y khoa, Dược & Điều dưỡng','fa-stethoscope',1),(4,'NN','Ngôn ngữ & Quan hệ quốc tế','fa-earth-asia',1),(5,'CK','Kỹ thuật, Ô tô & Chế tạo máy','fa-gears',1),(6,'SP','Sư phạm & Giáo dục','fa-graduation-cap',1),(7,'L','Luật & Khoa học Chính trị','fa-scale-balanced',1),(8,'DL','Du lịch & Quản trị Khách sạn','fa-plane-departure',1),(9,'KTR','Kiến trúc & Thiết kế đồ họa','fa-palette',1),(10,'XH','Truyền thông & Tâm lý học','fa-bullhorn',1),(11,'NNG','Nông - Lâm - Ngư nghiệp','fa-seedling',1),(12,'BV','An ninh - Quốc phòng','fa-shield-halved',1),(13,'NT','Nghệ thuật & Sân khấu','fa-masks-theater',1);
+/*!40000 ALTER TABLE `major_groups` ENABLE KEYS */;
+UNLOCK TABLES;
 
--- --------------------------------------------------------
+--
+-- Table structure for table `majors`
+--
+
+DROP TABLE IF EXISTS `majors`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `majors` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
+  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `group_code` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `tuition` varchar(100) COLLATE utf8mb4_general_ci DEFAULT '25 - 30 triệu/năm',
+  `job_rating` tinyint DEFAULT '4',
+  `description` text COLLATE utf8mb4_general_ci,
+  `exam_group_codes` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `majors`
+--
+
+LOCK TABLES `majors` WRITE;
+/*!40000 ALTER TABLE `majors` DISABLE KEYS */;
+INSERT INTO `majors` VALUES (1,'Khoa học máy tính / CNTT','cntt.jpg','IT','35 - 45 triệu/năm',5,'Ngành mũi nhọn 4.0, nhu cầu nhân lực rất lớn, mức lương khởi điểm hấp dẫn.','A00, A01, D07, A00-IT'),(2,'Kỹ thuật phần mềm','kythuatphanmem.jpg','IT','35 - 45 triệu/năm',5,'Ngành mũi nhọn 4.0, nhu cầu nhân lực rất lớn, mức lương khởi điểm hấp dẫn.','A00, A01, D07, A00-IT'),(3,'An toàn thông tin','antoantt.jpg','IT','35 - 45 triệu/năm',5,'Ngành mũi nhọn 4.0, nhu cầu nhân lực rất lớn, mức lương khởi điểm hấp dẫn.','A00, A01, D07, A00-IT'),(4,'Kinh tế đối ngoại','KTDN.jpg','KT','28 - 35 triệu/năm',4,'Môi trường năng động, đa dạng vị trí từ Sales, Marketing đến Quản trị nhân sự.','A00, A01, D01, D07'),(5,'Quản trị kinh doanh','qtkd.jpg','KT','28 - 35 triệu/năm',4,'Môi trường năng động, đa dạng vị trí từ Sales, Marketing đến Quản trị nhân sự.','A00, A01, D01, D07'),(6,'Marketing','meeting-01','KT','28 - 35 triệu/năm',4,'Môi trường năng động, đa dạng vị trí từ Sales, Marketing đến Quản trị nhân sự.','A00, A01, D01, D07'),(7,'Tài chính - Ngân hàng','Công nghệ Tài chính (Fintech).jpg','KT','28 - 35 triệu/năm',4,'Môi trường năng động, đa dạng vị trí từ Sales, Marketing đến Quản trị nhân sự.','A00, A01, D01, D07'),(8,'Y khoa (Bác sĩ đa khoa)','Y khoa (Bác sĩ đa khoa).jpg','YD','55 - 80 triệu/năm',5,'Thời gian đào tạo dài (6 năm), đòi hỏi kiên trì. Cơ hội việc làm bền vững và được xã hội trọng vọng.','B00, A00, D07'),(9,'Răng - Hàm - Mặt','Răng - Hàm - Mặt.jpg','YD','55 - 80 triệu/năm',5,'Thời gian đào tạo dài (6 năm), đòi hỏi kiên trì. Cơ hội việc làm bền vững và được xã hội trọng vọng.','B00, A00, D07'),(10,'Dược học','Dược học.jpg','YD','55 - 80 triệu/năm',5,'Thời gian đào tạo dài (6 năm), đòi hỏi kiên trì. Cơ hội việc làm bền vững và được xã hội trọng vọng.','B00, A00, D07'),(11,'Ngôn ngữ Anh','Ngôn ngữ Anh.jpg','NN','20 - 28 triệu/năm',3,'Cầu nối giao thương quốc tế. Cần kết hợp thêm kỹ năng chuyên môn khác để tăng cạnh tranh.','D01, D06, D14, D15'),(12,'Logistics và Quản lý chuỗi cung ứng','thumb_logistics.jpg','KT','28 - 35 triệu/năm',4,'Môi trường năng động, đa dạng vị trí từ Sales, Marketing đến Quản trị nhân sự.','A00, A01, D01, D07'),(13,'Công nghệ kỹ thuật Ô tô','Công nghệ kỹ thuật ô tô.jpg','CK','22 - 30 triệu/năm',4,'Phù hợp với người thích máy móc, kỹ thuật. Nhu cầu tuyển dụng ổn định tại các khu công nghiệp.','A00, A01, C01'),(14,'Trí tuệ nhân tạo (AI)','Trí tuệ nhân tạo (AI).jpg','IT','35 - 45 triệu/năm',5,'Ngành mũi nhọn 4.0, nhu cầu nhân lực rất lớn, mức lương khởi điểm hấp dẫn.','A00, A01, D07, A00-IT'),(15,'Truyền thông đa phương tiện','Truyền thông đa phương tiện.jpg','XH','25 - 30 triệu/năm',4,NULL,'D01, C00, D14'),(16,'Thiết kế đồ họa / Digital Art','Thiết kế đồ họa.jpg','NT','25 - 30 triệu/năm',4,NULL,'V00, V01, V02, H00'),(17,'Tâm lý học','Tâm lý học.jpg','XH','25 - 30 triệu/năm',4,NULL,'D01, C00, D14'),(18,'Thương mại điện tử','Thương mại điện tử.jpg','KT','28 - 35 triệu/năm',4,'Môi trường năng động, đa dạng vị trí từ Sales, Marketing đến Quản trị nhân sự.','A00, A01, D01, D07'),(19,'Luật kinh tế','Luật kinh tế.jpg','KT','25 - 30 triệu/năm',4,NULL,'A00, A01, D01, D07'),(20,'Ngôn ngữ Trung Quốc','Ngôn ngữ Trung Quốc.jpg','NN','20 - 28 triệu/năm',3,'Cầu nối giao thương quốc tế. Cần kết hợp thêm kỹ năng chuyên môn khác để tăng cạnh tranh.','D01, D06, D14, D15'),(21,'Kỹ thuật Xây dựng','Kỹ thuật Xây dựng.jpg','XD','25 - 30 triệu/năm',4,NULL,'V00, V01, V02, H00'),(22,'Kiến trúc','Kiến trúc.jpg','XD','25 - 30 triệu/năm',4,NULL,'V00, V01, V02, H00'),(23,'Công nghệ Thực phẩm','Công nghệ Thực phẩm.jpg','CN','25 - 30 triệu/năm',4,NULL,NULL),(24,'Công nghệ Sinh học','Công nghệ Sinh học.jpg','CN','25 - 30 triệu/năm',4,NULL,NULL),(25,'Quản trị Dịch vụ Du lịch & Lữ hành','Quản trị Dịch vụ Du lịch & Lữ hành.jpg','DL','25 - 30 triệu/năm',4,NULL,NULL),(26,'Quản trị Khách sạn','Quản trị Khách sạn.jpg','DL','25 - 30 triệu/năm',4,NULL,NULL),(27,'Kế toán - Kiểm toán','Kế toán - Kiểm toán.jpg','KT','28 - 35 triệu/năm',4,'Môi trường năng động, đa dạng vị trí từ Sales, Marketing đến Quản trị nhân sự.','A00, A01, D01, D07'),(28,'Quan hệ Quốc tế','Quan hệ Quốc tế.jpg','XH','25 - 30 triệu/năm',4,NULL,'D01, D06, D14, D15'),(29,'Ngôn ngữ Hàn Quốc','Ngôn ngữ Hàn Quốc.jpg','NN','20 - 28 triệu/năm',3,'Cầu nối giao thương quốc tế. Cần kết hợp thêm kỹ năng chuyên môn khác để tăng cạnh tranh.','D01, D06, D14, D15'),(30,'Ngôn ngữ Nhật','Ngôn ngữ Nhật.jpg','NN','20 - 28 triệu/năm',3,'Cầu nối giao thương quốc tế. Cần kết hợp thêm kỹ năng chuyên môn khác để tăng cạnh tranh.','D01, D06, D14, D15'),(31,'Kỹ thuật Điện - Điện tử','Kỹ thuật Điện - Điện tử.jpg','CK','22 - 30 triệu/năm',4,'Phù hợp với người thích máy móc, kỹ thuật. Nhu cầu tuyển dụng ổn định tại các khu công nghiệp.','A00, A01, C01'),(32,'Kỹ thuật Điều khiển & Tự động hóa','Kỹ thuật Điều khiển & Tự động hóa.jpg','CK','22 - 30 triệu/năm',4,'Phù hợp với người thích máy móc, kỹ thuật. Nhu cầu tuyển dụng ổn định tại các khu công nghiệp.','A00, A01, C01'),(33,'Thú y','Thú y.jpg','NNL','25 - 30 triệu/năm',4,NULL,'B00, A02, D08'),(34,'Tâm lý học giáo dục','Tâm lý học giáo dục.jpg','XH','25 - 30 triệu/năm',4,NULL,'D01, C00, D14'),(35,'Thiết kế thời trang','Thiết kế thời trang.jpg','NT','25 - 30 triệu/năm',4,NULL,'V00, V01, V02, H00'),(36,'Công nghệ Kỹ thuật Chip bán dẫn','Công nghệ Kỹ thuật Chip bán dẫn.jpg','CN','25 - 30 triệu/năm',4,NULL,'A00, A01, C01'),(37,'Công nghệ Tài chính (Fintech)','Công nghệ Tài chính (Fintech).jpg','KT','28 - 35 triệu/năm',4,'Môi trường năng động, đa dạng vị trí từ Sales, Marketing đến Quản trị nhân sự.','A00, A01, D01, D07'),(38,'Khoa học Dữ liệu (Data Science)','Khoa học Dữ liệu (Data Science).jpg','IT','35 - 45 triệu/năm',5,'Ngành mũi nhọn 4.0, nhu cầu nhân lực rất lớn, mức lương khởi điểm hấp dẫn.','A00, A01, D07, A00-IT'),(39,'Năng lượng Tái tạo','Năng lượng Tái tạo.jpg','CN','25 - 30 triệu/năm',4,NULL,NULL),(40,'Tâm lý học tham vấn','Tâm lý học tham vấn.jpg','XH','25 - 30 triệu/năm',4,NULL,'D01, C00, D14'),(41,'Quản trị Dịch vụ Y tế & Bệnh viện','Quản trị Dịch vụ Y tế & Bệnh viện.jpg','YD','55 - 80 triệu/năm',5,'Thời gian đào tạo dài (6 năm), đòi hỏi kiên trì. Cơ hội việc làm bền vững và được xã hội trọng vọng.','B00, A00, D07'),(42,'Thiết kế Game & Multimedia','Thiết kế Game & Multimedia.jpg','IT','35 - 45 triệu/năm',5,'Ngành mũi nhọn 4.0, nhu cầu nhân lực rất lớn, mức lương khởi điểm hấp dẫn.','A00, A01, D07, A00-IT'),(43,'An ninh / Quốc phòng','an-ninh-quoc-phong.jpg','BV','Ngân sách nhà nước',5,'Đào tạo sĩ quan, nghiệp vụ an ninh, quốc phòng. Đầu ra được phân công công tác.','A00, A01, B00, C00, D01'),(44,'Sư phạm (Toán/Văn/Anh)','su-pham.jpg','SP','10 - 15 triệu/năm',4,'Đào tạo giáo viên các cấp, được hỗ trợ học phí theo quy định nhà nước.','A00, A01, B00, C00, D01'),(45,'Giáo dục Tiểu học / Mầm non','giao-duc-tieu-hoc.jpg','SP','10 - 15 triệu/năm',4,'Đào tạo giáo viên mầm non và tiểu học, nhu cầu nhân lực ổn định.','A00, A01, B00, C00, D01'),(46,'Chính trị học / Xây dựng Đảng','chinh-tri-hoc.jpg','L','15 - 20 triệu/năm',3,'Nghiên cứu lý luận chính trị, tư tưởng, phục vụ cơ quan nhà nước, đoàn thể.',NULL),(47,'Luật học (Đại cương)','luat-hoc.jpg','L','20 - 35 triệu/năm',4,'Trang bị kiến thức pháp luật nền tảng, cơ hội làm việc tại tòa án, viện kiểm sát, doanh nghiệp.',NULL),(48,'Nông nghiệp công nghệ cao','nong-nghiep.jpg','NNG','15 - 25 triệu/năm',3,'Nghiên cứu sản xuất nông nghiệp công nghệ cao, lâm sinh và nuôi trồng thủy sản.','B00, A02, D08'),(49,'Thú y / Chăn nuôi','thu-y.jpg','NNG','15 - 25 triệu/năm',4,'Chăm sóc sức khỏe vật nuôi, kiểm dịch động vật, nhu cầu phòng khám thú y tăng cao.','B00, A02, D08'),(50,'Thiết kế Nội thất / Thời trang','thiet-ke-noi-that.jpg','KTR','40 - 60 triệu/năm',4,'Sáng tạo không gian sống và sản phẩm thời trang, yêu cầu năng khiếu thẩm mỹ cao.','V00, V01, V02, H00'),(51,'da',NULL,'IT','25 - 30 triệu/năm',4,NULL,NULL);
+/*!40000 ALTER TABLE `majors` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `mentors`
 --
 
+DROP TABLE IF EXISTS `mentors`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mentors` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `full_name` varchar(100) DEFAULT NULL,
-  `job_title` varchar(100) DEFAULT NULL,
-  `bio` text DEFAULT NULL,
-  `expertise` varchar(255) DEFAULT NULL,
-  `avatar` varchar(255) DEFAULT NULL,
-  `linkedin_url` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `full_name` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `job_title` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `bio` text COLLATE utf8mb4_general_ci,
+  `expertise` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `avatar` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `linkedin_url` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `mentors`
 --
 
-INSERT INTO `mentors` (`id`, `user_id`, `full_name`, `job_title`, `bio`, `expertise`, `avatar`, `linkedin_url`) VALUES
-(1, 20, 'Nguyễn Văn Dev', 'Senior Developer tại VNG', '5 năm kinh nghiệm Java/Golang. Cựu sinh viên UIT.', 'Lập trình Backend, System Design', 'avatar_dev.jpg', 'linkedin.com/in/demo'),
-(2, 21, 'Lê Thị HR', 'HR Manager tại FPT Software', 'Chuyên gia tuyển dụng & tư vấn CV cho sinh viên mới ra trường.', 'Phỏng vấn, Viết CV, Kỹ năng mềm', 'avatar_hr.jpg', 'linkedin.com/in/demo'),
-(3, 22, 'Phạm Thị Lan', 'Brand Manager tại Vinamilk', '10 năm kinh nghiệm lăn lộn ngành FMCG. Sẵn sàng chia sẻ về Agency vs Client.', 'Marketing, Branding, Truyền thông', 'avatar_mkt.jpg', 'linkedin.com/in/lanpham'),
-(4, 23, 'BS. Trần Văn Minh', 'Bác sĩ nội trú tại BV Chợ Rẫy', 'Hành trình 6 năm Y khoa đầy gian nan nhưng vinh quang. Tư vấn hướng đi Nội/Ngoại khoa.', 'Y khoa, Sức khỏe, Nghiên cứu', 'avatar_med.jpg', 'linkedin.com/in/minhtran'),
-(5, 24, 'KTS. Lê Thanh Tùng', 'Senior Architect tại VHA', 'Chuyên thiết kế cảnh quan và công trình xanh. Đam mê vẽ và kỹ thuật.', 'Kiến trúc, Quy hoạch, Vẽ tay', 'avatar_arch.jpg', 'linkedin.com/in/tungarch'),
-(6, 25, 'Hoàng Thu Thủy', 'Biên phiên dịch tiếng Nhật', 'N3 sau 6 tháng, N1 sau 2 năm. Kinh nghiệm làm việc tại Tokyo.', 'Ngôn ngữ Nhật, Du học, Biên dịch', 'avatar_jp.jpg', 'linkedin.com/in/thuyhoang'),
-(7, 26, 'Kỹ sư Vũ Minh', 'Design Engineer tại Synopsys', 'Chuyên gia thiết kế vật lý vi mạch (Physical Design). Đã tham gia 3 dự án tape-out chip.', 'Vi mạch, Bán dẫn, Phần cứng', 'avatar_chip.jpg', 'linkedin.com/in/vuchip'),
-(8, 27, 'Trần Thu Hà', 'Lead Data Scientist tại Momo', 'Thích kể chuyện bằng dữ liệu. Kinh nghiệm xử lý Big Data và xây dựng mô hình AI.', 'Khoa học dữ liệu, AI, Python', 'avatar_data.jpg', 'linkedin.com/in/trandata'),
-(9, 28, 'ThS. Nguyễn An', 'Chuyên viên tham vấn tâm lý', 'Chuyên trị liệu các vấn đề về Stress học đường và định hướng bản thân cho Gen Z.', 'Tâm lý học, Chữa lành, Tư vấn', 'avatar_psy.jpg', 'linkedin.com/in/nguyenan');
-
--- --------------------------------------------------------
+LOCK TABLES `mentors` WRITE;
+/*!40000 ALTER TABLE `mentors` DISABLE KEYS */;
+INSERT INTO `mentors` VALUES (1,20,'Nguyễn Văn Dev','Senior Developer tại VNG','5 năm kinh nghiệm Java/Golang. Cựu sinh viên UIT.','Lập trình Backend, System Design','avatar_dev.jpg','linkedin.com/in/demo'),(2,21,'Lê Thị HR','HR Manager tại FPT Software','Chuyên gia tuyển dụng & tư vấn CV cho sinh viên mới ra trường.','Phỏng vấn, Viết CV, Kỹ năng mềm','avatar_hr.jpg','linkedin.com/in/demo'),(3,22,'Phạm Thị Lan','Brand Manager tại Vinamilk','10 năm kinh nghiệm lăn lộn ngành FMCG. Sẵn sàng chia sẻ về Agency vs Client.','Marketing, Branding, Truyền thông','avatar_mkt.jpg','linkedin.com/in/lanpham'),(4,23,'BS. Trần Văn Minh','Bác sĩ nội trú tại BV Chợ Rẫy','Hành trình 6 năm Y khoa đầy gian nan nhưng vinh quang. Tư vấn hướng đi Nội/Ngoại khoa.','Y khoa, Sức khỏe, Nghiên cứu','avatar_med.jpg','linkedin.com/in/minhtran'),(5,24,'KTS. Lê Thanh Tùng','Senior Architect tại VHA','Chuyên thiết kế cảnh quan và công trình xanh. Đam mê vẽ và kỹ thuật.','Kiến trúc, Quy hoạch, Vẽ tay','avatar_arch.jpg','linkedin.com/in/tungarch'),(6,25,'Hoàng Thu Thủy','Biên phiên dịch tiếng Nhật','N3 sau 6 tháng, N1 sau 2 năm. Kinh nghiệm làm việc tại Tokyo.','Ngôn ngữ Nhật, Du học, Biên dịch','avatar_jp.jpg','linkedin.com/in/thuyhoang'),(7,26,'Kỹ sư Vũ Minh','Design Engineer tại Synopsys','Chuyên gia thiết kế vật lý vi mạch (Physical Design). Đã tham gia 3 dự án tape-out chip.','Vi mạch, Bán dẫn, Phần cứng','avatar_chip.jpg','linkedin.com/in/vuchip'),(8,27,'Trần Thu Hà','Lead Data Scientist tại Momo','Thích kể chuyện bằng dữ liệu. Kinh nghiệm xử lý Big Data và xây dựng mô hình AI.','Khoa học dữ liệu, AI, Python','avatar_data.jpg','linkedin.com/in/trandata'),(9,28,'ThS. Nguyễn An','Chuyên viên tham vấn tâm lý','Chuyên trị liệu các vấn đề về Stress học đường và định hướng bản thân cho Gen Z.','Tâm lý học, Chữa lành, Tư vấn','avatar_psy.jpg','linkedin.com/in/nguyenan');
+/*!40000 ALTER TABLE `mentors` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `questions`
 --
 
+DROP TABLE IF EXISTS `questions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `questions` (
-  `id` int(11) NOT NULL,
-  `content` text NOT NULL,
-  `group_code` varchar(2) NOT NULL,
-  `image_url` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int NOT NULL AUTO_INCREMENT,
+  `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `group_code` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `questions`
 --
 
-INSERT INTO `questions` (`id`, `content`, `group_code`, `image_url`) VALUES
-(1, 'Tôi thích làm việc với các công cụ, máy móc', 'R', NULL),
-(2, 'Tôi thích sửa chữa đồ đạc trong nhà', 'R', NULL),
-(3, 'Tôi thích làm việc ngoài trời, trồng cây hoặc chăm sóc thú cưng', 'R', NULL),
-(4, 'Tôi thích lắp ráp mô hình hoặc thiết bị điện tử', 'R', NULL),
-(5, 'Tôi thích vận động cơ thể và làm các công việc thủ công', 'R', NULL),
-(6, 'Tôi thích tìm hiểu nguyên lý hoạt động của mọi vật', 'I', NULL),
-(7, 'Tôi thích giải các bài toán đố hoặc câu đố tư duy', 'I', NULL),
-(8, 'Tôi thích đọc sách khoa học hoặc xem phim tài liệu', 'I', NULL),
-(9, 'Tôi thích phân tích số liệu và làm việc với các con số', 'I', NULL),
-(10, 'Tôi thích thực hiện các thí nghiệm khoa học', 'I', NULL),
-(11, 'Tôi thích vẽ tranh, điêu khắc hoặc thiết kế', 'A', NULL),
-(12, 'Tôi thích chơi nhạc cụ hoặc ca hát', 'A', NULL),
-(13, 'Tôi thích viết truyện, làm thơ hoặc kịch bản', 'A', NULL),
-(14, 'Tôi thích tham gia các hoạt động sáng tạo, không theo khuôn mẫu', 'A', NULL),
-(15, 'Tôi thích trang trí phòng ốc hoặc phối đồ thời trang', 'A', NULL),
-(16, 'Tôi thích lắng nghe và chia sẻ vấn đề với người khác', 'S', NULL),
-(17, 'Tôi thích tham gia các hoạt động tình nguyện, giúp đỡ cộng đồng', 'S', NULL),
-(18, 'Tôi thích dạy học hoặc hướng dẫn người khác làm việc', 'S', NULL),
-(19, 'Tôi thích làm việc nhóm hơn là làm việc một mình', 'S', NULL),
-(20, 'Tôi thích chăm sóc người ốm hoặc trẻ em', 'S', NULL),
-(21, 'Tôi thích làm nhóm trưởng hoặc người lãnh đạo', 'E', NULL),
-(22, 'Tôi thích thuyết phục người khác theo ý kiến của mình', 'E', NULL),
-(23, 'Tôi thích kinh doanh, buôn bán hoặc khởi nghiệp', 'E', NULL),
-(24, 'Tôi thích tham gia các cuộc tranh luận hoặc đàm phán', 'E', NULL),
-(25, 'Tôi thích đặt ra mục tiêu và lập kế hoạch để đạt được nó', 'E', NULL),
-(26, 'Tôi thích làm việc có quy trình, trật tự rõ ràng', 'C', NULL),
-(27, 'Tôi thích sắp xếp hồ sơ, tài liệu gọn gàng', 'C', NULL),
-(28, 'Tôi thích làm việc với các bảng tính Excel hoặc sổ sách kế toán', 'C', NULL),
-(29, 'Tôi thích tuân thủ đúng nội quy và giờ giấc', 'C', NULL),
-(30, 'Tôi thích công việc văn phòng ổn định, ít biến động', 'C', NULL),
-(31, 'Ban đã ăn cơm chưa ', 'R', NULL),
-(32, 'an cơm chauw', 'R', NULL);
-
--- --------------------------------------------------------
+LOCK TABLES `questions` WRITE;
+/*!40000 ALTER TABLE `questions` DISABLE KEYS */;
+INSERT INTO `questions` VALUES (1,'Tôi thích làm việc với các công cụ, máy móc','R'),(2,'Tôi thích sửa chữa đồ đạc trong nhà','R'),(3,'Tôi thích làm việc ngoài trời, trồng cây hoặc chăm sóc thú cưng','R'),(4,'Tôi thích lắp ráp mô hình hoặc thiết bị điện tử','R'),(5,'Tôi thích vận động cơ thể và làm các công việc thủ công','R'),(6,'Tôi thích tìm hiểu nguyên lý hoạt động của mọi vật','I'),(7,'Tôi thích giải các bài toán đố hoặc câu đố tư duy','I'),(8,'Tôi thích đọc sách khoa học hoặc xem phim tài liệu','I'),(9,'Tôi thích phân tích số liệu và làm việc với các con số','I'),(10,'Tôi thích thực hiện các thí nghiệm khoa học','I'),(11,'Tôi thích vẽ tranh, điêu khắc hoặc thiết kế','A'),(12,'Tôi thích chơi nhạc cụ hoặc ca hát','A'),(13,'Tôi thích viết truyện, làm thơ hoặc kịch bản','A'),(14,'Tôi thích tham gia các hoạt động sáng tạo, không theo khuôn mẫu','A'),(15,'Tôi thích trang trí phòng ốc hoặc phối đồ thời trang','A'),(16,'Tôi thích lắng nghe và chia sẻ vấn đề với người khác','S'),(17,'Tôi thích tham gia các hoạt động tình nguyện, giúp đỡ cộng đồng','S'),(18,'Tôi thích dạy học hoặc hướng dẫn người khác làm việc','S'),(19,'Tôi thích làm việc nhóm hơn là làm việc một mình','S'),(20,'Tôi thích chăm sóc người ốm hoặc trẻ em','S'),(21,'Tôi thích làm nhóm trưởng hoặc người lãnh đạo','E'),(22,'Tôi thích thuyết phục người khác theo ý kiến của mình','E'),(23,'Tôi thích kinh doanh, buôn bán hoặc khởi nghiệp','E'),(24,'Tôi thích tham gia các cuộc tranh luận hoặc đàm phán','E'),(25,'Tôi thích đặt ra mục tiêu và lập kế hoạch để đạt được nó','E'),(26,'Tôi thích làm việc có quy trình, trật tự rõ ràng','C'),(27,'Tôi thích sắp xếp hồ sơ, tài liệu gọn gàng','C'),(28,'Tôi thích làm việc với các bảng tính Excel hoặc sổ sách kế toán','C'),(29,'Tôi thích tuân thủ đúng nội quy và giờ giấc','C'),(30,'Tôi thích công việc văn phòng ổn định, ít biến động','C'),(31,'Tôi thích tự tay bảo dưỡng xe cộ hoặc các thiết bị điện tử','R'),(32,'Tôi thích các hoạt động thể thao ngoài trời hoặc cắm trại','R'),(33,'Tôi thích vận hành các máy móc thiết bị hạng nặng','R'),(34,'Tôi thích tìm hiểu về cơ thể người và các kiến thức y học','I'),(35,'Tôi thích giải quyết các vấn đề dựa trên logic và dữ liệu thực tế','I'),(36,'Tôi tò mò về vũ trụ, thiên văn học hoặc các hiện tượng vật lý','I'),(37,'Tôi thích chụp ảnh, chỉnh sửa video hoặc thiết kế đồ họa','A'),(38,'Tôi thường có những ý tưởng khác biệt và thích sự phá cách','A'),(39,'Tôi thích diễn xuất, dẫn chương trình hoặc thể hiện trước đám đông','A'),(40,'Tôi thích tham gia các hoạt động từ thiện, công tác xã hội','S'),(41,'Tôi có khả năng lắng nghe và tư vấn giải quyết mâu thuẫn cho bạn bè','S'),(42,'Tôi thích công việc chăm sóc khách hàng hoặc tư vấn viên','S'),(43,'Tôi mong muốn đóng góp trực tiếp cho sự phát triển của cộng đồng','S'),(44,'Tôi thích bán hàng, tiếp thị sản phẩm đến người tiêu dùng','E'),(45,'Tôi thích quản lý tài chính, đầu tư hoặc chơi chứng khoán','E'),(46,'Tôi thích đàm phán hợp đồng hoặc thuyết phục đối tác','E'),(47,'Tôi có tham vọng trở thành người đứng đầu tổ chức','E'),(48,'Tôi thích công việc kiểm kê hàng hóa, kho bãi','C'),(49,'Tôi cẩn trọng trong việc chi tiêu và lập ngân sách cá nhân','C'),(50,'Tôi thích soạn thảo văn bản hành chính hoặc quản lý hồ sơ nhân sự','C');
+/*!40000 ALTER TABLE `questions` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `resources`
 --
 
+DROP TABLE IF EXISTS `resources`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `resources` (
-  `id` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `category` varchar(100) DEFAULT NULL,
-  `content` longtext DEFAULT NULL,
-  `file_link` varchar(255) DEFAULT NULL,
-  `thumbnail` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `category` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `content` longtext COLLATE utf8mb4_general_ci,
+  `file_link` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `thumbnail` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `resources`
 --
 
-INSERT INTO `resources` (`id`, `title`, `category`, `content`, `file_link`, `thumbnail`, `created_at`) VALUES
-(1, 'Ebook: Đắc Nhân Tâm', 'Ebook', 'Phân tích xu hướng nghề nghiệp 2025-2030. Top 10 ngành nghề có thu nhập cao nhất.', 'nhasachmienphi.pdf', 'thumb_ebook.jpg', '2025-12-26 18:45:58'),
-(2, 'Review ngành Logistics thực tế', 'Video', 'Một ngày làm việc của nhân viên Logistics tại cảng Cát Lái.', 'https://youtube.com/watch?v=demo', 'thumb_logistics.jpg', '2025-12-26 18:45:58'),
-(3, 'Tổng hợp đề thi thử THPT QG 2025', 'Tài liệu', 'Bộ đề thi thử môn Toán, Lý, Anh từ các trường chuyên nổi tiếng.', 'de-thi-thu-2025.zip', 'thumb_exam.jpg', '2025-12-26 18:45:58'),
-(4, 'Tổng kết Điểm chuẩn 2025: Biến động mạnh ở khối C00 và D01', 'Bài viết', 'Năm 2025 ghi nhận sự tăng điểm đột biến của nhóm ngành Xã hội nhân văn do thay đổi trong cách ra đề Văn và Sử...', 'nhasachmienphi.pdf', 'review_2025.jpg', '2025-12-26 18:46:55'),
-(5, 'Top 5 Laptop cho sinh viên IT nhập học 2025', 'Review', 'Đánh giá các dòng máy chạy chip AI mới nhất phù hợp cho việc học lập trình: Macbook Air M3, Dell XPS, Asus Zenbook...', NULL, 'laptop_it_2025.jpg', '2025-12-26 18:46:55'),
-(6, 'Đề thi chính thức THPT Quốc gia 2025 (Full các môn)', 'Tài liệu', 'Trọn bộ đề thi và đáp án chính thức của Bộ GD&ĐT năm 2025. Tài liệu tham khảo quý giá cho 2k8.', 'de_thi_full_2025.zip', 'exam_2025.jpg', '2025-12-26 18:46:55'),
-(7, 'Gap Year: Nên hay không nên?', 'Bài viết', 'Phân tích ưu nhược điểm của việc nghỉ 1 năm trước khi vào đại học để trải nghiệm cuộc sống.', NULL, 'gap_year.jpg', '2025-12-26 18:47:42'),
-(8, 'Top 10 Website tìm việc uy tín cho sinh viên Part-time', 'Tổng hợp', 'Danh sách các trang web như TopCV, Ybox, LinkedIn... và cách tránh lừa đảo tuyển dụng.', NULL, 'parttime_job.jpg', '2025-12-26 18:47:42'),
-(9, 'Podcast: Người trong muôn nghề - Ngành Tâm lý học', 'Video', 'Trò chuyện cùng Thạc sĩ tâm lý về cơ hội nghề nghiệp thực tế tại Việt Nam, không chỉ là tư vấn viên.', 'https://youtube.com/watch?v=tamly', 'podcast_tamly.jpg', '2025-12-26 18:47:42'),
-(10, 'Bộ từ vựng chuyên ngành IT cho người mới bắt đầu', 'Ebook', 'Tổng hợp 500 thuật ngữ tiếng Anh chuyên ngành CNTT không thể bỏ qua.', 'it_english.pdf', 'ebook_it.jpg', '2025-12-26 18:47:42'),
-(11, 'Review ký túc xá khu A vs khu B ĐHQG TP.HCM', 'Review', 'So sánh cơ sở vật chất, giá cả, an ninh và đời sống tinh thần tại 2 khu ký túc xá lớn nhất Đông Nam Á.', NULL, 'ktx_dhqg.jpg', '2025-12-26 18:47:42'),
-(12, 'NÓNG: Bộ GD&ĐT dự kiến bỏ xét tuyển sớm từ năm 2025', 'Tin tức', 'Để đảm bảo công bằng, Bộ dự kiến yêu cầu tất cả phương thức xét tuyển (Học bạ, ĐGNL) đều phải xét chung một đợt với điểm thi THPT. Thí sinh cần lưu ý điều chỉnh chiến lược.', NULL, 'news_bo_xet_som.jpg', '2025-12-26 18:48:03'),
-(13, 'Bản đồ nhân lực ngành Bán dẫn Việt Nam 2025-2030', 'Phân tích', 'Nhu cầu kỹ sư thiết kế vi mạch tăng 300%. Mức lương khởi điểm có thể đạt 1.000 USD. Danh sách các trường đào tạo tốt nhất.', NULL, 'semiconductor_map.jpg', '2025-12-26 18:48:03'),
-(14, 'Review ngành Thiết kế Game: Không chỉ là chơi game', 'Hướng nghiệp', 'Phân biệt Game Designer, Game Developer và Game Artist. Cơ hội làm việc tại các Studio lớn (VNG, Gameloft).', NULL, 'game_design_career.jpg', '2025-12-26 18:48:03'),
-(15, 'Học phí Đại học 2025-2026: Tiếp tục tăng?', 'Tài chính', 'Tổng hợp mức học phí mới nhất của 50 trường ĐH. Các quỹ học bổng và gói vay sinh viên lãi suất thấp.', NULL, 'tuition_2025.jpg', '2025-12-26 18:48:03');
-
--- --------------------------------------------------------
+LOCK TABLES `resources` WRITE;
+/*!40000 ALTER TABLE `resources` DISABLE KEYS */;
+INSERT INTO `resources` VALUES (1,'Ebook: Đắc Nhân Tâm','Ebook','Phân tích xu hướng nghề nghiệp 2025-2030. Top 10 ngành nghề có thu nhập cao nhất.','nhasachmienphi.pdf','thumb_ebook.jpg','2025-12-26 18:45:58'),(2,'Review ngành Logistics thực tế','Video','Một ngày làm việc của nhân viên Logistics tại cảng Cát Lái.','https://youtube.com/watch?v=demo','thumb_logistics.jpg','2025-12-26 18:45:58'),(3,'Tổng hợp đề thi thử THPT QG 2025','Tài liệu','Bộ đề thi thử môn Toán, Lý, Anh từ các trường chuyên nổi tiếng.','de-thi-thu-2025.zip','thumb_exam.jpg','2025-12-26 18:45:58'),(4,'Tổng kết Điểm chuẩn 2025: Biến động mạnh ở khối C00 và D01','Bài viết','Năm 2025 ghi nhận sự tăng điểm đột biến của nhóm ngành Xã hội nhân văn do thay đổi trong cách ra đề Văn và Sử...','nhasachmienphi.pdf','review_2025.jpg','2025-12-26 18:46:55'),(5,'Top 5 Laptop cho sinh viên IT nhập học 2025','Review','Đánh giá các dòng máy chạy chip AI mới nhất phù hợp cho việc học lập trình: Macbook Air M3, Dell XPS, Asus Zenbook...',NULL,'laptop_it_2025.jpg','2025-12-26 18:46:55'),(6,'Đề thi chính thức THPT Quốc gia 2025 (Full các môn)','Tài liệu','Trọn bộ đề thi và đáp án chính thức của Bộ GD&ĐT năm 2025. Tài liệu tham khảo quý giá cho 2k8.','de_thi_full_2025.zip','exam_2025.jpg','2025-12-26 18:46:55'),(7,'Gap Year: Nên hay không nên?','Bài viết','Phân tích ưu nhược điểm của việc nghỉ 1 năm trước khi vào đại học để trải nghiệm cuộc sống.',NULL,'gap_year.jpg','2025-12-26 18:47:42'),(8,'Top 10 Website tìm việc uy tín cho sinh viên Part-time','Tổng hợp','Danh sách các trang web như TopCV, Ybox, LinkedIn... và cách tránh lừa đảo tuyển dụng.',NULL,'parttime_job.jpg','2025-12-26 18:47:42'),(9,'Podcast: Người trong muôn nghề - Ngành Tâm lý học','Video','Trò chuyện cùng Thạc sĩ tâm lý về cơ hội nghề nghiệp thực tế tại Việt Nam, không chỉ là tư vấn viên.','https://youtube.com/watch?v=tamly','podcast_tamly.jpg','2025-12-26 18:47:42'),(10,'Bộ từ vựng chuyên ngành IT cho người mới bắt đầu','Ebook','Tổng hợp 500 thuật ngữ tiếng Anh chuyên ngành CNTT không thể bỏ qua.','it_english.pdf','ebook_it.jpg','2025-12-26 18:47:42'),(11,'Review ký túc xá khu A vs khu B ĐHQG TP.HCM','Review','So sánh cơ sở vật chất, giá cả, an ninh và đời sống tinh thần tại 2 khu ký túc xá lớn nhất Đông Nam Á.',NULL,'ktx_dhqg.jpg','2025-12-26 18:47:42'),(12,'NÓNG: Bộ GD&ĐT dự kiến bỏ xét tuyển sớm từ năm 2025','Tin tức','Để đảm bảo công bằng, Bộ dự kiến yêu cầu tất cả phương thức xét tuyển (Học bạ, ĐGNL) đều phải xét chung một đợt với điểm thi THPT. Thí sinh cần lưu ý điều chỉnh chiến lược.',NULL,'news_bo_xet_som.jpg','2025-12-26 18:48:03'),(13,'Bản đồ nhân lực ngành Bán dẫn Việt Nam 2025-2030','Phân tích','Nhu cầu kỹ sư thiết kế vi mạch tăng 300%. Mức lương khởi điểm có thể đạt 1.000 USD. Danh sách các trường đào tạo tốt nhất.',NULL,'semiconductor_map.jpg','2025-12-26 18:48:03'),(14,'Review ngành Thiết kế Game: Không chỉ là chơi game','Hướng nghiệp','Phân biệt Game Designer, Game Developer và Game Artist. Cơ hội làm việc tại các Studio lớn (VNG, Gameloft).',NULL,'game_design_career.jpg','2025-12-26 18:48:03'),(15,'Học phí Đại học 2025-2026: Tiếp tục tăng?','Tài chính','Tổng hợp mức học phí mới nhất của 50 trường ĐH. Các quỹ học bổng và gói vay sinh viên lãi suất thấp.',NULL,'tuition_2025.jpg','2025-12-26 18:48:03');
+/*!40000 ALTER TABLE `resources` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `search_history`
 --
 
+DROP TABLE IF EXISTS `search_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `search_history` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
   `score` float NOT NULL,
-  `group_code` varchar(10) NOT NULL,
-  `created_at` datetime DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `group_code` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `search_history`
 --
 
-INSERT INTO `search_history` (`id`, `user_id`, `score`, `group_code`, `created_at`) VALUES
-(1, 5, 26, 'IT', '2025-12-25 03:40:09'),
-(2, 29, 227, 'IT', '2025-12-28 23:45:19'),
-(3, 29, 22.7, 'IT', '2025-12-28 23:45:32'),
-(4, 29, 22.7, 'IT', '2025-12-30 22:10:07'),
-(5, 29, 22.7, 'IT', '2025-12-30 22:12:16'),
-(6, 29, 31, 'IT', '2025-12-30 22:16:02'),
-(7, 29, 31, 'IT', '2025-12-30 22:16:19'),
-(8, 29, 11, 'IT', '2025-12-30 22:18:36'),
-(9, 29, 19, 'IT', '2025-12-30 22:18:45'),
-(10, 29, 19, 'IT', '2025-12-30 22:21:21'),
-(11, 29, 11, 'CK', '2025-12-30 22:32:35'),
-(12, 29, 11, 'CK', '2025-12-30 22:39:23'),
-(13, 29, 11, 'CK', '2025-12-30 22:40:17'),
-(14, 29, 11, 'CK', '2025-12-30 22:41:39'),
-(15, 29, 11, 'CK', '2025-12-30 22:41:42'),
-(16, 29, 11, 'CK', '2025-12-30 22:42:43'),
-(17, 29, 21, 'NT', '2025-12-30 22:42:54'),
-(18, 29, 21, 'NT', '2025-12-30 22:42:58'),
-(19, 29, 11, 'CK', '2025-12-30 22:43:04'),
-(20, 29, 11, 'CK', '2025-12-30 22:47:28'),
-(21, 29, 11, 'CK', '2025-12-30 22:50:29'),
-(22, 29, 11, 'CK', '2025-12-30 22:51:00'),
-(23, 29, 11, 'CK', '2025-12-30 22:57:52'),
-(24, 29, 23, 'YD', '2025-12-30 22:58:07'),
-(25, 29, 22.3, 'DL', '2025-12-30 22:58:17'),
-(26, 29, 22.3, 'DL', '2025-12-30 22:59:13'),
-(27, 29, 22.3, 'DL', '2025-12-30 22:59:51'),
-(28, 29, 22.3, 'DL', '2025-12-30 23:01:58'),
-(29, 29, 21, 'BV', '2025-12-30 23:08:42'),
-(30, 29, 21, 'IT', '2025-12-30 23:08:47'),
-(31, 29, 21, 'IT', '2025-12-30 23:10:50'),
-(32, 29, 21, 'IT', '2025-12-30 23:13:17'),
-(33, 29, 21, 'IT', '2025-12-30 23:14:22'),
-(34, 29, 21, 'IT', '2025-12-30 23:15:35'),
-(35, 29, 21, 'IT', '2025-12-30 23:15:46'),
-(36, 29, 21, 'IT', '2025-12-30 23:16:44'),
-(37, 29, 21, 'IT', '2025-12-30 23:17:00'),
-(38, 29, 21, 'IT', '2025-12-30 23:20:45'),
-(39, 29, 21, 'IT', '2025-12-30 23:21:07'),
-(40, 29, 21, 'IT', '2025-12-30 23:22:01'),
-(41, 29, 21, 'IT', '2025-12-30 23:23:14'),
-(42, 29, 21, 'IT', '2025-12-30 23:23:24'),
-(43, 29, 21, 'IT', '2025-12-30 23:23:31'),
-(44, 29, 21, 'IT', '2025-12-30 23:23:37'),
-(45, 29, 21, 'IT', '2025-12-30 23:23:52'),
-(46, 29, 21, 'IT', '2025-12-30 23:23:55'),
-(47, 29, 21, 'IT', '2025-12-30 23:24:04'),
-(48, 29, 21, 'IT', '2025-12-30 23:24:15'),
-(49, 29, 21, 'IT', '2025-12-30 23:27:18'),
-(50, 29, 22.3, 'DL', '2026-01-03 15:07:59'),
-(51, 29, 21, 'IT', '2026-01-03 15:09:04'),
-(52, 29, 21, 'IT', '2026-01-03 15:19:01'),
-(53, 29, 21, 'IT', '2026-01-03 15:22:30'),
-(54, 29, 21, 'IT', '2026-01-03 15:32:22'),
-(55, 29, 21, 'BV', '2026-01-03 23:29:22'),
-(56, 29, 22, 'IT', '2026-01-03 23:29:27'),
-(57, 29, 22.1, 'NN', '2026-01-03 23:29:45'),
-(58, 29, 27, 'L', '2026-01-05 23:28:34'),
-(59, 29, 27, 'BV', '2026-01-05 23:28:40'),
-(60, 29, 27, 'BV', '2026-01-05 23:28:44'),
-(61, 29, 27, 'DL', '2026-01-05 23:28:46'),
-(62, 29, 27, 'IT', '2026-01-05 23:28:53'),
-(63, 29, 27, 'KTR', '2026-01-05 23:28:55'),
-(64, 29, 25, 'KTR', '2026-01-05 23:29:59'),
-(65, 29, 25, 'L', '2026-01-05 23:30:02'),
-(66, 29, 25, 'L', '2026-01-05 23:34:18'),
-(67, 29, 27, 'BV', '2026-01-05 23:35:18'),
-(68, 29, 27, 'BV', '2026-01-05 23:37:22'),
-(69, 29, 27, 'BV', '2026-01-05 23:37:23'),
-(70, 29, 27, 'IT', '2026-01-05 23:37:28'),
-(71, 29, 27, 'DL', '2026-01-05 23:38:15'),
-(72, 29, 27, 'KTR', '2026-01-05 23:38:18'),
-(73, 29, 27, 'CK', '2026-01-05 23:38:20'),
-(74, 29, 27, 'L', '2026-01-05 23:38:23'),
-(75, 29, 27, 'L', '2026-01-05 23:39:09'),
-(76, 29, 27, 'L', '2026-01-05 23:40:25'),
-(77, 29, 27, 'L', '2026-01-05 23:40:27'),
-(78, 29, 27, 'BV', '2026-01-05 23:40:30'),
-(79, 29, 27, 'BV', '2026-01-05 23:45:03'),
-(80, 29, 27, 'BV', '2026-01-05 23:45:06'),
-(81, 29, 27, 'BV', '2026-01-05 23:45:07'),
-(82, 29, 27, 'BV', '2026-01-05 23:53:56'),
-(83, 29, 27, 'BV', '2026-01-05 23:53:57'),
-(84, 29, 27, 'IT', '2026-01-05 23:54:01'),
-(85, 29, 27, 'DL', '2026-01-05 23:54:04'),
-(86, 29, 27, 'KTR', '2026-01-05 23:54:07'),
-(87, 29, 27, 'KT', '2026-01-05 23:54:09'),
-(88, 29, 27, 'CK', '2026-01-05 23:54:12'),
-(89, 29, 27, 'L', '2026-01-05 23:54:14'),
-(90, 29, 27, 'NT', '2026-01-05 23:54:19'),
-(91, 29, 27, 'NN', '2026-01-05 23:54:23'),
-(92, 29, 27, 'NNG', '2026-01-05 23:54:25'),
-(93, 29, 27, 'SP', '2026-01-05 23:54:28'),
-(94, 29, 27, 'XH', '2026-01-05 23:54:30'),
-(95, 29, 27, 'YD', '2026-01-05 23:54:33'),
-(96, 29, 28, 'YD', '2026-01-05 23:54:38'),
-(97, 29, 29, 'YD', '2026-01-05 23:54:43'),
-(98, 29, 25, 'YD', '2026-01-05 23:54:51'),
-(99, 29, 30, 'YD', '2026-01-05 23:54:59'),
-(100, 29, 30, 'BV', '2026-01-05 23:55:02');
-
--- --------------------------------------------------------
+LOCK TABLES `search_history` WRITE;
+/*!40000 ALTER TABLE `search_history` DISABLE KEYS */;
+INSERT INTO `search_history` VALUES (1,5,26,'IT','2025-12-25 03:40:09'),(2,29,227,'IT','2025-12-28 23:45:19'),(3,29,22.7,'IT','2025-12-28 23:45:32'),(4,29,22.7,'IT','2025-12-30 22:10:07'),(5,29,22.7,'IT','2025-12-30 22:12:16'),(6,29,31,'IT','2025-12-30 22:16:02'),(7,29,31,'IT','2025-12-30 22:16:19'),(8,29,11,'IT','2025-12-30 22:18:36'),(9,29,19,'IT','2025-12-30 22:18:45'),(10,29,19,'IT','2025-12-30 22:21:21'),(11,29,11,'CK','2025-12-30 22:32:35'),(12,29,11,'CK','2025-12-30 22:39:23'),(13,29,11,'CK','2025-12-30 22:40:17'),(14,29,11,'CK','2025-12-30 22:41:39'),(15,29,11,'CK','2025-12-30 22:41:42'),(16,29,11,'CK','2025-12-30 22:42:43'),(17,29,21,'NT','2025-12-30 22:42:54'),(18,29,21,'NT','2025-12-30 22:42:58'),(19,29,11,'CK','2025-12-30 22:43:04'),(20,29,11,'CK','2025-12-30 22:47:28'),(21,29,11,'CK','2025-12-30 22:50:29'),(22,29,11,'CK','2025-12-30 22:51:00'),(23,29,11,'CK','2025-12-30 22:57:52'),(24,29,23,'YD','2025-12-30 22:58:07'),(25,29,22.3,'DL','2025-12-30 22:58:17'),(26,29,22.3,'DL','2025-12-30 22:59:13'),(27,29,22.3,'DL','2025-12-30 22:59:51'),(28,29,22.3,'DL','2025-12-30 23:01:58'),(29,29,21,'BV','2025-12-30 23:08:42'),(30,29,21,'IT','2025-12-30 23:08:47'),(31,29,21,'IT','2025-12-30 23:10:50'),(32,29,21,'IT','2025-12-30 23:13:17'),(33,29,21,'IT','2025-12-30 23:14:22'),(34,29,21,'IT','2025-12-30 23:15:35'),(35,29,21,'IT','2025-12-30 23:15:46'),(36,29,21,'IT','2025-12-30 23:16:44'),(37,29,21,'IT','2025-12-30 23:17:00'),(38,29,21,'IT','2025-12-30 23:20:45'),(39,29,21,'IT','2025-12-30 23:21:07'),(40,29,21,'IT','2025-12-30 23:22:01'),(41,29,21,'IT','2025-12-30 23:23:14'),(42,29,21,'IT','2025-12-30 23:23:24'),(43,29,21,'IT','2025-12-30 23:23:31'),(44,29,21,'IT','2025-12-30 23:23:37'),(45,29,21,'IT','2025-12-30 23:23:52'),(46,29,21,'IT','2025-12-30 23:23:55'),(47,29,21,'IT','2025-12-30 23:24:04'),(48,29,21,'IT','2025-12-30 23:24:15'),(49,29,21,'IT','2025-12-30 23:27:18'),(50,29,22.3,'DL','2026-01-03 15:07:59'),(51,29,21,'IT','2026-01-03 15:09:04'),(52,29,21,'IT','2026-01-03 15:19:01'),(53,29,21,'IT','2026-01-03 15:22:30'),(54,29,21,'IT','2026-01-03 15:32:22'),(55,29,21,'BV','2026-01-03 23:29:22'),(56,29,22,'IT','2026-01-03 23:29:27'),(57,29,22.1,'NN','2026-01-03 23:29:45'),(58,29,30,'IT','2026-01-06 00:46:14'),(59,29,30,'IT','2026-01-06 00:47:02'),(60,29,30,'IT','2026-01-06 00:47:43'),(61,29,30,'IT','2026-01-06 00:50:22'),(62,29,30,'IT','2026-01-06 00:50:30'),(63,29,30,'IT','2026-01-06 00:50:41'),(64,29,30,'KT','2026-01-06 00:50:56'),(65,29,30,'IT','2026-01-06 00:52:09'),(66,29,30,'IT','2026-01-06 00:53:27'),(67,29,30,'IT','2026-01-06 00:53:30'),(68,29,30,'NN','2026-01-06 00:53:39'),(69,29,30,'IT','2026-01-06 01:00:51'),(70,29,21,'IT','2026-01-06 01:01:07'),(71,29,21,'BV','2026-01-06 01:22:15'),(72,29,31,'BV','2026-01-06 01:29:36'),(73,29,27,'BV','2026-01-06 01:29:50'),(74,29,22,'BV','2026-01-06 01:31:49'),(75,29,32,'L','2026-01-06 01:31:55'),(76,29,32,'SP','2026-01-06 01:32:11'),(77,29,22,'SP','2026-01-06 01:32:24'),(78,29,2999,'SP','2026-01-06 01:32:29'),(79,29,29,'SP','2026-01-06 01:32:33'),(80,29,29,'YD','2026-01-06 01:33:30'),(81,29,18,'DL','2026-01-06 01:39:58'),(82,29,18,'DL','2026-01-06 01:40:21'),(83,29,18,'NNG','2026-01-06 01:40:25'),(84,29,22,'DL','2026-01-06 01:40:57'),(85,29,25,'DL','2026-01-06 01:41:04'),(86,29,29,'DL','2026-01-06 01:41:08'),(87,29,29,'DL','2026-01-06 01:44:01'),(88,29,29,'BV','2026-01-06 01:44:04'),(89,29,29,'NN','2026-01-06 01:44:08'),(90,29,29,'NN','2026-01-06 01:49:58'),(91,29,29,'IT','2026-01-06 01:51:47'),(92,29,29,'IT','2026-01-06 01:59:47'),(93,29,21,'BV','2026-01-06 02:00:14'),(94,29,28,'BV','2026-01-06 02:00:19'),(95,33,30,'KT','2026-01-06 22:26:20'),(96,29,23,'BV','2026-01-06 23:20:57'),(97,29,23,'BV','2026-01-06 23:21:05'),(98,29,23,'BV','2026-01-06 23:21:08'),(99,29,28,'BV','2026-01-06 23:21:14'),(100,29,28,'BV','2026-01-06 23:21:42'),(101,29,30,'IT','2026-01-06 23:22:25'),(102,29,30,'IT','2026-01-06 23:24:04'),(103,29,30,'IT','2026-01-06 23:25:27'),(104,29,23,'NT','2026-01-06 23:25:50'),(105,29,30,'IT','2026-01-06 23:29:43');
+/*!40000 ALTER TABLE `search_history` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `universities`
 --
 
+DROP TABLE IF EXISTS `universities`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `universities` (
-  `id` int(11) NOT NULL,
-  `name` varchar(150) NOT NULL,
-  `code` varchar(20) NOT NULL,
-  `region` varchar(50) DEFAULT 'ToanQuoc'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
+  `code` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `region` varchar(50) COLLATE utf8mb4_general_ci DEFAULT 'ToanQuoc',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `universities`
 --
 
-INSERT INTO `universities` (`id`, `name`, `code`, `region`) VALUES
-(1, 'Đại học Bách Khoa Hà Nội', 'HUST', 'Bac'),
-(2, 'Đại học Ngoại Thương', 'FTU', 'Bac'),
-(3, 'Đại học Kinh Tế Quốc Dân', 'NEU', 'Bac'),
-(4, 'Đại học Y Hà Nội', 'HMU', 'Bac'),
-(5, 'Đại học Quốc Gia HN - ĐH Công Nghệ', 'UET', 'Bac'),
-(6, 'Đại học Bách Khoa TP.HCM', 'HCMUT', 'Nam'),
-(7, 'Đại học Y Dược TP.HCM', 'UMP', 'Nam'),
-(8, 'Đại học Kinh Tế TP.HCM', 'UEH', 'Nam'),
-(9, 'Đại học Sư Phạm Kỹ Thuật TP.HCM', 'HCMUTE', 'Nam'),
-(10, 'Đại học FPT', 'FPT', 'ToanQuoc'),
-(11, 'Đại học Tôn Đức Thắng', 'TDTU', 'Nam'),
-(12, 'Đại học Luật TP.HCM', 'ULAW', 'Nam'),
-(13, 'Đại học Quốc tế - ĐHQG TP.HCM', 'IU', 'Nam'),
-(14, 'Đại học Công nghệ TP.HCM', 'HUTECH', 'Nam'),
-(15, 'Đại học Kinh tế - Tài chính TP.HCM', 'UEF', 'Nam'),
-(16, 'Học viện Công nghệ Bưu chính Viễn thông (Hà Nội)', 'PTIT', 'Bac'),
-(17, 'Đại học RMIT Việt Nam', 'RMIT', 'ToanQuoc'),
-(18, 'Đại học Thương Mại', 'TMU', 'Bac'),
-(19, 'Đại học Công nghiệp Hà Nội', 'HaUI', 'Bac'),
-(20, 'Đại học Giao thông Vận tải', 'UTC', 'Bac'),
-(21, 'Học viện Ngân hàng', 'BA', 'Bac'),
-(22, 'Học viện Tài chính', 'AOF', 'Bac'),
-(23, 'Đại học Xây dựng Hà Nội', 'NUCE', 'Bac'),
-(24, 'Đại học Bách Khoa - ĐH Đà Nẵng', 'DUT', 'Trung'),
-(25, 'Đại học Kinh tế - ĐH Đà Nẵng', 'DUE', 'Trung'),
-(26, 'Đại học Ngoại ngữ - ĐH Đà Nẵng', 'UFL', 'Trung'),
-(27, 'Đại học Y Dược - ĐH Huế', 'HUMP', 'Trung'),
-(28, 'Đại học Nông Lâm TP.HCM', 'NLU', 'Nam'),
-(29, 'Đại học Sài Gòn', 'SGU', 'Nam'),
-(30, 'Đại học Mở TP.HCM', 'OU', 'Nam'),
-(31, 'Đại học Cần Thơ', 'CTU', 'Nam'),
-(32, 'Đại học Văn Lang', 'VLU', 'ToanQuoc'),
-(33, 'Đại học Hoa Sen', 'HSU', 'ToanQuoc'),
-(34, 'Đại học Thái Nguyên', 'TNU', 'Bac'),
-(35, 'Đại học Vinh', 'VNU', 'Trung'),
-(36, 'Đại học Hàng Hải Việt Nam', 'VMU', 'Bac'),
-(37, 'Đại học Đại Nam', 'DNU', 'Bac'),
-(38, 'Đại học Quy Nhơn', 'QNU', 'Trung'),
-(39, 'Đại học Tây Nguyên', 'TTN', 'Trung'),
-(40, 'Đại học Nha Trang', 'NTU', 'Trung'),
-(41, 'Đại học Quốc tế Hồng Bàng', 'HIU', 'Nam'),
-(42, 'Đại học Nguyễn Tất Thành', 'NTTU', 'Nam'),
-(43, 'Đại học Văn Hiến', 'VHU', 'Nam'),
-(44, 'Học viện An ninh Nhân dân', 'AGU', 'Nam'),
-(45, 'Học viện Cảnh sát Nhân dân', 'BLU', 'Nam'),
-(46, 'Đại học Kiến trúc TP.HCM', 'BVU', 'Nam'),
-(47, 'Đại học Kiến trúc Hà Nội', 'DU', 'Nam'),
-(48, 'Đại học Luật Hà Nội', 'DDIU', 'Nam'),
-(49, 'Đại học Sư phạm Hà Nội', 'DNUT', 'Nam'),
-(50, 'Học viện Báo chí và Tuyên truyền', 'HPMU', 'Bac'),
-(51, 'Học viện Nông nghiệp Việt Nam', 'HAUI', 'Bac'),
-(52, 'Đại học Lâm nghiệp', 'HITGU', 'Bac'),
-(53, 'Đại học Mỹ thuật TP.HCM', 'HLU', 'Bac'),
-(54, 'Đại học Sư phạm Nghệ thuật TW', 'HNUE', 'Bac'),
-(55, 'Học viện Chính trị Quốc gia', 'HUCE', 'Bac'),
-(56, 'Hanoi University of Culture', 'HUC', 'Bac'),
-(57, 'Hanoi University of Industrial Fine Arts', 'HUIFA', 'Bac'),
-(58, 'Hanoi University of Mining and Geology', 'HUMG', 'Bac'),
-(59, 'Hanoi University of Pharmacy', 'HUP', 'Bac'),
-(60, 'VNU University of Languages and International Studies', 'VNU-ULIS', 'Bac'),
-(61, 'Duy Tan University', 'DTU', 'Trung'),
-(62, 'Vietnam National University, Hanoi', 'VNU', 'Bac'),
-(63, 'Vietnam National University, Ho Chi Minh City', 'VNU-HCM', 'Nam'),
-(64, 'Hue University', 'HU', 'Trung'),
-(65, 'University of Da Nang', 'UDN', 'Trung'),
-(66, 'Nguyen Tat Thanh University', 'NTTU', 'Nam'),
-(67, 'Industrial University of Ho Chi Minh City', 'IUHCM', 'Nam'),
-(68, 'Ho Chi Minh City Open University', 'HCM-OpenU', 'Nam'),
-(69, 'Vietnam National University of Agriculture', 'VNUA', 'Bac'),
-(70, 'VinUniversity', 'VINU', 'Bac'),
-(71, 'VNUHCM University of Science', 'VNUHCM-US', 'Nam'),
-(72, 'VNUHCM University of Technology', 'VNUHCM-UT', 'Nam'),
-(73, 'Vietnamese-German University', 'VGU', 'Nam'),
-(74, 'Western University Hanoi', 'WUHN', 'Bac'),
-(75, 'Tay Nguyen University', 'TNU-TN', 'Trung');
-
--- --------------------------------------------------------
+LOCK TABLES `universities` WRITE;
+/*!40000 ALTER TABLE `universities` DISABLE KEYS */;
+INSERT INTO `universities` VALUES (1,'Đại học Bách Khoa Hà Nội','HUST','Bac'),(2,'Đại học Ngoại Thương','FTU','Bac'),(3,'Đại học Kinh Tế Quốc Dân','NEU','Bac'),(4,'Đại học Y Hà Nội','HMU','Bac'),(5,'Đại học Quốc Gia HN - ĐH Công Nghệ','UET','Bac'),(6,'Đại học Bách Khoa TP.HCM','HCMUT','Nam'),(7,'Đại học Y Dược TP.HCM','UMP','Nam'),(8,'Đại học Kinh Tế TP.HCM','UEH','Nam'),(9,'Đại học Sư Phạm Kỹ Thuật TP.HCM','HCMUTE','Nam'),(10,'Đại học FPT','FPT','ToanQuoc'),(11,'Đại học Tôn Đức Thắng','TDTU','Nam'),(12,'Đại học Luật TP.HCM','ULAW','Nam'),(13,'Đại học Quốc tế - ĐHQG TP.HCM','IU','Nam'),(14,'Đại học Công nghệ TP.HCM','HUTECH','Nam'),(15,'Đại học Kinh tế - Tài chính TP.HCM','UEF','Nam'),(16,'Học viện Công nghệ Bưu chính Viễn thông (Hà Nội)','PTIT','Bac'),(17,'Đại học RMIT Việt Nam','RMIT','ToanQuoc'),(18,'Đại học Thương Mại','TMU','Bac'),(19,'Đại học Công nghiệp Hà Nội','HaUI','Bac'),(20,'Đại học Giao thông Vận tải','UTC','Bac'),(21,'Học viện Ngân hàng','BA','Bac'),(22,'Học viện Tài chính','AOF','Bac'),(23,'Đại học Xây dựng Hà Nội','NUCE','Bac'),(24,'Đại học Bách Khoa - ĐH Đà Nẵng','DUT','Trung'),(25,'Đại học Kinh tế - ĐH Đà Nẵng','DUE','Trung'),(26,'Đại học Ngoại ngữ - ĐH Đà Nẵng','UFL','Trung'),(27,'Đại học Y Dược - ĐH Huế','HUMP','Trung'),(28,'Đại học Nông Lâm TP.HCM','NLU','Nam'),(29,'Đại học Sài Gòn','SGU','Nam'),(30,'Đại học Mở TP.HCM','OU','Nam'),(31,'Đại học Cần Thơ','CTU','Nam'),(32,'Đại học Văn Lang','VLU','ToanQuoc'),(33,'Đại học Hoa Sen','HSU','ToanQuoc'),(34,'Đại học Thái Nguyên','TNU','Bac'),(35,'Đại học Vinh','VNU','Trung'),(36,'Đại học Hàng Hải Việt Nam','VMU','Bac'),(37,'Đại học Đại Nam','DNU','Bac'),(38,'Đại học Quy Nhơn','QNU','Trung'),(39,'Đại học Tây Nguyên','TTN','Trung'),(40,'Đại học Nha Trang','NTU','Trung'),(41,'Đại học Quốc tế Hồng Bàng','HIU','Nam'),(42,'Đại học Nguyễn Tất Thành','NTTU','Nam'),(43,'Đại học Văn Hiến','VHU','Nam'),(44,'An Giang University','AGU','Nam'),(45,'Bac Lieu University','BLU','Nam'),(46,'Baria Vungtau University','BVU','Nam'),(47,'Dalat University','DU','Nam'),(48,'Dong Do International University','DDIU','Nam'),(49,'Dong Nai University of Technology','DNUT','Nam'),(50,'Hai Phong Medical University','HPMU','Bac'),(51,'Hanoi Architectural University','HAUI','Bac'),(52,'Hanoi Industrial Textile and Garment University','HITGU','Bac'),(53,'Hanoi Law University','HLU','Bac'),(54,'Hanoi National University of Education','HNUE','Bac'),(55,'Hanoi University of Civil Engineering','HUCE','Bac'),(56,'Hanoi University of Culture','HUC','Bac'),(57,'Hanoi University of Industrial Fine Arts','HUIFA','Bac'),(58,'Hanoi University of Mining and Geology','HUMG','Bac'),(59,'Hanoi University of Pharmacy','HUP','Bac'),(60,'VNU University of Languages and International Studies','VNU-ULIS','Bac'),(61,'Duy Tan University','DTU','Trung'),(62,'Vietnam National University, Hanoi','VNU','Bac'),(63,'Vietnam National University, Ho Chi Minh City','VNU-HCM','Nam'),(64,'Hue University','HU','Trung'),(65,'University of Da Nang','UDN','Trung'),(66,'Nguyen Tat Thanh University','NTTU','Nam'),(67,'Industrial University of Ho Chi Minh City','IUHCM','Nam'),(68,'Ho Chi Minh City Open University','HCM-OpenU','Nam'),(69,'Vietnam National University of Agriculture','VNUA','Bac'),(70,'VinUniversity','VINU','Bac'),(71,'VNUHCM University of Science','VNUHCM-US','Nam'),(72,'VNUHCM University of Technology','VNUHCM-UT','Nam'),(73,'Vietnamese-German University','VGU','Nam'),(74,'Western University Hanoi','WUHN','Bac'),(75,'Tay Nguyen University','TNU-TN','Trung');
+/*!40000 ALTER TABLE `universities` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `users`
 --
 
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `fullname` varchar(100) NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `role` enum('student','admin') DEFAULT 'student',
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `status` enum('active','temporary_banned','permanently_banned') DEFAULT 'active'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `id` int NOT NULL AUTO_INCREMENT,
+  `fullname` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `username` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `role` enum('student','admin') COLLATE utf8mb4_general_ci DEFAULT 'student',
+  `user_type` enum('student','alumni') COLLATE utf8mb4_general_ci DEFAULT 'student',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` enum('active','temporary_ban','permanent_ban') COLLATE utf8mb4_general_ci DEFAULT 'active',
+  `gender` enum('Nam','Nữ','Khác') COLLATE utf8mb4_general_ci DEFAULT 'Nam',
+  `birthday` date DEFAULT NULL,
+  `academic_performance` enum('Yếu','Trung bình','Khá','Giỏi','Xuất sắc') COLLATE utf8mb4_general_ci DEFAULT 'Trung bình',
+  `region` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Khu vực',
+  `aspiration` text COLLATE utf8mb4_general_ci COMMENT 'Nguyện vọng',
+  `phone` varchar(15) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `address` text COLLATE utf8mb4_general_ci,
+  `personality` text COLLATE utf8mb4_general_ci COMMENT 'Tính cách',
+  `avatar` varchar(255) COLLATE utf8mb4_general_ci DEFAULT 'default-avatar.png',
+  `ban_reason` text COLLATE utf8mb4_general_ci,
+  `employment_status` enum('working','unemployed') COLLATE utf8mb4_general_ci DEFAULT 'working',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `fullname`, `username`, `password`, `role`, `created_at`, `status`) VALUES
-(4, 'admin', 'XanQuan', '$2y$10$4kmJFbzIHQJsZ570TwMNNOBooeVwHjh8xgfZOV6yHXA3DAENI2I5O', 'admin', '2026-01-02 10:57:07', 'active'),
-(5, 'Q', 'Q', '$2y$10$OnlnRGcPBy.bsyGIktcvQuuG45oxn/gU2xzFBxAnG5K/g4gCqcLQG', 'student', '2026-01-02 10:57:07', 'active'),
-(6, 'Q', 'QQ', '$2y$10$vEIgV3ft.H4irNZzfzLSXOVaxbgegnU2P63Zd216YD1oYVCxJuvNO', 'admin', '2026-01-02 10:57:07', 'active'),
-(20, 'Nguyễn Văn Dev', 'mentor_dev', '$2y$10$DEMOHASH', 'student', '2026-01-02 10:57:07', 'active'),
-(21, 'Lê Thị HR', 'mentor_hr', '$2y$10$DEMOHASH', 'student', '2026-01-02 10:57:07', 'active'),
-(22, 'Phạm Lan Marketing', 'mentor_mkt', '$2y$10$DEMO', 'student', '2026-01-02 10:57:07', 'active'),
-(23, 'Trần Bác Sĩ', 'mentor_med', '$2y$10$DEMO', 'student', '2026-01-02 10:57:07', 'active'),
-(24, 'Lê Kiến Trúc', 'mentor_arch', '$2y$10$DEMO', 'student', '2026-01-02 10:57:07', 'active'),
-(25, 'Hoàng Nhật Ngữ', 'mentor_jp', '$2y$10$DEMO', 'student', '2026-01-02 10:57:07', 'active'),
-(26, 'Vũ Chip', 'mentor_chip', '$2y$10$DEMO', 'student', '2026-01-02 10:57:07', 'active'),
-(27, 'Trần Data', 'mentor_data', '$2y$10$DEMO', 'student', '2026-01-02 10:57:07', 'active'),
-(28, 'Nguyễn Tâm Lý', 'mentor_psy', '$2y$10$DEMO', 'student', '2026-01-02 10:57:07', 'active'),
-(29, 'nhan', '111@gmail.com', '$2y$10$5TFrgJg1JVqyJwGzKXY7FeEjuNS5kzz63u6TP/zmzCPws1lOtzERG', 'student', '2026-01-02 10:57:07', 'temporary_banned'),
-(30, 'Đặng Thành Nhân', 'admin', '$2y$10$sJslFCXhXt2ahAY4e5WNze0pX3RD7Edv3/Lx85dIdQt88fy4U2Way', 'student', '2026-01-04 16:28:20', 'active'),
-(31, 'Đặng Thành Nhân', 'admin1', '$2y$10$mYB2as0NsYghgmfdsYcEDuXp046YOa7G860MigIzUBCfdT.56bQEu', 'admin', '2026-01-04 16:28:59', 'active');
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (4,'admin','XanQuan','$2y$10$4kmJFbzIHQJsZ570TwMNNOBooeVwHjh8xgfZOV6yHXA3DAENI2I5O','admin','student','2026-01-02 10:57:07','active','Nam',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(5,'Q','Q','$2y$10$OnlnRGcPBy.bsyGIktcvQuuG45oxn/gU2xzFBxAnG5K/g4gCqcLQG','student','student','2026-01-02 10:57:07','active','Nam',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(6,'Q','QQ','$2y$10$vEIgV3ft.H4irNZzfzLSXOVaxbgegnU2P63Zd216YD1oYVCxJuvNO','admin','student','2026-01-02 10:57:07','active','Nam',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(20,'Nguyễn Văn Dev','mentor_dev','$2y$10$DEMOHASH','student','student','2026-01-02 10:57:07','active','Nam',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(21,'Lê Thị HR','mentor_hr','$2y$10$DEMOHASH','student','student','2026-01-02 10:57:07','active','Nam',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(22,'Phạm Lan Marketing','mentor_mkt','$2y$10$DEMO','student','student','2026-01-02 10:57:07','active','Nam',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(23,'Trần Bác Sĩ','mentor_med','$2y$10$DEMO','student','student','2026-01-02 10:57:07','active','Nam',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(24,'Lê Kiến Trúc','mentor_arch','$2y$10$DEMO','student','student','2026-01-02 10:57:07','active','Nam',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(25,'Hoàng Nhật Ngữ','mentor_jp','$2y$10$DEMO','student','student','2026-01-02 10:57:07','active','Nam',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(26,'Vũ Chip','mentor_chip','$2y$10$DEMO','student','student','2026-01-02 10:57:07','active','Nam',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(27,'Trần Data','mentor_data','$2y$10$DEMO','student','student','2026-01-02 10:57:07','active','Nam',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(28,'Nguyễn Tâm Lý','mentor_psy','$2y$10$DEMO','student','student','2026-01-02 10:57:07','active','Nam',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(29,'DNAgwd Thành nHÂn','111@gmail.com','$2y$10$5TFrgJg1JVqyJwGzKXY7FeEjuNS5kzz63u6TP/zmzCPws1lOtzERG','student','student','2026-01-02 10:57:07','active','Nam','2004-09-11','Khá','D10','Bác sĩ Đa khoa','0977446037','123','','1767643438_ga1.jpg',NULL,'working'),(30,'Đặng Thành Nhân','admin','$2y$10$sJslFCXhXt2ahAY4e5WNze0pX3RD7Edv3/Lx85dIdQt88fy4U2Way','student','student','2026-01-04 16:28:20','active','Nam',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(31,'Đặng Thành Nhân','admin1','$2y$10$mYB2as0NsYghgmfdsYcEDuXp046YOa7G860MigIzUBCfdT.56bQEu','admin','student','2026-01-04 16:28:59','active','Nam',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(32,'Đặng Thành Nhân','n1','$2y$10$SRlCej5ddPCTRp3lGt/PEuAI/wXYAbwUMlv5tvIaVfboEKRXVrUWa','student','student','2026-01-06 13:57:36','active','Nam',NULL,'Trung bình','A00','Kỹ thuật Phần mềm',NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(33,'n2','n2','$2y$10$Mnn7NeWNbLUiieiOLXu1wOjzvrXz3ZLFX2c4hZmD6gxxkK5vN0a7m','student','student','2026-01-06 13:58:23','active','Nam','2005-09-11','Trung bình','A01','răng hàm mặt ','1123','','','1767714055_ga1.jpg',NULL,'working'),(34,'Đặng Thành Nhân','n4','$2y$10$nJFZyjtU76b8Qp8dnNmCZeP/X/AMzYY2MXSLahCfg7crumSzqcYlm','student','student','2026-01-06 14:11:14','active','Nam',NULL,'Trung bình',NULL,NULL,NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(35,'Đặng Thành Nhân','n5','$2y$10$G1EkEN0GP6nWB/l.VajTSODgLchZR04PHGt6yBP3oNlTzwX58dDou','student','alumni','2026-01-06 14:17:29','active','Nam','2004-09-11','Trung bình','A00','It','1','123','','default-avatar.png',NULL,'working'),(36,'Đặng Thành Nhân','n6','$2y$10$U44UAtOKAB7hbbCNoxOsg.W3awYUeOfqiIpk00CysMjb9.8uKErP2','student','alumni','2026-01-06 15:17:12','active','Nam','1808-09-09',NULL,'D01','kinh doanh quốc tế ','0911203',NULL,'','default-avatar.png',NULL,'working'),(101,'Nguyễn Văn Kỹ Thuật','alumni_r','$2y$10$DEMOHASH','student','alumni','2026-01-06 15:41:51','active','Nam',NULL,'Giỏi','A00','Kỹ thuật Cơ khí',NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(102,'Trần Trung Nghiên Cứu','alumni_i','$2y$10$DEMOHASH','student','alumni','2026-01-06 15:41:51','active','Nam',NULL,'Xuất sắc','A01','Khoa học Máy tính',NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(103,'Lê Thị Nghệ Thuật','alumni_a','$2y$10$DEMOHASH','student','alumni','2026-01-06 15:41:51','active','Nam',NULL,'Khá','D01','Thiết kế Đồ họa',NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(104,'Phạm Tâm Lý Học','alumni_s','$2y$10$DEMOHASH','student','alumni','2026-01-06 15:41:51','active','Nam',NULL,'Giỏi','D01','Tâm lý học chuyên sâu',NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(105,'Hoàng Quản Lý','alumni_e','$2y$10$DEMOHASH','student','alumni','2026-01-06 15:41:51','active','Nam',NULL,'Giỏi','A01','Quản trị Kinh doanh',NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(106,'Vũ Kế Toán','alumni_c','$2y$10$DEMOHASH','student','alumni','2026-01-06 15:41:51','active','Nam',NULL,'Khá','A01','Kế toán Kiểm toán',NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(107,'Đỗ AI Expert','alumni_ai','$2y$10$DEMOHASH','student','alumni','2026-01-06 15:41:51','active','Nam',NULL,'Xuất sắc','A00','Trí tuệ nhân tạo',NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(108,'Ngô Marketing','alumni_m','$2y$10$DEMOHASH','student','alumni','2026-01-06 15:41:51','active','Nam',NULL,'Giỏi','D01','Marketing Kỹ thuật số',NULL,NULL,NULL,'default-avatar.png',NULL,'unemployed'),(109,'Bùi Điện Tử','alumni_ee','$2y$10$DEMOHASH','student','alumni','2026-01-06 15:41:51','active','Nam',NULL,'Khá','A00','Kỹ thuật Điện tử',NULL,NULL,NULL,'default-avatar.png',NULL,'working'),(110,'Phan Y Khoa','alumni_med','$2y$10$DEMOHASH','student','alumni','2026-01-06 15:41:51','active','Nam',NULL,'Xuất sắc','B00','Bác sĩ Đa khoa',NULL,NULL,NULL,'default-avatar.png',NULL,'working');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `ai_chats`
---
-ALTER TABLE `ai_chats`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `assessment_results`
---
-ALTER TABLE `assessment_results`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `consultation_requests`
---
-ALTER TABLE `consultation_requests`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `course_id` (`course_id`);
-
---
--- Indexes for table `course_reviews`
---
-ALTER TABLE `course_reviews`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `course_id` (`course_id`);
-
---
--- Indexes for table `enrollments`
---
-ALTER TABLE `enrollments`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `entry_scores`
---
-ALTER TABLE `entry_scores`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `uni_id` (`uni_id`),
-  ADD KEY `major_id` (`major_id`);
-
---
--- Indexes for table `events`
---
-ALTER TABLE `events`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `event_registrations`
---
-ALTER TABLE `event_registrations`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `event_id` (`event_id`),
-  ADD KEY `user_id` (`user_id`);
-
---
--- Indexes for table `faqs`
---
-ALTER TABLE `faqs`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `majors`
---
-ALTER TABLE `majors`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `major_groups`
---
-ALTER TABLE `major_groups`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `group_code` (`group_code`);
-
---
--- Indexes for table `mentors`
---
-ALTER TABLE `mentors`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `questions`
---
-ALTER TABLE `questions`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `resources`
---
-ALTER TABLE `resources`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `search_history`
---
-ALTER TABLE `search_history`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `universities`
---
-ALTER TABLE `universities`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username` (`username`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `ai_chats`
---
-ALTER TABLE `ai_chats`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
-
---
--- AUTO_INCREMENT for table `assessment_results`
---
-ALTER TABLE `assessment_results`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
---
--- AUTO_INCREMENT for table `consultation_requests`
---
-ALTER TABLE `consultation_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `course_reviews`
---
-ALTER TABLE `course_reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `enrollments`
---
-ALTER TABLE `enrollments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT for table `entry_scores`
---
-ALTER TABLE `entry_scores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9695;
-
---
--- AUTO_INCREMENT for table `events`
---
-ALTER TABLE `events`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT for table `event_registrations`
---
-ALTER TABLE `event_registrations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `faqs`
---
-ALTER TABLE `faqs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `majors`
---
-ALTER TABLE `majors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
-
---
--- AUTO_INCREMENT for table `major_groups`
---
-ALTER TABLE `major_groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
---
--- AUTO_INCREMENT for table `mentors`
---
-ALTER TABLE `mentors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT for table `questions`
---
-ALTER TABLE `questions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
-
---
--- AUTO_INCREMENT for table `resources`
---
-ALTER TABLE `resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT for table `search_history`
---
-ALTER TABLE `search_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
-
---
--- AUTO_INCREMENT for table `universities`
---
-ALTER TABLE `universities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `consultation_requests`
---
-ALTER TABLE `consultation_requests`
-  ADD CONSTRAINT `consultation_requests_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `majors` (`id`);
-
---
--- Constraints for table `course_reviews`
---
-ALTER TABLE `course_reviews`
-  ADD CONSTRAINT `course_reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `course_reviews_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `majors` (`id`);
-
---
--- Constraints for table `entry_scores`
---
-ALTER TABLE `entry_scores`
-  ADD CONSTRAINT `entry_scores_ibfk_1` FOREIGN KEY (`uni_id`) REFERENCES `universities` (`id`),
-  ADD CONSTRAINT `entry_scores_ibfk_2` FOREIGN KEY (`major_id`) REFERENCES `majors` (`id`);
-
---
--- Constraints for table `event_registrations`
---
-ALTER TABLE `event_registrations`
-  ADD CONSTRAINT `event_registrations_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`),
-  ADD CONSTRAINT `event_registrations_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
-COMMIT;
-
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2026-01-07  1:19:27
