@@ -5,220 +5,234 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập thành viên - UniGuide</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/TuVanTuyenSinh/public/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        :root {
+            --primary: #ef7e7e;
+            --secondary: #81ecec;
+            --bg-dark: #2d3436;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         
-        body {
-            background: linear-gradient(135deg, #f08b8b 0%, #7e98d5 100%);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        body { 
+            background: radial-gradient(circle at top left, #f08b8b, #7e98d5); 
+            height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
             padding: 20px;
+            perspective: 1000px;
         }
 
-        .main-container {
-            display: flex;
+        /* Container 3D */
+        .main-container { 
+            display: flex; 
             width: 100%; 
-            max-width: 1000px;
+            max-width: 1000px; 
             height: 85vh; 
-            min-height: 550px;
-            background: #2d3436;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            min-height: 600px; 
+            background: var(--bg-dark); 
+            border-radius: 30px; 
+            overflow: hidden; 
+            box-shadow: 20px 20px 60px rgba(0,0,0,0.5), 
+                        -5px -5px 20px rgba(255,255,255,0.05);
+            transform-style: preserve-3d;
+            animation: fadeIn 1s ease-out;
         }
 
-        /* Nửa bên trái - Form Đăng nhập */
-        .login-side {
-            flex: 1;
-            padding: 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background: #2d3436;
+        /* FORM BÊN TRÁI */
+        .login-side { 
+            flex: 1; 
+            padding: 60px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            background: #252a2b; /* Đậm hơn một chút để tạo khối */
+            position: relative;
         }
 
-        .login-side h2 {
-            color: #ef7e7e;
-            font-size: 32px;
-            font-weight: 800;
+        .login-side h2 { 
+            color: var(--primary); 
+            font-size: 38px; 
+            font-weight: 800; 
             margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
-        .login-side p {
-            color: #b2bec3;
-            font-size: 14px;
-            margin-bottom: 35px;
-        }
+        .login-side p { color: #b2bec3; font-size: 15px; margin-bottom: 40px; }
 
-        .input-group {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .input-group i {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #b2bec3;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 15px 15px 15px 55px;
-            background: transparent;
-            border: 1px solid #636e72;
-            border-radius: 30px;
-            color: #fff;
-            outline: none;
-            transition: 0.3s;
-            font-size: 15px;
-        }
-
-        .input-group input:focus {
-            border-color: #ef7e7e;
-            box-shadow: 0 0 10px rgba(239, 126, 126, 0.2);
-        }
-
-        .login-btn {
-            background: linear-gradient(to right, #ef7e7e, #81ecec);
-            border: none;
-            padding: 15px;
-            border-radius: 30px;
-            color: #2d3436;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            margin-top: 15px;
+        /* Input Group 3D */
+        .input-group { position: relative; margin-bottom: 25px; }
+        .input-group i { 
+            position: absolute; 
+            left: 20px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            color: var(--primary); 
             transition: 0.3s;
         }
 
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(129, 236, 236, 0.3);
-            opacity: 0.9;
+        .input-group input { 
+            width: 100%; 
+            padding: 16px 16px 16px 55px; 
+            background: #1e2223; 
+            border: 2px solid transparent; 
+            border-radius: 15px; 
+            color: #fff; 
+            outline: none; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 4px 4px 8px rgba(0,0,0,0.5), 
+                        inset -2px -2px 5px rgba(255,255,255,0.05);
         }
 
-        .forgot-pass {
-            text-align: right;
-            margin-top: 20px;
-            color: #b2bec3;
-            font-size: 13px;
-            text-decoration: none;
-            font-style: italic;
-        }
-        
-        .forgot-pass:hover { color: #ef7e7e; }
-
-        /* Nửa bên phải - Hình ảnh & Đăng ký */
-        .social-side {
-            flex: 1;
-            background: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            padding: 50px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: #fff;
+        .input-group input:focus { 
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(239, 126, 126, 0.2),
+                        inset 2px 2px 5px rgba(0,0,0,0.5);
+            transform: scale(1.02);
         }
 
-        .social-side::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Làm tối nền để chữ rõ hơn */
-        }
-
-        .social-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .social-content h2 {
-            font-size: 36px;
-            margin-bottom: 15px;
-            font-weight: 800;
-        }
-
-        .social-icons {
-            display: flex;
-            gap: 20px;
-            margin: 35px 0;
-            justify-content: center;
-        }
-
-        .icon-circle {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.7);
+        .login-terms {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            transition: 0.4s;
-            cursor: pointer;
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .icon-circle:hover {
-            background: #ef7e7e;
-            border-color: #ef7e7e;
-            transform: rotate(360deg);
-        }
-
-        .terms {
-            font-size: 12px;
-            margin-top: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            gap: 12px;
+            margin-bottom: 25px;
             color: #dfe6e9;
+            font-size: 13px;
         }
 
-        .create-account {
-            margin-top: 25px;
-            font-size: 14px;
-            color: #fff;
-            text-decoration: none;
-            display: block;
-            font-weight: 600;
-            border-bottom: 1px solid transparent;
+        .login-terms input {
+            accent-color: var(--primary);
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* Button 3D */
+        .login-btn { 
+            background: linear-gradient(135deg, var(--primary), #d63031); 
+            border: none; 
+            padding: 18px; 
+            border-radius: 15px; 
+            color: #fff; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            cursor: pointer; 
+            transition: 0.4s;
+            box-shadow: 0 10px 20px rgba(239, 126, 126, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 15px 30px rgba(239, 126, 126, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .login-btn:active { transform: translateY(-2px); }
+
+        .forgot-pass { 
+            text-align: center; 
+            margin-top: 25px; 
+            color: #b2bec3; 
+            font-size: 14px; 
+            text-decoration: none; 
+            font-style: italic;
             transition: 0.3s;
         }
+        .forgot-pass:hover { color: var(--primary); }
 
-        .create-account:hover {
-            color: #81ecec;
-            border-bottom: 1px solid #81ecec;
+        /* BÊN PHẢI GLASSMORPHISM */
+        .social-side { 
+            flex: 1; 
+            background: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1350&q=80'); 
+            background-size: cover; 
+            background-position: center; 
+            position: relative; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
         }
 
-        .alert-error {
-            background: rgba(255, 118, 117, 0.1);
-            color: #ff7675;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 13px;
+        .social-side::before { 
+            content: ""; 
+            position: absolute; 
+            top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.4); 
+            backdrop-filter: blur(3px);
+        }
+
+        .social-content { 
+            position: relative; 
+            z-index: 1; 
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 50px 40px;
+            border-radius: 25px;
+            text-align: center;
+            max-width: 380px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transform: translateZ(50px); /* Đẩy khối về phía người dùng */
+        }
+
+        .social-content h2 { 
+            font-size: 42px; 
+            font-weight: 800; 
+            color: #fff;
             margin-bottom: 20px;
-            border-left: 4px solid #ff7675;
-            text-align: left;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        /* Responsive cho điện thoại */
-        @media (max-width: 768px) {
-            .main-container { flex-direction: column; height: auto; }
-            .social-side { display: none; } /* Ẩn bớt phần ảnh trên mobile cho gọn */
+        .create-account { 
+            display: block;
+            margin-top: 30px;
+            font-size: 15px; 
+            color: #fff; 
+            text-decoration: none; 
+            font-weight: 600; 
+            padding: 15px 30px; 
+            border: 2px solid #fff; 
+            border-radius: 50px; 
+            transition: 0.4s;
+            background: rgba(255,255,255,0.05);
         }
+
+        .create-account:hover { 
+            background: #fff; 
+            color: var(--bg-dark); 
+            box-shadow: 0 10px 25px rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px) rotateX(-10deg); }
+            to { opacity: 1; transform: translateY(0) rotateX(0); }
+        }
+
+        .alert-error { 
+            background: rgba(255, 118, 117, 0.2); 
+            color: #ff7675; 
+            padding: 15px; 
+            border-radius: 12px; 
+            font-size: 14px; 
+            margin-bottom: 25px; 
+            border-left: 5px solid #ff7675;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
     </style>
 </head>
 <body>
@@ -226,7 +240,7 @@
     <div class="main-container">
         <div class="login-side">
             <h2>Đăng nhập</h2>
-            <p>Vui lòng điền thông tin tài khoản của bạn</p>
+            <p>Chào mừng bạn trở lại với UniGuide</p>
 
             <?php if(isset($error)): ?>
                 <div class="alert-error">
@@ -244,34 +258,21 @@
                     <input type="password" name="password" placeholder="Mật khẩu" required>
                 </div>
                 
-                <button type="submit" class="login-btn">Đăng nhập</button>
+                <div class="login-terms">
+                    <input type="checkbox" name="accept_terms" id="check_terms" required>
+                    <label for="check_terms">Tôi đồng ý với các <a href="#" style="color:var(--primary); text-decoration:none;">điều khoản</a></label>
+                </div>
+                
+                <button type="submit" class="login-btn">Đăng nhập ngay</button>
                 <a href="index.php?page=forgot_password" class="forgot-pass">Quên mật khẩu?</a>
             </form>
         </div>
 
         <div class="social-side">
             <div class="social-content">
-                <h2>Đăng ký</h2>
-                <p>Sử dụng tài khoản mạng xã hội của bạn</p>
-
-                <div class="social-icons">
-    <a href="https://github.com/cuontelebara/TuVanTuyenSinh" target="_blank" class="icon-circle">
-        <i class="fa fa-github"></i>
-    </a>
-    <a href="https://www.facebook.com/DangThanhNhan.0" target="_blank" class="icon-circle">
-        <i class="fa fa-facebook-f"></i>
-    </a>
-    <a href="https://www.instagram.com/dangthangnhan/" target="_blank" class="icon-circle">
-        <i class="fa fa-instagram"></i>
-    </a>
-</div>
-
-                <div class="terms">
-                    <input type="checkbox" id="check_terms" required>
-                    <label for="check_terms">Tôi đồng ý với các <a href="#" style="color: #ef7e7e; text-decoration: none;">điều khoản & điều kiện</a></label>
-                </div>
-
-                <a href="index.php?page=register" class="create-account">Chưa có tài khoản? Tạo tài khoản mới</a>
+                <h2>New Here?</h2>
+                <p style="color: #dfe6e9; font-size: 15px;">Tham gia UniGuide để nhận tư vấn tuyển sinh cá nhân hóa và lộ trình nghề nghiệp tối ưu.</p>
+                <a href="index.php?page=register" class="create-account">Tạo tài khoản mới</a>
             </div>
         </div>
     </div>

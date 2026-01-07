@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'name' => '__root__',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'fe0b79173dc0c9ff35e4e3819ce95815c1dd2937',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
+    ),
+    'versions' => array(
+        '__root__' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'fe0b79173dc0c9ff35e4e3819ce95815c1dd2937',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'hybridauth/hybridauth' => array(
+            'pretty_version' => 'v3.12.2',
+            'version' => '3.12.2.0',
+            'reference' => 'c6184bf92404394e918353a0ea0d35a97ac3b0fe',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../hybridauth/hybridauth',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'phpmailer/phpmailer' => array(
+            'pretty_version' => 'v7.0.1',
+            'version' => '7.0.1.0',
+            'reference' => '360ae911ce62e25e11249f6140fa58939f556ebe',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpmailer/phpmailer',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+    ),
+);

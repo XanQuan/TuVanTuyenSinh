@@ -412,32 +412,48 @@ class AdminController {
     }
 
     public function edit_course() {
-        $id = (int)$_GET['id'];
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $name = $_POST['name'];
-            $desc = $_POST['description'];
-            $tuition = $_POST['tuition'];
-            $teacher = $_POST['teacher'];
-            $rating = $_POST['rating'];
+    $id = (int)$_GET['id'];
+    
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $name = $_POST['name'];
+        $desc = $_POST['description'];
+        $tuition = $_POST['tuition'];
+        $teacher = $_POST['teacher'];
+        
+        // Ràng buộc điểm số tối đa 5.0
+        $rating = (float)$_POST['rating'];
+        if ($rating > 5.0) $rating = 5.0;
 
-            if (!empty($_FILES['image']['name'])) {
-                if (!file_exists("uploads/courses/")) mkdir("uploads/courses/", 0777, true);
-                $image = time() . '_' . basename($_FILES['image']['name']);
-                move_uploaded_file($_FILES['image']['tmp_name'], "uploads/courses/" . $image);
-                $stmt = $this->conn->prepare("UPDATE courses SET name=?, description=?, tuition=?, image=?, teacher=?, rating=? WHERE id=?");
-                $stmt->bind_param("sssssdi", $name, $desc, $tuition, $image, $teacher, $rating, $id);
-            } else {
-                $stmt = $this->conn->prepare("UPDATE courses SET name=?, description=?, tuition=?, teacher=?, rating=? WHERE id=?");
-                $stmt->bind_param("ssssdi", $name, $desc, $tuition, $teacher, $rating, $id);
+        if (!empty($_FILES['image']['name'])) {
+            // Tạo thư mục nếu chưa có
+            if (!file_exists("uploads/courses/")) {
+                mkdir("uploads/courses/", 0777, true);
             }
-            $stmt->execute();
-            header("Location: index.php?page=admin&action=courses");
-            exit;
+            
+            $image = time() . '_' . basename($_FILES['image']['name']);
+            move_uploaded_file($_FILES['image']['tmp_name'], "uploads/courses/" . $image);
+            
+            // Cập nhật kèm ảnh mới
+            $stmt = $this->conn->prepare("UPDATE courses SET name=?, description=?, tuition=?, image=?, teacher=?, rating=? WHERE id=?");
+            $stmt->bind_param("sssssdi", $name, $desc, $tuition, $image, $teacher, $rating, $id);
+        } else {
+            // Giữ nguyên ảnh cũ
+            $stmt = $this->conn->prepare("UPDATE courses SET name=?, description=?, tuition=?, teacher=?, rating=? WHERE id=?");
+            $stmt->bind_param("ssssdi", $name, $desc, $tuition, $teacher, $rating, $id);
         }
-        $course = $this->conn->query("SELECT * FROM courses WHERE id = $id")->fetch_assoc();
-        $content_view = 'views/admin/courses/edit.php';
-        require_once 'views/admin/dashboard.php';
+        
+        $stmt->execute();
+        header("Location: index.php?page=admin&action=courses&status=updated");
+        exit;
     }
+
+    // Lấy dữ liệu khóa học để đổ vào Form
+    $course = $this->conn->query("SELECT * FROM courses WHERE id = $id")->fetch_assoc();
+    
+    // Nhúng vào giao diện Dashboard chung
+    $content_view = 'views/admin/courses/edit.php';
+    require_once 'views/admin/dashboard.php';
+}
 
     public function delete_course() {
         if (isset($_GET['id'])) {
@@ -520,59 +536,63 @@ class AdminController {
     // ======================================================
     // 10. QUẢN LÝ CHUYÊN GIA (MENTORS)
     // ======================================================
-    public function mentors() {
-        $mentors = [];
-        // Lấy thông tin mentor kèm username nếu email không có
-        $sql = "SELECT mentors.*, users.fullname, users.username 
-                FROM mentors 
-                JOIN users ON mentors.user_id = users.id";
-        $result = $this->conn->query($sql);
-        if ($result) while($row = $result->fetch_assoc()) { $mentors[] = $row; }
-        
-        $content_view = 'views/admin/mentors/index.php';
-        require_once 'views/admin/dashboard.php';
+ public function mentors() {
+    $mentors = [];
+    $result = $this->conn->query("SELECT * FROM mentors ORDER BY id DESC");
+    if ($result) {
+        while($row = $result->fetch_assoc()) { $mentors[] = $row; }
     }
+    $content_view = 'views/admin/mentors/index.php';
+    require_once 'views/admin/dashboard.php';
+}
 
-    public function add_mentor() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $user_id = $_POST['user_id'];
-            $full_name = $_POST['full_name'];
-            $job_title = $_POST['job_title'];
-            $expertise = $_POST['expertise'];
-            $bio = $_POST['bio'];
-            $linkedin_url = $_POST['linkedin_url'];
-            
-            $avatar = 'default_mentor.jpg';
-            if (!empty($_FILES['avatar']['name'])) {
-                if (!file_exists("public/assets/images/")) mkdir("public/assets/images/", 0777, true);
-                $avatar = time() . '_avt_' . basename($_FILES['avatar']['name']);
-                move_uploaded_file($_FILES['avatar']['tmp_name'], "public/assets/images/" . $avatar);
+// 2. Thêm Mentor mới
+public function add_mentor() {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $full_name = $_POST['full_name'];
+        $job_title = $_POST['job_title'];
+        $expertise = $_POST['expertise'];
+        $bio = $_POST['bio'];
+        $user_id = $_POST['user_id'];
+        $linkedin = $_POST['linkedin_url'];
+
+        $avatar = 'default_mentor.jpg';
+        if (!empty($_FILES['avatar']['name'])) {
+            // Đảm bảo thư mục tồn tại
+            if (!file_exists("public/assets/images/mentors/")) {
+                mkdir("public/assets/images/mentors/", 0777, true);
             }
-
-            $stmt = $this->conn->prepare("INSERT INTO mentors (user_id, full_name, job_title, expertise, bio, avatar, linkedin_url) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("issssss", $user_id, $full_name, $job_title, $expertise, $bio, $avatar, $linkedin_url);
-            $stmt->execute();
-            header("Location: index.php?page=admin&action=mentors");
-            exit;
+            $avatar = time() . '_' . $_FILES['avatar']['name'];
+            move_uploaded_file($_FILES['avatar']['tmp_name'], "public/assets/images/mentors/" . $avatar);
         }
-        
-        // Lấy danh sách user để chọn
-        $users = [];
-        $res = $this->conn->query("SELECT id, fullname, username FROM users ORDER BY fullname ASC");
-        while($row = $res->fetch_assoc()) $users[] = $row;
 
-        $content_view = 'views/admin/mentors/add.php';
-        require_once 'views/admin/dashboard.php';
-    }
-
-    public function delete_mentor() {
-        if (isset($_GET['id'])) {
-            $this->conn->query("DELETE FROM mentors WHERE id=" . $_GET['id']);
-        }
+        $stmt = $this->conn->prepare("INSERT INTO mentors (user_id, full_name, job_title, expertise, bio, avatar, linkedin_url) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("issssss", $user_id, $full_name, $job_title, $expertise, $bio, $avatar, $linkedin);
+        $stmt->execute();
         header("Location: index.php?page=admin&action=mentors");
         exit;
     }
+    // Lấy danh sách users để chọn làm Mentor
+    $users = [];
+    $res = $this->conn->query("SELECT id, fullname FROM users WHERE role != 'admin'");
+    while($row = $res->fetch_assoc()) { $users[] = $row; }
 
+    $content_view = 'views/admin/mentors/add.php';
+    require_once 'views/admin/dashboard.php';
+}
+
+// 3. Xóa Mentor
+public function delete_mentor() {
+    $id = $_GET['id'] ?? 0;
+    // Lấy tên ảnh để xóa file vật lý
+    $m = $this->conn->query("SELECT avatar FROM mentors WHERE id = $id")->fetch_assoc();
+    if ($m && $m['avatar'] != 'default_mentor.jpg') {
+        @unlink("public/assets/images/mentors/" . $m['avatar']);
+    }
+    $this->conn->query("DELETE FROM mentors WHERE id = $id");
+    header("Location: index.php?page=admin&action=mentors");
+    exit;
+}
     // ======================================================
     // 11. QUẢN LÝ TÀI LIỆU (RESOURCES)
     // ======================================================

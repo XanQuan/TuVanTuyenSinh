@@ -19,24 +19,35 @@
                 <div class="col-lg-4 col-md-6 mb-5 fade-in-up">
                     <div class="mentor-card" onclick="window.location.href='index.php?page=mentors&action=detail&id=<?= $m['id'] ?>'">
     <div class="mentor-thumb">
-        <img src="public/assets/images/<?= htmlspecialchars($m['image'] ?? 'course-01.jpg') ?>" 
-             alt="<?= htmlspecialchars($m['name']) ?>">
+    <?php 
+        // 1. Lấy tên file từ cột 'avatar' (Database của bạn dùng avatar chứ không phải image)
+        $avatar = !empty($m['avatar']) ? $m['avatar'] : 'default_mentor.jpg';
         
-        <div class="mentor-social-overlay" onclick="event.stopPropagation(); window.location.href='mailto:<?= htmlspecialchars($m['email'] ?? '#') ?>'">
-            <span><i class="fa fa-envelope"></i> Gửi Email trực tiếp</span>
-        </div>
-    </div>
+        // 2. Kiểm tra đường dẫn vật lý để ưu tiên ảnh thật
+        // Lưu ý: Nếu ảnh bạn để ở public/assets/images thì dùng đường dẫn này
+        $avatarPath = "public/assets/images/" . $avatar;
+        
+        // Nếu không tồn tại ở thư mục ngoài, thử tìm trong thư mục mentors/
+        if (!file_exists($avatarPath)) {
+            $avatarPath = "public/assets/images/mentors/" . $avatar;
+        }
+    ?>
+    <img src="<?= $avatarPath ?>" 
+         alt="<?= htmlspecialchars($m['full_name']) ?>" 
+         class="img-fluid"
+         onerror="this.src='https://ui-avatars.com/api/?name=<?= urlencode($m['full_name']) ?>&background=be1e2d&color=fff'">
+</div>
     
-    <div class="mentor-content">
-        <span class="mentor-expertise"><?= htmlspecialchars($m['expertise'] ?? 'Cố vấn chuyên môn') ?></span>
-        <h4 class="mentor-name"><?= htmlspecialchars($m['name'] ?? 'Chuyên gia tư vấn') ?></h4>
-        <p class="mentor-bio">
-            <?= mb_substr(htmlspecialchars($m['bio'] ?? ''), 0, 100) ?>...
-        </p>
-        <div class="mentor-footer">
-            <span class="contact-link">XEM CHI TIẾT <i class="fa fa-arrow-right"></i></span>
-        </div>
+<div class="mentor-content">
+    <span class="mentor-expertise"><?= htmlspecialchars($m['expertise'] ?? 'Cố vấn chuyên môn') ?></span>
+    <h4 class="mentor-name"><?= htmlspecialchars($m['full_name'] ?? 'Chuyên gia tư vấn') ?></h4>
+    <p class="mentor-bio">
+        <?= mb_substr(htmlspecialchars($m['bio'] ?? ''), 0, 100) ?>...
+    </p>
+    <div class="mentor-footer">
+        <span class="contact-link">XEM CHI TIẾT <i class="fa fa-arrow-right"></i></span>
     </div>
+</div>
 </div>
                 </div>
                 <?php endforeach; ?>

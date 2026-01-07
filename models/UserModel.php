@@ -7,53 +7,62 @@ class UserModel {
     }
 
     /**
-     * 1. Xử lý Đăng ký thành viên
-     * Tự động băm mật khẩu và gán vai trò mặc định là 'student'
+     * 1. Xử lý Đăng ký thành viên (Đã thêm Email)
      */
-    public function register($fullname, $username, $password, $user_type = 'student') {
-        // Kiểm tra tên đăng nhập tồn tại
-        $checkSql = "SELECT id FROM users WHERE username = ?";
+    public function register($fullname, $email, $username, $password, $user_type = 'student') {
+        // Kiểm tra xem Username HOẶC Email đã tồn tại chưa
+        $checkSql = "SELECT id FROM users WHERE username = ? OR email = ?";
         $checkStmt = $this->conn->prepare($checkSql);
-        $checkStmt->bind_param("s", $username);
+        $checkStmt->bind_param("ss", $username, $email);
         $checkStmt->execute();
         
         if ($checkStmt->get_result()->num_rows > 0) {
-            return false; 
+            return false; // Trả về false nếu bị trùng tên hoặc email
         }
 
+        // Mã hóa mật khẩu
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         $role = 'student';
 
-        // Cập nhật câu lệnh SQL để lưu trường user_type
-        $sql = "INSERT INTO users (fullname, username, password, user_type, role) VALUES (?, ?, ?, ?, ?)";
+        // Cập nhật câu lệnh SQL: thêm cột 'email'
+        $sql = "INSERT INTO users (fullname, email, username, password, user_type, role) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("sssss", $fullname, $username, $hashed_password, $user_type, $role);
+        
+        // ssssss = 6 chuỗi (string) tương ứng với các dấu ?
+        $stmt->bind_param("ssssss", $fullname, $email, $username, $hashed_password, $user_type, $role);
         
         return $stmt->execute();
     }
 
     /**
      * 2. Xử lý Đăng nhập
-     * Sử dụng Prepared Statement và kiểm tra mật khẩu đã mã hóa 
      */
-   public function login($username, $password) {
-        $sql = "SELECT * FROM users WHERE username = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    public function login($username, $password) {
+    // Chỉ lấy user nếu trạng thái là 'active'
+    $sql = "SELECT * FROM users WHERE (username = ? OR email = ?) AND status = 'active'";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("ss", $username, $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-        if ($result->num_rows > 0) {
-            $user = $result->fetch_assoc();
-            
-            if (password_verify($password, $user['password'])) {
-                // Trả về toàn bộ thông tin bao gồm user_type
-                return $user; 
-            }
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        // Kiểm tra mật khẩu đã băm (password_verify)
+        if (password_verify($password, $user['password'])) {
+            return $user; 
         }
-        
-        return false; 
     }
+    return false; 
 }
 
+    /**
+     * 3. Tìm user theo Username (Dùng cho GitHub/Auth)
+     */
+    public function findUserByUsername($username) {
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ? OR email = ?");
+        $stmt->bind_param("ss", $username, $username);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
+}
 ?>

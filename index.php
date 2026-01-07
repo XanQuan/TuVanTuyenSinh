@@ -113,25 +113,54 @@ switch ($page) {
         exit; // Dừng thực thi ngay để lệnh chuyển hướng có hiệu lực
         break;
  // === Quên Mk ===
-    case 'forgot_password':
-        require_once 'controllers/AuthController.php';
-        $auth = new AuthController($conn);
-        $auth->forgotPassword(); // Gọi hàm hiển thị giao diện quên mật khẩu
-        break;
+   // === Quên Mk ===
+case 'forgot_password':
+    require_once 'controllers/AuthController.php';
+    $auth = new AuthController($conn);
+    
+    // Nếu người dùng nhấn nút Gửi (POST), gọi hàm xử lý gửi mail
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $auth->handleForgotPassword(); 
+    } else {
+        // Nếu chỉ truy cập bình thường, hiển thị form nhập email
+        $auth->forgotPassword(); 
+    }
+    break;
     // === XỬ LÝ ĐĂNG XUẤT ===
   // Tìm đoạn case 'logout' trong index.php và sửa thành:
     
 
     // === XỬ LÝ AUTH CHUNG ===
-    case 'auth':
-        require_once 'controllers/AuthController.php';
-        $auth = new AuthController($conn);
-        if (method_exists($auth, $action)) {
-            $auth->$action();
-        } else {
-            $auth->login();
-        }
-        break;
+ case 'auth':
+    require_once 'controllers/AuthController.php';
+    $auth = new AuthController($conn);
+
+    // 1. Ưu tiên xử lý Callback từ Mạng xã hội (GitHub)
+    if (isset($_GET['action']) && $_GET['action'] == 'callback') {
+        $auth->socialCallback();
+    } 
+    
+    // 2. Xử lý khi nhấn vào link "Đặt lại mật khẩu" từ Gmail gửi về
+    else if (isset($_GET['action']) && $_GET['action'] == 'reset_password') {
+        // Hàm này sẽ kiểm tra token và hiện form nhập mật khẩu mới
+        $auth->showResetPasswordForm();
+    }
+
+    // 3. Xử lý khi user nhấn vào nút Login Social (Có biến ?provider=github)
+    else if (isset($_GET['provider'])) {
+        $auth->socialLogin();
+    } 
+
+    // 4. Xử lý các action thông thường (login, register, logout, handleForgotPassword...)
+    else if (isset($action) && method_exists($auth, $action)) {
+        $auth->$action();
+    } 
+
+    // 5. Mặc định hiện trang Login
+    else {
+        $auth->login();
+    }
+    break;
 
     // === TRANG QUẢN TRỊ (ADMIN) ===
     case 'admin':

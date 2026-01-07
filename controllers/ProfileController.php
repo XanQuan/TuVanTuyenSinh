@@ -15,7 +15,7 @@ class ProfileController {
     public function index() {
         $user_id = $_SESSION['user']['id'];
         
-        // 1. Lấy thông tin người dùng hiện tại và điểm Holland mới nhất
+        // 1. Lấy thông tin người dùng và kết quả Holland mới nhất
         $stmt = $this->conn->prepare("SELECT u.*, r.r_score, r.i_score, r.a_score, r.s_score, r.e_score, r.c_score 
                                       FROM users u 
                                       LEFT JOIN assessment_results r ON u.id = r.user_id 
@@ -24,7 +24,7 @@ class ProfileController {
         $stmt->execute();
         $user = $stmt->get_result()->fetch_assoc();
 
-        // --- BỔ SUNG: Lấy danh sách khối thi từ database để đổ ra View ---
+        // Lấy danh sách khối thi
         $exam_groups_result = $this->conn->query("SELECT * FROM exam_groups ORDER BY code ASC");
         $all_exam_groups = [];
         if ($exam_groups_result) {
@@ -33,18 +33,18 @@ class ProfileController {
             }
         }
 
-        // 2. Lấy dữ liệu thống kê hoạt động
+        // 2. Thống kê
         $quiz_count = $this->conn->query("SELECT COUNT(*) as total FROM assessment_results WHERE user_id = $user_id")->fetch_assoc()['total'] ?? 0;
         $chat_count = $this->conn->query("SELECT COUNT(*) as total FROM chat_sessions WHERE user_id = $user_id")->fetch_assoc()['total'] ?? 0;
 
-        // --- KHỞI TẠO DỮ LIỆU MACHINE LEARNING THẬT ---
+        // 3. THUẬT TOÁN KNN: CẢI TIẾN LINH HOẠT
         $top_suggestion = "Đang thu thập thêm dữ liệu...";
         $top_match_rate = 0;
         $top_employment_status = 'working';
-        $best_mentor_name = "Tiền bối ẩn danh";
 
-        // 3. THUẬT TOÁN KNN: Truy vấn tập mẫu từ Alumni đã xác minh
-        $sql_ml = "SELECT u.fullname, r.feedback_major as aspiration, u.employment_status, 
+        // Lấy dữ liệu Alumni (Tiền bối)
+        $sql_ml = "SELECT u.fullname, u.region, u.academic_performance, u.employment_status, 
+                          r.feedback_major as aspiration, 
                           r.r_score, r.i_score, r.a_score, r.s_score, r.e_score, r.c_score 
                    FROM assessment_results r 
                    INNER JOIN users u ON u.id = r.user_id 
@@ -55,27 +55,45 @@ class ProfileController {
         if ($others && $others->num_rows > 0) {
             $recommendations = [];
             while($row = $others->fetch_assoc()) {
-                $similarity = $this->calculateSimilarity($user, $row);
-                $percentage = (($similarity + 25) / (25 + 15)) * 100; 
-                $percentage = max(30, min(99, $percentage)); 
+               // --- SỬA LẠI LOGIC TÍNH % TRONG VÒNG LẶP WHILE ---
 
-                $recommendations[] = [
-                    'major' => $row['aspiration'], 
-                    'fullname' => $row['fullname'],
-                    'score' => $similarity,
-                    'match_rate' => round($percentage),
-                    'status' => $row['employment_status']
-                ];
+$similarity = $this->calculateSimilarity($user, $row);
+
+// 1. Tính % dựa trên khoảng cách Holland (Similarity càng cao % càng cao)
+// Giả sử similarity = 5 là khớp hoàn hảo 100% tính cách
+$holland_percent = ($similarity / 5) * 100;
+
+// 2. Xử lý biến thiên theo Khối thi (Region)
+if (!empty($user['region']) && $user['region'] == $row['region']) {
+    // Nếu trùng khối thi: Lấy % tính cách + 40% điểm thưởng 
+    // (nhưng không vượt quá 98% để trông thật hơn)
+    $final_percentage = min(98, $holland_percent + 40);
+} else {
+    // Nếu khác khối thi: Chỉ lấy % tính cách và đảm bảo không quá thấp
+    $final_percentage = max(35, $holland_percent);
+}
+
+// 3. Làm tròn số để hiển thị đẹp (Ví dụ: 76%)
+$match_rate_display = round($final_percentage);
+
+$recommendations[] = [
+    'major' => $row['aspiration'], 
+    'fullname' => $row['fullname'],
+    'score' => $similarity,
+    'match_rate' => $match_rate_display,
+    'status' => $row['employment_status']
+];
             }
+            
+            // Sắp xếp: Ai có score cao nhất (giống nhất) lên đầu
             usort($recommendations, function($a, $b) { return $b['score'] <=> $a['score']; });
             
             $top_suggestion = $recommendations[0]['major'];
             $top_match_rate = $recommendations[0]['match_rate']; 
             $top_employment_status = $recommendations[0]['status'];
-            $best_mentor_name = $recommendations[0]['fullname'];
         }
 
-        // 4. Tính % hoàn thiện hồ sơ tự động
+        // 4. Tính % hoàn thiện hồ sơ
         $fields = ['fullname', 'birthday', 'gender', 'phone', 'academic_performance', 'address', 'aspiration', 'avatar'];
         $filled = 0; 
         foreach ($fields as $f) { if (!empty($user[$f])) $filled++; }
@@ -86,9 +104,18 @@ class ProfileController {
 
     private function calculateSimilarity($userA, $userB) {
         $score = 0;
-        if (($userA['region'] ?? '') == ($userB['region'] ?? '')) $score += 3;
-        if (($userA['academic_performance'] ?? '') == ($userB['academic_performance'] ?? '')) $score += 2;
-        
+        // Thưởng 20 điểm nếu trùng khối thi (Chỉ số quan trọng nhất của bạn)
+        if (!empty($userA['region']) && !empty($userB['region']) && $userA['region'] == $userB['region']) {
+            $score += 20; 
+        }
+
+        // Thưởng 5 điểm nếu cùng học lực
+        if (!empty($userA['academic_performance']) && !empty($userB['academic_performance']) 
+            && $userA['academic_performance'] == $userB['academic_performance']) {
+            $score += 5;
+        }
+
+        // Độ lệch tính cách Holland
         $dist = sqrt(
             pow(($userA['r_score'] ?? 0) - ($userB['r_score'] ?? 0), 2) +
             pow(($userA['i_score'] ?? 0) - ($userB['i_score'] ?? 0), 2) +
@@ -97,6 +124,7 @@ class ProfileController {
             pow(($userA['e_score'] ?? 0) - ($userB['e_score'] ?? 0), 2) +
             pow(($userA['c_score'] ?? 0) - ($userB['c_score'] ?? 0), 2)
         );
+
         return $score - $dist;
     }
 

@@ -8,30 +8,41 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     
     <style>
+        :root {
+            --primary: #ef7e7e;
+            --secondary: #81ecec;
+            --bg-dark: #2d3436;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         
         body {
-            background: linear-gradient(135deg, #f08b8b 0%, #7e98d5 100%);
+            background: radial-gradient(circle at top left, #f08b8b, #7e98d5);
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 20px;
+            perspective: 1000px;
         }
 
+        /* Container 3D Depth */
         .main-container {
             display: flex;
-            width: 900px;
-            height: 600px;
-            background: #2d3436;
-            border-radius: 24px;
+            width: 1000px;
+            min-height: 700px; 
+            background: var(--bg-dark);
+            border-radius: 30px;
             overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            box-shadow: 25px 25px 50px rgba(0,0,0,0.4), 
+                        -5px -5px 15px rgba(255,255,255,0.02);
+            animation: slideUp 0.8s ease-out;
         }
 
-        /* Nửa bên trái */
+        /* Nửa bên trái - Glassmorphism style */
         .info-side {
             flex: 1;
-            background: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
             background-position: center;
             position: relative;
@@ -45,28 +56,24 @@
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
         }
 
         .info-content {
             position: relative;
             z-index: 1;
             width: 100%;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
         }
 
-        .info-content h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-            font-weight: 800;
-            color: #fff;
-        }
-
-        .info-content p {
-            font-size: 15px;
-            line-height: 1.8;
-            color: #dfe6e9;
-            margin-bottom: 40px;
-        }
+        .info-content h2 { font-size: 38px; margin-bottom: 20px; font-weight: 800; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .info-content p { font-size: 15px; line-height: 1.8; color: #dfe6e9; margin-bottom: 40px; }
 
         .login-btn-outline {
             text-decoration: none;
@@ -75,42 +82,37 @@
             background: transparent;
             border: 2px solid #fff;
             color: #fff;
-            border-radius: 30px;
+            border-radius: 50px;
             font-weight: 600;
-            transition: 0.3s;
+            transition: 0.4s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .login-btn-outline:hover {
-            background: #fff;
-            color: #2d3436;
+        .login-btn-outline:hover { 
+            background: #fff; 
+            color: var(--bg-dark); 
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(255,255,255,0.2);
         }
 
-        /* Nửa bên phải */
+        /* Nửa bên phải - Neumorphism Input */
         .register-side {
             flex: 1.2;
             padding: 40px 60px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            background: #2d3436;
+            background: #252a2b;
         }
 
-        .register-side h2 {
-            color: #ef7e7e;
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .register-side p {
-            color: #b2bec3;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
+        .register-side h2 { color: var(--primary); font-size: 34px; font-weight: 800; margin-bottom: 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .register-side p { color: #b2bec3; font-size: 14px; margin-bottom: 25px; }
 
         .input-group {
             position: relative;
             margin-bottom: 18px;
+            width: 100%;
         }
 
         .input-group i {
@@ -118,26 +120,34 @@
             left: 20px;
             top: 50%;
             transform: translateY(-50%);
-            color: #ef7e7e;
+            color: var(--primary);
             z-index: 2;
+            transition: 0.3s;
         }
 
-        .input-group input, .input-group select {
+        .input-group input, 
+        .input-group select {
             width: 100%;
-            padding: 14px 15px 14px 50px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid #636e72;
-            border-radius: 30px;
+            height: 52px;
+            padding: 0 20px 0 55px;
+            background: #1e2223;
+            border: 2px solid transparent;
+            border-radius: 15px;
             color: #fff;
             outline: none;
-            transition: 0.3s;
+            transition: all 0.3s;
             font-size: 14px;
-            appearance: none;
+            box-shadow: inset 4px 4px 8px rgba(0,0,0,0.4), 
+                        inset -2px -2px 5px rgba(255,255,255,0.05);
         }
 
-        /* Tùy chỉnh riêng cho select để có mũi tên */
-        .input-group select {
-            cursor: pointer;
+        .input-group input:focus, 
+        .input-group select:focus {
+            border-color: var(--primary);
+            background: #252a2b;
+            box-shadow: 0 0 15px rgba(239, 126, 126, 0.15),
+                        inset 2px 2px 5px rgba(0,0,0,0.5);
+            transform: translateY(-2px);
         }
 
         .select-wrapper::after {
@@ -152,65 +162,41 @@
             pointer-events: none;
         }
 
-        .input-group input:focus, .input-group select:focus {
-            border-color: #ef7e7e;
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 10px rgba(239, 126, 126, 0.2);
-        }
-
+        /* 3D Button */
         .register-btn {
-            background: linear-gradient(to right, #ef7e7e, #f08b8b);
+            background: linear-gradient(135deg, var(--primary), #d63031);
             border: none;
-            padding: 15px;
-            border-radius: 30px;
+            height: 58px;
+            border-radius: 15px;
             color: #fff;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 15px;
             transition: 0.4s;
-            box-shadow: 0 10px 20px rgba(239, 126, 126, 0.3);
+            box-shadow: 0 10px 25px rgba(239, 126, 126, 0.3);
+            width: 100%;
         }
 
         .register-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 25px rgba(239, 126, 126, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(239, 126, 126, 0.4);
             filter: brightness(1.1);
         }
 
-        .login-link {
-            text-align: center;
-            margin-top: 25px;
-            color: #b2bec3;
-            font-size: 14px;
+        .register-btn:active { transform: translateY(-1px); }
+
+        .login-link { text-align: center; margin-top: 25px; color: #b2bec3; font-size: 14px; }
+        .login-link a { color: var(--primary); text-decoration: none; font-weight: 600; transition: 0.3s; }
+        .login-link a:hover { text-decoration: underline; color: #ff9f9f; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .login-link a {
-            color: #ef7e7e;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        .login-link a:hover { text-decoration: underline; }
-
-        .alert-error {
-            background: rgba(255, 118, 117, 0.1);
-            color: #ff7675;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 13px;
-            margin-bottom: 20px;
-            text-align: center;
-            border: 1px solid rgba(255, 118, 117, 0.2);
-        }
-
-        /* Định dạng các option của select */
-        select option {
-            background: #2d3436;
-            color: #fff;
-        }
+        select option { background: #2d3436; color: #fff; }
     </style>
 </head>
 <body>
@@ -229,8 +215,8 @@
             <p>Bắt đầu hành trình UniGuide của bạn</p>
 
             <?php if(isset($error)): ?>
-                <div class="alert-error">
-                    <i class="fas fa-exclamation-circle me-2"></i> <?= $error ?>
+                <div class="alert-error" style="background: rgba(255, 118, 117, 0.2); color: #ff7675; padding: 12px; border-radius: 10px; margin-bottom: 20px; border-left: 5px solid #ff7675;">
+                    <i class="fas fa-exclamation-circle"></i> <?= $error ?>
                 </div>
             <?php endif; ?>
 
@@ -250,6 +236,11 @@
                 </div>
 
                 <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" name="email" placeholder="Địa chỉ Email" required>
+                </div>
+
+                <div class="input-group">
                     <i class="fas fa-user"></i>
                     <input type="text" name="username" placeholder="Tên đăng nhập" required>
                 </div>
@@ -264,7 +255,7 @@
                     <input type="password" name="confirm_password" placeholder="Xác nhận mật khẩu" required>
                 </div>
                 
-                <button type="submit" class="register-btn" style="width: 100%;">ĐĂNG KÝ NGAY</button>
+                <button type="submit" class="register-btn">ĐĂNG KÝ NGAY</button>
             </form>
 
             <div class="login-link">

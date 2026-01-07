@@ -1,60 +1,98 @@
 <?php require_once 'views/layouts/header.php'; ?>
 
 <div class="fade-in-page">
-    <section class="mentor-hero" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('public/assets/images/meetings-bg.jpg'); padding: 100px 0; color: #fff;">
-        <div class="container text-center">
-            <div class="mentor-avatar-wrap mb-4">
-                <img src="public/assets/images/<?= htmlspecialchars($mentor['avatar'] ?? 'default.jpg') ?>" 
-                     style="width: 150px; height: 150px; border-radius: 50%; border: 5px solid #fff; object-fit: cover; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+    <section class="mentor-hero-new" style="background: linear-gradient(135deg, #a71d2a 0%, #2b2d42 100%); padding: 80px 0; color: #fff; position: relative; overflow: hidden;">
+        <div class="container position-relative" style="z-index: 2;">
+            <div class="row align-items-center text-center text-md-start">
+                <div class="col-md-3 mb-4 mb-md-0 text-center">
+                    <div class="mentor-avatar-wrap">
+                        <?php 
+                            $avatar = !empty($mentor['avatar']) ? $mentor['avatar'] : 'default_mentor.jpg';
+                            $avatarPath = "public/assets/images/" . $avatar;
+                        ?>
+                        <img src="<?= $avatarPath ?>" 
+                             style="width: 200px; height: 200px; border-radius: 30px; border: 8px solid rgba(255,255,255,0.1); object-fit: cover; shadow: 0 15px 35px rgba(0,0,0,0.3);"
+                             onerror="this.src='https://ui-avatars.com/api/?name=<?= urlencode($mentor['full_name']) ?>&size=200&background=fff&color=a71d2a'">
+                    </div>
+                </div>
+                <div class="col-md-9 ps-md-5">
+                    <span class="badge bg-warning text-dark mb-3 px-3 py-2 fw-bold shadow-sm" style="border-radius: 10px;"><?= htmlspecialchars($mentor['job_title'] ?? 'Chuyên gia') ?></span>
+                    <h1 class="display-4 fw-bold mb-2 text-white"><?= htmlspecialchars($mentor['full_name'] ?? 'Đang cập nhật') ?></h1>
+                    <p class="lead mb-0" style="color: rgba(255,255,255,0.8);"><i class="fas fa-graduation-cap me-2"></i><?= htmlspecialchars($mentor['expertise'] ?? 'Kết nối chuyên gia UniGuide') ?></p>
+                </div>
             </div>
-            
-            <span class="badge bg-danger mb-2 px-3 py-2 text-uppercase"><?= htmlspecialchars($mentor['job_title'] ?? 'Chuyên gia') ?></span>
-            <h1 class="fw-bold"><?= htmlspecialchars($mentor['full_name'] ?? 'Đang cập nhật') ?></h1>
-            <p class="lead opacity-75"><?= htmlspecialchars($mentor['expertise'] ?? 'Kết nối chuyên gia UniGuide') ?></p>
+        </div>
+        <div style="position: absolute; right: -5%; bottom: -10%; opacity: 0.1; font-size: 200px; color: #fff;">
+            <i class="fas fa-quote-right"></i>
         </div>
     </section>
 
-    <section style="padding: 80px 0; background: #fdfdfd;">
+    <section style="padding: 60px 0; background: #f4f7f6;">
         <div class="container">
-            <div class="row">
+            <div class="row g-4">
                 <div class="col-lg-8">
-                    <div class="card border-0 shadow-soft rounded-5 p-5 mb-4">
+                    <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 mb-4 bg-white">
                         <h4 class="fw-bold mb-4 d-flex align-items-center" style="color: #2d3436;">
-                            <span style="width: 5px; height: 25px; background: #be1e2d; display: inline-block; margin-right: 15px; border-radius: 10px;"></span>
+                            <span style="width: 6px; height: 25px; background: #a71d2a; display: inline-block; margin-right: 15px; border-radius: 10px;"></span>
                             Tiểu sử & Kinh nghiệm
                         </h4>
-                        <div class="mentor-bio-text" style="font-size: 17px; line-height: 1.8; color: #636e72;">
+                        <div class="mentor-bio-text text-secondary" style="font-size: 17px; line-height: 1.8; text-align: justify;">
                             <?= nl2br(htmlspecialchars($mentor['bio'] ?? 'Thông tin kinh nghiệm đang được cập nhật.')) ?>
                         </div>
                     </div>
 
-                    <div class="card border-0 shadow-soft rounded-5 p-5" style="background: #f0f7ff;">
-                        <h5 class="fw-bold mb-3" style="color: #0056b3;">Lĩnh vực tư vấn chuyên sâu</h5>
-                        <ul class="list-unstyled row">
-                            <li class="col-md-6 mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Định hướng nghề nghiệp</li>
-                            <li class="col-md-6 mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Kỹ năng phỏng vấn</li>
-                            <li class="col-md-6 mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Kết nối doanh nghiệp</li>
-                            <li class="col-md-6 mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Tư vấn học bổng</li>
-                        </ul>
+                    <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
+                        <h4 class="fw-bold mb-4 d-flex align-items-center" style="color: #2d3436;">
+                            <span style="width: 6px; height: 25px; background: #3498db; display: inline-block; margin-right: 15px; border-radius: 10px;"></span>
+                            Kỹ năng tư vấn chuyên sâu
+                        </h4>
+                        <div class="row g-3">
+                            <?php 
+                            if (!empty($mentor['expertise'])): 
+                                $skills = explode(',', $mentor['expertise']); 
+                                foreach ($skills as $s): 
+                                    $skill = trim($s);
+                                    if($skill != ''):
+                            ?>
+                                <div class="col-md-6">
+                                    <div class="p-3 rounded-3 d-flex align-items-center" style="background: #f0f7ff; border-left: 4px solid #3498db;">
+                                        <i class="fa fa-check-circle text-primary me-3 fs-5"></i>
+                                        <span class="fw-medium text-dark"><?= htmlspecialchars($skill) ?></span>
+                                    </div>
+                                </div>
+                            <?php 
+                                    endif;
+                                endforeach; 
+                            else: 
+                                echo '<p class="text-muted italic">Đang cập nhật kỹ năng chuyên sâu...</p>';
+                            endif; 
+                            ?>
+                        </div>
                     </div>
                 </div>
 
                 <div class="col-lg-4">
-                    <div class="sticky-top" style="top: 100px;">
-                        <div class="card p-4 border-0 shadow-soft rounded-5 text-center bg-white">
-                            <h5 class="fw-bold mb-4">Đặt lịch tư vấn</h5>
-                            <p class="text-muted small mb-4">Kết nối trực tiếp với chuyên gia để nhận được lời khuyên chính xác nhất cho tương lai của bạn.</p>
+                    <div class="sticky-top" style="top: 100px; z-index: 10;">
+                        <div class="card p-4 border-0 shadow-lg rounded-4 text-center bg-white border-top border-5 border-danger">
+                            <h5 class="fw-bold mb-3 text-dark">Đặt lịch tư vấn</h5>
+                            <p class="text-muted small mb-4 px-2">Nhận lời khuyên trực tiếp 1:1 từ chuyên gia để định hướng tương lai chính xác nhất.</p>
                             
-                            <a href="<?= isset($mentor['linkedin_url']) ? 'https://' . htmlspecialchars($mentor['linkedin_url']) : '#' ?>" 
+                            <a href="<?= !empty($mentor['linkedin_url']) ? (str_contains($mentor['linkedin_url'], 'http') ? $mentor['linkedin_url'] : 'https://' . $mentor['linkedin_url']) : '#' ?>" 
                                target="_blank"
-                               class="btn btn-danger btn-lg w-100 rounded-pill py-3 fw-bold shadow-danger mb-3 pulse-effect">
-                                KẾT NỐI NGAY <i class="fa fa-linkedin ms-2"></i>
+                               class="btn btn-primary btn-lg w-100 rounded-pill py-3 fw-bold mb-3 shadow pulse-effect"
+                               style="background-color: #0077b5; border: none;">
+                                <i class="fab fa-linkedin me-2"></i> KẾT NỐI LINKEDIN
                             </a>
                             
                             <button onclick="openBookingModal(<?= $mentor['id'] ?>, '<?= htmlspecialchars($mentor['full_name']) ?>')" 
-                                    class="btn btn-outline-dark btn-lg w-100 rounded-pill py-3 fw-bold shadow-sm">
-                                HẸN LỊCH 1:1
+                                    class="btn btn-danger btn-lg w-100 rounded-pill py-3 fw-bold shadow-sm"
+                                    style="background-color: #a71d2a; border: none;">
+                                <i class="fas fa-calendar-alt me-2 text-warning"></i> HẸN LỊCH 1:1
                             </button>
+                            
+                            <div class="mt-4 pt-3 border-top">
+                                <p class="small text-muted mb-0"><i class="fas fa-shield-alt me-1"></i> Thông tin của bạn luôn được bảo mật</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -64,13 +102,19 @@
 </div>
 
 <style>
+    .mentor-avatar-wrap img {
+        transition: all 0.5s ease;
+    }
+    .mentor-avatar-wrap img:hover {
+        transform: rotate(3deg) scale(1.05);
+    }
     .shadow-soft { box-shadow: 0 10px 40px rgba(0,0,0,0.04) !important; }
-    .rounded-5 { border-radius: 30px !important; }
-    .fade-in-page { animation: fadeIn 1s ease-in-out; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .pulse-effect:hover { transform: scale(1.03); transition: 0.3s; }
-    .swal2-input, .swal2-textarea { border-radius: 10px !important; border: 1px solid #eee !important; box-shadow: none !important; }
+    .fade-in-page { animation: fadeIn 0.8s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .pulse-effect:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,119,181,0.2) !important; }
 </style>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
