@@ -53,7 +53,7 @@
                         <i class="fas fa-balance-scale fa-2x" style="color: #faad14;"></i>
                     </div>
                     <h5>So sánh đa chiều</h5>
-                    <p class="small">Đối chiếu học phí, điểm chuẩn và cơ hội việc làm giữa các trường.</p>
+                    <p class="small">Đối chiếu các ngành, điểm chuẩn và cơ hội việc làm giữa các trường.</p>
                 </div>
             </div>
             <div class="col-lg-3">
@@ -62,7 +62,7 @@
                         <i class="fas fa-database fa-2x" style="color: #1890ff;"></i>
                     </div>
                     <h5>Dữ liệu khổng lồ</h5>
-                    <p class="small">Cập nhật thông tin từ hơn 200 trường Đại học và Cao đẳng toàn quốc.</p>
+                    <p class="small">Cập nhật thông tin từ nhiều trường Đại học và Cao đẳng toàn quốc.</p>
                 </div>
             </div>
             <div class="col-lg-3">

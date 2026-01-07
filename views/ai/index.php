@@ -48,33 +48,30 @@
         transition: 0.3s;
     }
 
-    /* 4. ÉP MÀU CHỮ TRẮNG TOÀN DIỆN CHO NỘI DUNG CHAT */
+    /* 4. ÉP MÀU CHỮ TRẮNG TOÀN DIỆN */
     .msg-content, 
     .ai-rendered-content, 
     .ai-rendered-content p, 
     .ai-rendered-content span,
     .ai-rendered-content li,
     .ai-rendered-content div {
-        color: #ffffff !important; /* Trắng tinh khiết 100% */
-        opacity: 1 !important;     /* Loại bỏ độ mờ */
+        color: #ffffff !important;
+        opacity: 1 !important;
         font-weight: 400;
         line-height: 1.8;
         font-size: 16px;
     }
 
-    /* Làm nổi bật các đoạn chat của AI */
     .ai-msg .msg-content {
         color: #ffffff !important;
-        text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.8); /* Bóng đổ giúp chữ nổi bật hơn */
+        text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.8);
     }
 
-    /* Màu đỏ hồng cho các từ khóa quan trọng */
     .ai-rendered-content strong {
         color: #ff4d4d !important; 
         font-weight: 700;
     }
 
-    /* Màu cho tiêu đề trong đoạn chat */
     .ai-rendered-content h1, 
     .ai-rendered-content h2, 
     .ai-rendered-content h3 {
@@ -83,7 +80,6 @@
         margin-bottom: 10px;
     }
 
-    /* Sidebar - Lịch sử trò chuyện */
     .history-list {
         flex: 1;
         overflow-y: auto;
@@ -96,7 +92,7 @@
         padding: 12px 15px;
         border-radius: 8px;
         font-size: 14px;
-        color: #ced4da !important; /* Xám sáng cho lịch sử */
+        color: #ced4da !important;
         text-decoration: none;
         white-space: nowrap;
         overflow: hidden;
@@ -190,7 +186,7 @@
 <div class="ai-page-wrapper">
     <div class="chat-sidebar">
         <a href="index.php?page=ai_consultant" class="new-chat-link">
-            <i class="fa-solid fa-plus"></i> + Chat mới
+            <i class="fa-solid fa-plus"></i> + Tư vấn mới
         </a>
         <div class="history-list">
             <?php if (isset($all_sessions) && !empty($all_sessions)): ?>
@@ -210,7 +206,8 @@
             <div class="message-row ai-msg">
                 <div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>
                 <div class="msg-content">
-                    Chào bạn! Tôi là <strong>UniGuide AI</strong>. Hãy hỏi tôi bất cứ điều gì nhé!
+                    Chào bạn! Tôi là <strong>UniGuide AI</strong> - Chuyên gia định hướng chuyên ngành cho sinh viên. 
+                    Hãy cho tôi biết bạn đang học ngành gì? Tôi sẽ giúp bạn chọn chuyên ngành hẹp và lộ trình phát triển kỹ năng nhé!
                 </div>
             </div>
 
@@ -229,10 +226,13 @@
 
         <div class="chat-footer">
             <div class="input-wrapper">
-                <input id="user-input" type="text" placeholder="Hỏi UniGuide về ngành học..." autocomplete="off">
+                <input id="user-input" type="text" placeholder="Bạn đang học ngành gì? Hãy hỏi về chuyên ngành hẹp tại đây..." autocomplete="off">
                 <button onclick="sendMessage()" class="btn-send">
                     <i class="fa-solid fa-paper-plane"></i>
                 </button>
+            </div>
+            <div class="text-center mt-2">
+                <small style="color: #6e7681; font-size: 11px;">Hệ thống tư vấn chuyên ngành và định hướng nghề nghiệp UniGuide AI.</small>
             </div>
         </div>
     </div>
@@ -241,6 +241,7 @@
 <script>
 window.addEventListener('load', function() {
     const chatBox = document.getElementById("chat-box");
+    // Xử lý Markdown cho các tin nhắn cũ khi load trang
     document.querySelectorAll('.ai-rendered-content').forEach(el => {
         el.innerHTML = marked.parse(el.innerText);
     });
@@ -254,12 +255,18 @@ function sendMessage() {
     const msg = input.value.trim();
     if(!msg) return;
 
+    // Hiển thị tin nhắn User
     box.innerHTML += `<div class="message-row user-msg"><div class="msg-content">${msg}</div></div>`;
     input.value = '';
     box.scrollTop = box.scrollHeight;
 
+    // Hiển thị Loading
     const loadingId = 'loading-' + Date.now();
-    box.innerHTML += `<div id="${loadingId}" class="message-row ai-msg"><div class="ai-avatar"><i class="fa-solid fa-robot"></i></div><div class="msg-content">Đang suy nghĩ...</div></div>`;
+    box.innerHTML += `
+        <div id="${loadingId}" class="message-row ai-msg">
+            <div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>
+            <div class="msg-content">Đang phân tích lộ trình cho bạn...</div>
+        </div>`;
     box.scrollTop = box.scrollHeight;
 
     const formData = new FormData();
@@ -277,6 +284,8 @@ function sendMessage() {
             }
             const formattedReply = marked.parse(data.reply);
             box.innerHTML += `<div class="message-row ai-msg"><div class="ai-avatar"><i class="fa-solid fa-robot"></i></div><div class="msg-content ai-rendered-content">${formattedReply}</div></div>`;
+        } else {
+            box.innerHTML += `<div class="message-row ai-msg"><div class="msg-content text-danger">⚠️ ${data.message}</div></div>`;
         }
         box.scrollTop = box.scrollHeight;
     });

@@ -308,6 +308,34 @@ case 'mentors':
         header("Location: index.php?page=advice");
         exit;
         break;
+        // ==========================================================
+    // 🎓 CHỨC NĂNG: PHÂN TÍCH LỘ TRÌNH CHUYÊN SÂU (Dành cho SV năm 2)
+    // ==========================================================
+    case 'history':
+        $controllerFile = 'controllers/HistoryController.php';
+        if (file_exists($controllerFile)) {
+            require_once $controllerFile;
+            if (class_exists('HistoryController')) {
+                // Khởi tạo Controller và truyền kết nối $conn từ db.php vào
+                $history = new HistoryController($conn);
+                
+                // Mặc định chạy hàm index() để hiện danh sách 9 ngành
+                $history->index();
+            } else {
+                echo "Lỗi: Class HistoryController không tồn tại.";
+            }
+        } else {
+            echo "Lỗi: Không tìm thấy file controllers/HistoryController.php";
+        }
+        break;
+        case 'discovery': // Đổi từ history thành discovery
+    $controllerFile = 'controllers/HistoryController.php'; // Vẫn gọi file này nếu bạn đã viết code vào đây
+    if (file_exists($controllerFile)) {
+        require_once $controllerFile;
+        $history = new HistoryController($conn);
+        $history->index();
+    }
+    break;
  
 }
 ?>

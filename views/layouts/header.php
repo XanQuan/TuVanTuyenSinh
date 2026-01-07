@@ -148,7 +148,7 @@
       <div class="row">
         <div class="col-lg-8 col-sm-8">
           <div class="left-content">
-            <p>Hệ thống tư vấn tuyển sinh trực tuyến <strong>UniGuide</strong>.</p>
+            <p>Hệ thống tư vấn tuyển sinh & hổ trợ chọn chuyên ngành trực tuyến <strong>UniGuide</strong>.</p>
           </div>
         </div>
         <div class="col-lg-4 col-sm-4">

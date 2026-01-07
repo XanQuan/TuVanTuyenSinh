@@ -142,12 +142,12 @@
         <div class="container text-center">
             <div class="caption">
                 <h6 class="text-white-50 text-uppercase letter-spacing-2">Kiến tạo tương lai cùng UniGuide</h6>
-                <h2>Hệ Thống <span>Tư Vấn Tuyển Sinh</span> AI</h2>
+                <h2>Hệ Thống <span>Tư Vấn Tuyển Sinh & hổ trợ chọn chuyên ngành</span> AI</h2>
                 <p class="text-white opacity-75 fs-5 mb-5 mx-auto" style="max-width: 700px;">
                     Định hướng nghề nghiệp thông minh dựa trên mô hình tâm lý học Holland và thuật toán phân tích điểm chuẩn chính xác nhất.
                 </p>
                 <div class="d-flex justify-content-center gap-3 flex-wrap">
-                    <a href="#consulting" class="btn btn-danger rounded-pill px-5 py-3 fw-bold shadow">🔍 TRA CỨU ĐIỂM</a>
+                    <a href="#search-section" class="btn btn-danger rounded-pill px-5 py-3 fw-bold shadow">🔍 TRA CỨU ĐIỂM</a>
                     <a href="index.php?page=assessment" class="btn btn-warning rounded-pill px-5 py-3 fw-bold shadow">🧩 TEST HOLLAND</a>
                 </div>
             </div>
@@ -307,7 +307,7 @@
         <div class="row align-items-center">
             <div class="col-lg-4 text-center text-lg-start mb-3 mb-lg-0">
                 <h5 class="fw-800 text-white mb-1" style="letter-spacing: 1px;">UNIGUIDE 2026</h5>
-                <p class="text-white-50 small mb-0">© Hệ thống tư vấn tuyển sinh thông minh.</p>
+                <p class="text-white-50 small mb-0">© Hệ thống tư vấn tuyển sinh & hổ trợ chọn chuyên ngành thông minh.</p>
             </div>
 
             <div class="col-lg-5 text-center mb-3 mb-lg-0">

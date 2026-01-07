@@ -1,123 +1,79 @@
-    <?php
-    class CompareController {
-        private $conn;
+<?php
+class CompareController {
+    private $conn;
+    public function __construct($db) { $this->conn = $db; }
 
-        public function __construct($db) {
-            $this->conn = $db;
+    public function index() {
+        // Lấy danh sách ngành lớn duy nhất từ bảng tri thức
+        $majors = [];
+        $res = $this->conn->query("SELECT DISTINCT major_name FROM knowledge_base ORDER BY major_name ASC");
+        if ($res) {
+            while($row = $res->fetch_assoc()) $majors[] = $row;
         }
+        require 'views/compare/index.php';
+    }
 
-        // 1. Hiển thị trang chọn trường
-        public function index() {
-            $universities = [];
-            // Lấy danh sách trường (Chỉ lấy ID và Name để tránh lỗi)
-            $res = $this->conn->query("SELECT id, name FROM universities ORDER BY name ASC");
-            if ($res && $res->num_rows > 0) {
-                while($row = $res->fetch_assoc()) $universities[] = $row;
-            }
-            
-            require 'views/compare/index.php';
-        }
+    // API phục vụ AJAX lấy chuyên ngành hẹp
+   // Đổi tên hàm này để khớp với file view
+public function getSpecsByMajor() { 
+    header('Content-Type: application/json');
+    // JavaScript gửi major_name, nên ta dùng major_name
+    $major_name = $_GET['major_name'] ?? ''; 
+    
+    $stmt = $this->conn->prepare("SELECT id, specialization FROM knowledge_base WHERE major_name = ?");
+    $stmt->bind_param("s", $major_name);
+    $stmt->execute();
+    $data = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    
+    echo json_encode($data);
+    exit;
+}
 
-        // 2. API AJAX: Lấy danh sách ngành theo ID trường
-        public function getMajorsByUni() {
-            header('Content-Type: application/json');
-            
-            $uni_id = isset($_GET['uni_id']) ? (int)$_GET['uni_id'] : 0;
-            $data = [];
+    public function result() {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Đổi major_a thành spec_a để khớp với name của select
+        $spec1_id = (int)($_POST['spec_a'] ?? 0); 
+        $spec2_id = (int)($_POST['spec_b'] ?? 0);
 
-            if ($uni_id > 0) {
-                // SỬA LỖI: Chỉ lấy m.id và m.name (Tuyệt đối không lấy cột lạ)
-                $sql = "SELECT DISTINCT m.id, m.name 
-                        FROM majors m 
-                        JOIN entry_scores s ON m.id = s.major_id 
-                        WHERE s.uni_id = ? 
-                        ORDER BY m.name ASC";
-                
-                $stmt = $this->conn->prepare($sql);
-                if ($stmt) {
-                    $stmt->bind_param("i", $uni_id);
-                    $stmt->execute();
-                    $res = $stmt->get_result();
-                    while($row = $res->fetch_assoc()) {
-                        $data[] = $row;
-                    }
-                }
-            }
-            
-            echo json_encode($data);
-            exit;
-        }
+        if ($spec1_id > 0 && $spec2_id > 0) {
+            $info1 = $this->conn->query("SELECT * FROM knowledge_base WHERE id = $spec1_id")->fetch_assoc();
+            $info2 = $this->conn->query("SELECT * FROM knowledge_base WHERE id = $spec2_id")->fetch_assoc();
 
-        // 3. Xử lý kết quả so sánh
-        public function result() {
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $uni1_id = isset($_POST['uni_a']) ? (int)$_POST['uni_a'] : 0;
-                $major1_id = isset($_POST['major_a']) ? (int)$_POST['major_a'] : 0;
-                
-                $uni2_id = isset($_POST['uni_b']) ? (int)$_POST['uni_b'] : 0;
-                $major2_id = isset($_POST['major_b']) ? (int)$_POST['major_b'] : 0;
-
-                if ($uni1_id && $major1_id && $uni2_id && $major2_id) {
-                    // Lấy thông tin
-                    $info1 = $this->getInfo($uni1_id, $major1_id);
-                    $scores1 = $this->getScoreHistory($uni1_id, $major1_id);
-                    
-                    $info2 = $this->getInfo($uni2_id, $major2_id);
-                    $scores2 = $this->getScoreHistory($uni2_id, $major2_id);
-
-                    require 'views/compare/result.php';
-                } else {
-                    echo "<script>alert('Vui lòng chọn đầy đủ thông tin để so sánh!'); window.history.back();</script>";
-                }
-            } else {
-                header("Location: index.php?page=compare");
-            }
-        }
-
-        // --- HÀM ĐÃ SỬA LỖI: CHỈ LẤY CỘT CƠ BẢN ---
-        private function getInfo($uni_id, $major_id) {
-            // Tôi đã xóa hết các cột: code, description, career_prospects, tuition...
-            // Chỉ giữ lại name để đảm bảo 100% không lỗi dù DB sơ sài cỡ nào.
-            
-            $sql = "SELECT u.name as uni_name, 
-                        m.name as major_name
-                    FROM universities u, majors m
-                    WHERE u.id = ? AND m.id = ?";
-            
-            $stmt = $this->conn->prepare($sql);
-            if ($stmt) {
-                $stmt->bind_param("ii", $uni_id, $major_id);
-                $stmt->execute();
-                $data = $stmt->get_result()->fetch_assoc();
-                
-                // Tự tạo dữ liệu giả để giao diện không bị trống (Vì DB bạn không có)
-                if ($data) {
-                    $data['description'] = "Đang cập nhật mô tả cho ngành " . $data['major_name'];
-                    $data['career_prospects'] = "Cơ hội việc làm rộng mở.";
-                    $data['tuition'] = "Liên hệ trường";
-                    $data['job_rating'] = 5;
-                    $data['uni_code'] = "U" . $uni_id; // Mã giả
-                }
-                return $data;
-            }
-            return null;
-        }
-
-        private function getScoreHistory($uni_id, $major_id) {
-            $sql = "SELECT year, score FROM entry_scores 
-                    WHERE uni_id = ? AND major_id = ? 
-                    ORDER BY year ASC";
-            
-            $stmt = $this->conn->prepare($sql);
-            if ($stmt) {
-                $stmt->bind_param("ii", $uni_id, $major_id);
-                $stmt->execute();
-                $res = $stmt->get_result();
-                $data = [];
-                while($row = $res->fetch_assoc()) $data[] = $row;
-                return $data;
-            }
-            return [];
+            $ai_analysis = $this->getAIComparison($info1, $info2);
+            require 'views/compare/result.php';
+        } else {
+            // Lỗi này hiện ra nếu spec_a/spec_b bị rỗng
+            echo "<script>alert('Vui lòng chọn đầy đủ chuyên ngành!'); window.history.back();</script>";
         }
     }
-    ?>
+}
+
+    private function getAIComparison($d1, $d2) {
+        $apiKey = "AIzaSyAHNizToEMn41q4WFD1A-y1WkcxqYt_CBY"; // Sử dụng Key của bạn
+       $apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" . $apiKey;
+        
+        $prompt = "Bạn là chuyên gia định hướng nghề nghiệp. Hãy so sánh 2 hướng đi:
+        1. {$d1['major_name']} - Chuyên ngành: {$d1['specialization']}. Kỹ năng: {$d1['skills_required']}.
+        2. {$d2['major_name']} - Chuyên ngành: {$d2['specialization']}. Kỹ năng: {$d2['skills_required']}.
+        
+        Yêu cầu: 
+        - Phân tích sự khác biệt cốt lõi.
+        - Dự báo xu hướng việc làm năm 2026.
+        - Đưa ra lời khuyên sinh viên nào nên chọn hướng nào.
+        Trả lời bằng Markdown, trình bày đẹp, có các icon.";
+
+        $data = ["contents" => [["parts" => [["text" => $prompt]]]]];
+        
+        $ch = curl_init($apiUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        
+        $response = curl_exec($ch);
+        $res = json_decode($response, true);
+        curl_close($ch);
+
+        return $res['candidates'][0]['content']['parts'][0]['text'] ?? "Hệ thống AI đang bận phân tích, vui lòng thử lại sau.";
+    }
+}
