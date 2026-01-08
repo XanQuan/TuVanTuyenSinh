@@ -14,7 +14,7 @@ class CompareController {
     }
 
     // API phục vụ AJAX lấy chuyên ngành hẹp
-   // Đổi tên hàm này để khớp với file view
+   
 public function getSpecsByMajor() { 
     header('Content-Type: application/json');
     // JavaScript gửi major_name, nên ta dùng major_name
